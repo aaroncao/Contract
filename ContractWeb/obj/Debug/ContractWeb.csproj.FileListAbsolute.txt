@@ -20,3 +20,6 @@ E:\NetWorkSpace\ContractWeb\ContractWeb\bin\zh-Hans\EntityFramework.resources.dl
 E:\NetWorkSpace\ContractWeb\ContractWeb\bin\zh-Hans\System.Web.Providers.resources.dll
 E:\NetWorkSpace\ContractWeb\ContractWeb\obj\Debug\ContractWeb.dll
 E:\NetWorkSpace\ContractWeb\ContractWeb\obj\Debug\ContractWeb.pdb
+E:\NetWorkSpace\ContractWeb\ContractWeb\bin\ND.Lib.Data.SqlHelper.dll
+E:\NetWorkSpace\ContractWeb\ContractWeb\obj\Debug\ContractWeb.csprojResolveAssemblyReference.cache
+E:\NetWorkSpace\ContractWeb\ContractWeb\bin\Newtonsoft.Json.dll

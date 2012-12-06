@@ -5,39 +5,64 @@ using System.Web;
 
 namespace ContractWeb.Models
 {
+    /// <summary>
+    /// 用户实体
+    /// </summary>
     public class UserInfo
     {
-        //编号
-        int id;
+        /// <summary>
+        /// 编号
+        /// </summary>
+        public int id { get; set; }
 
-        //登录昵称
-        string userID;
+        /// <summary>
+        /// 登录昵称
+        /// </summary>
+        public string userID { get; set; }
 
-        //权限组ID
-        int powergroupID;
+        /// <summary>
+        /// 权限组ID
+        /// </summary>
+        public int powergroupID { get; set; }
 
-        //密码
-        string password;
+        /// <summary>
+        /// 密码
+        /// </summary>
+        public string password { get; set; }
 
-        //使用状态
-        int state = 1;
+        /// <summary>
+        /// 使用状态
+        /// </summary>
+        public int state { get; set; }
 
-        //真实姓名
-        string name;
+        /// <summary>
+        /// 真实姓名
+        /// </summary>
+        public string name { get; set; }
 
-        //性别
-        int sex = 1;
+        /// <summary>
+        /// 性别
+        /// </summary>
+        public int sex { get; set; }
 
-        //身份证号
-        string card;
+        /// <summary>
+        /// 身份证号
+        /// </summary>
+        public string card { get; set; }
 
-        //联系电话
-        string tel;
+        /// <summary>
+        /// 联系电话
+        /// </summary>
+        public string tel { get; set; }
 
-        //地址
-        string address;
+        /// <summary>
+        /// 地址
+        /// </summary>
+        public string address { get; set; }
 
-        //注册日期
-        DateTime date;
+        /// <summary>
+        /// 注册日期
+        /// </summary>
+        public DateTime date { get; set; }
     }
 }

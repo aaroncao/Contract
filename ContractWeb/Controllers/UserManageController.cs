@@ -4,6 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+using ContractWeb.Common;
+using ContractWeb.Models;
+using ContractWeb.DataAccess;
+
 namespace ContractWeb.Controllers
 {
     public class UserManageController : Controller
@@ -15,10 +19,13 @@ namespace ContractWeb.Controllers
         }
         
         // 获取数据
-        public JsonResult data()
+        public JsonResult getUserList()
         {
-            var result = new JsonResult();
-            result.Data = new { total = 239, rows = new object[] { new { code = "001", name = "Name 1", addr = "Address 11", col4 = "col4 data"} }};
+            DaUserInfo dal = new DaUserInfo();
+            IList<UserInfo> list = dal.getUserList();
+
+            var result = new CustomJsonResult();
+            result.Data = new { total = list.Count, rows = list };
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return result;
         }

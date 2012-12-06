@@ -4,118 +4,22 @@
 
 <script>
     $(function () {
-        $('#test').datagrid({
-            title: 'My DataGrid',
-            iconCls: 'icon-save',
-            width: 700,
-            height: 350,
-            nowrap: true,
-            autoRowHeight: false,
-            striped: true,
-            collapsible: true,
-            url: "UserManage/data",  //'datagrid_data.json',
-            sortName: 'code',
-            sortOrder: 'desc',
-            remoteSort: false,
-            idField: 'code',
-            frozenColumns: [[
-                { field: 'ck', checkbox: true },
-                { title: '编号', field: 'code', width: 80, sortable: true }
-            ]],
-            columns: [[
-                { title: 'Base Information', colspan: 3 },
-                {
-                    field: 'opt', title: 'Operation', width: 100, align: 'center', rowspan: 2,
-                    formatter: function (value, rec) {
-                        return '<span style="color:red">Edit Delete</span>';
-                    }
-                }
-            ], [
-                { field: 'name', title: 'Name', width: 120 },
-                {
-                    field: 'addr', title: 'Address', width: 220, rowspan: 2, sortable: true,
-                    sorter: function (a, b) {
-                        return (a > b ? 1 : -1);
-                    }
-                },
-                { field: 'col4', title: 'Col41', width: 150, rowspan: 2 }
-            ]],
-            pagination: true,
-            rownumbers: true,
-            toolbar: [{
-                id: 'btnadd',
-                text: 'Add',
-                iconCls: 'icon-add',
-                handler: function () {
-                    $('#btnsave').linkbutton('enable');
-                    alert('add')
-                }
-            }, {
-                id: 'btncut',
-                text: 'Cut',
-                iconCls: 'icon-cut',
-                handler: function () {
-                    $('#btnsave').linkbutton('enable');
-                    alert('cut')
-                }
-            }, '-', {
-                id: 'btnsave',
-                text: 'Save',
-                disabled: true,
-                iconCls: 'icon-save',
-                handler: function () {
-                    $('#btnsave').linkbutton('disable');
-                    alert('save')
-                }
-            }]
-        });
-        var p = $('#test').datagrid('getPager');
-        $(p).pagination({
-            onBeforeRefresh: function () {
-                alert('before refresh');
-            }
-        });
+        $('#tblUserList').datagrid();
     });
-    function resize() {
-        $('#test').datagrid('resize', {
-            width: 700,
-            height: 400
-        });
-    }
-    function getSelected() {
-        var selected = $('#test').datagrid('getSelected');
-        if (selected) {
-            alert(selected.code + ":" + selected.name + ":" + selected.addr + ":" + selected.col4);
-        }
-    }
-    function getSelections() {
-        var ids = [];
-        var rows = $('#test').datagrid('getSelections');
-        for (var i = 0; i < rows.length; i++) {
-            ids.push(rows[i].code);
-        }
-        alert(ids.join(':'));
-    }
-    function clearSelections() {
-        $('#test').datagrid('clearSelections');
-    }
-    function selectRow() {
-        $('#test').datagrid('selectRow', 2);
-    }
-    function selectRecord() {
-        $('#test').datagrid('selectRecord', '002');
-    }
-    function unselectRow() {
-        $('#test').datagrid('unselectRow', 2);
-    }
-    function mergeCells() {
-        $('#test').datagrid('mergeCells', {
-            index: 2,
-            field: 'addr',
-            rowspan: 2,
-            colspan: 2
-        });
-    }
 </script>
 
-<table id="test"></table>
+<table id="tblUserList" style="width:700px;height:350px;" data-options="singleSelect:true,idField:'id',url:'UserManage/getUserList'">
+    <thead>
+        <tr>
+            <th data-options="field:'id',width:100">ID</th>
+            <th data-options="field:'userID',width:100">userID</th>
+            <th data-options="field:'powergroupID',width:100">powergroupID</th>
+            <th data-options="field:'name',width:100">name</th>
+            <th data-options="field:'sex',width:100">sex</th>
+            <th data-options="field:'card',width:100">card</th>
+            <th data-options="field:'tel',width:100">tel</th>
+            <th data-options="field:'address',width:100">address</th>
+            <th data-options="field:'date',width:100">date</th>
+        </tr>
+    </thead>
+</table>
