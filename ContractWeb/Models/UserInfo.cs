@@ -23,7 +23,7 @@ namespace ContractWeb.Models
         /// <summary>
         /// 权限组ID
         /// </summary>
-        public int powergroupID { get; set; }
+        public string powergroupID { get; set; }
 
         /// <summary>
         /// 密码
@@ -33,7 +33,7 @@ namespace ContractWeb.Models
         /// <summary>
         /// 使用状态
         /// </summary>
-        public int state { get; set; }
+        public string state { get; set; }
 
         /// <summary>
         /// 真实姓名
@@ -43,7 +43,7 @@ namespace ContractWeb.Models
         /// <summary>
         /// 性别
         /// </summary>
-        public int sex { get; set; }
+        public string sex { get; set; }
 
         /// <summary>
         /// 身份证号

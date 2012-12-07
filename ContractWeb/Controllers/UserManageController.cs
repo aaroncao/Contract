@@ -17,16 +17,31 @@ namespace ContractWeb.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// 用户修改密码界面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ChangePwdView()
+        {
+            return View();
+        }
         
-        // 获取数据
+        /// <summary>
+        /// 获取用户数据
+        /// </summary>
+        /// <returns></returns>
         public JsonResult getUserList()
         {
-            DaUserInfo dal = new DaUserInfo();
-            IList<UserInfo> list = dal.getUserList();
+            DaUserInfo daUserInfo = new DaUserInfo();
+            IList<UserInfo> users = daUserInfo.getUserList();
 
             var result = new CustomJsonResult();
-            result.Data = new { total = list.Count, rows = list };
+            result.dateFormat = "yyyy-MM-dd";
+
+            result.Data = new { total = users.Count, rows = users };
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+
             return result;
         }
 

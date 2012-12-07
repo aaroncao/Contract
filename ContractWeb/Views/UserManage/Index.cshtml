@@ -1,19 +1,18 @@
-﻿@{
-    ViewBag.Title = "用户管理";
-}
+﻿<div class="ftitle">用户管理</div>
+<p />
 
 <!-- Table -->
-<table id="tblUserList" style="width: 900px; height: 350px;" data-options="singleSelect:true,idField:'id',url:'UserManage/getUserList'" toolbar="#toolbar">
+<table id="tblUserList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'UserManage/getUserList'" toolbar="#toolbar">
     <thead>
         <tr>
-            <th data-options="field:'userID',width:100">userID</th>
-            <th data-options="field:'powergroupID',width:100">powergroupID</th>
-            <th data-options="field:'name',width:100">name</th>
-            <th data-options="field:'sex',width:100">sex</th>
-            <th data-options="field:'card',width:100">card</th>
-            <th data-options="field:'tel',width:100">tel</th>
-            <th data-options="field:'address',width:100">address</th>
-            <th data-options="field:'date',width:100">date</th>
+            <th data-options="field:'userID',width:80">用户名</th>
+            <th data-options="field:'name',width:100">姓名</th>
+            <th data-options="field:'sex',width:50">性别</th>
+            <th data-options="field:'card',width:130">身份证号</th>
+            <th data-options="field:'tel',width:100">联系方式</th>
+            <th data-options="field:'address',width:200">联系地址</th>
+            <th data-options="field:'date',width:120">注册日期</th>
+            <th data-options="field:'state',width:80">状态</th>
         </tr>
     </thead>
 </table>
@@ -30,28 +29,24 @@
     <div class="ftitle">User Information</div>
     <form id="fm" method="post" novalidate>
         <div class="fitem">
-            <label>First Name:</label>
+            <label>用户名:</label>
             <input name="firstname" class="easyui-validatebox" required="true">
         </div>
         <div class="fitem">
-            <label>Last Name:</label>
-            <input name="lastname" class="easyui-validatebox" required="true">
+            <label>真实姓名:</label>
+            <input name="lastname">
         </div>
         <div class="fitem">
-            <label>Phone:</label>
-            <input name="phone">
-        </div>
-        <div class="fitem">
-            <label>Email:</label>
-            <input name="email" class="easyui-validatebox" validtype="email">
+            <label>所属岗位:</label>
+            <input name="phone" class="easyui-validatebox" required="true">
         </div>
     </form>
 </div>
 
 <!-- Dialog Buttons -->
 <div id="dlg-buttons">
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="saveUser()">Save</a>
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">Cancel</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="saveUser()">保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
 </div>
 
 <script>
@@ -81,7 +76,7 @@
         border-bottom:1px solid #ccc;  
     }  
     .fitem{  
-        margin-bottom:5px;  
+        margin-bottom:15px;  
     }  
     .fitem label{  
         display:inline-block;  

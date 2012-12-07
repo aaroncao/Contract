@@ -11,7 +11,20 @@ namespace ContractWeb.Common
 {
     public class CustomJsonResult : JsonResult
     {
-        private const string _dateFormat = "yyyy-MM-dd hh:mm";
+        private string _dateFormat = "yyyy-MM-dd hh:mm";
+
+        public string dateFormat 
+        {
+            get
+            {
+                return _dateFormat;
+            }
+
+            set
+            {
+                _dateFormat = value;
+            }
+        }
 
         public override void ExecuteResult(ControllerContext context)
         {
