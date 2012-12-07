@@ -47,5 +47,38 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+
+        /// <summary>
+        /// 登录验证
+        /// </summary>
+        /// <param name="userID">用户ID</param>
+        /// <param name="pwd">密码</param>
+        /// <returns></returns>
+        public UserInfo checkUserID(string userID, string pwd)
+        {
+            UserInfo info = null;
+
+            string strSql = "select id, userID, "
+                + "(case state when 1 then '使用' when 0 then '禁止' end) as state, name, "
+                + "(case sex when 1 then '男' when 2 then '女' end) as sex, card, tel, address, date from UserInfo "
+                + "where userID=@userID and password=@pwd";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@userID", userID),
+                new SqlParameter("@pwd", pwd)
+            };
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+            IList<UserInfo> list = DynamicBuilder<UserInfo>.ConvertToList(dr);
+
+
+            if (list != null && list.Count > 0)
+            {
+                info = list[0];
+            }
+            
+            return info;
+        }
     }
 }

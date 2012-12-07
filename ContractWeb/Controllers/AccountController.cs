@@ -5,32 +5,43 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
+
 using ContractWeb.Models;
+using ContractWeb.DataAccess;
+using ContractWeb.Common;
 
 namespace ContractWeb.Controllers
 {
     public class AccountController : Controller
     {
-
-        //
-        // GET: /Account/LogOn
-
+        /// <summary>
+        /// 登录界面
+        /// </summary>
+        /// <returns></returns>
         public ActionResult LogOn()
         {
             return View();
         }
 
-        //
-        // POST: /Account/LogOn
-
+        /// <summary>
+        /// 登录验证
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult LogOn(LogOnModel model, string returnUrl)
         {
             if (ModelState.IsValid)
             {
-                if (Membership.ValidateUser(model.UserName, model.Password))
+                DaUserInfo daUser = new DaUserInfo();
+                UserInfo info = daUser.checkUserID(model.UserName, model.Password);
+
+                if (info != null)
                 {
+                    BaseHelper.user = info;
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
                     {
@@ -51,9 +62,10 @@ namespace ContractWeb.Controllers
             return View(model);
         }
 
+
+
         //
         // GET: /Account/LogOff
-
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();

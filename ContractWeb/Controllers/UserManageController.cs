@@ -24,6 +24,7 @@ namespace ContractWeb.Controllers
         /// <returns></returns>
         public ActionResult ChangePwdView()
         {
+            ViewBag.name = BaseHelper.user.userID;
             return View();
         }
         

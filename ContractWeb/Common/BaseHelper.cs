@@ -4,6 +4,8 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 
+using ContractWeb.Models;
+
 namespace ContractWeb.Common
 {
     /// <summary>
@@ -15,5 +17,11 @@ namespace ContractWeb.Common
         /// 数据库链接
         /// </summary>
         public static string DBConnStr = ConfigurationManager.ConnectionStrings["DBConnection"].ToString();
+
+        /// <summary>
+        /// 当前用户
+        /// </summary>
+        public static UserInfo user;
+
     }
 }
