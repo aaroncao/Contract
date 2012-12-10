@@ -10,29 +10,29 @@ using ND.Lib.Data.SqlHelper;
 
 namespace ContractWeb.DataAccess
 {
-    public class DaPowerGroup
+    public class DaChannel
     {
         /// <summary>
-        /// 获取权限组列表
+        /// 获取渠道类别列表
         /// </summary>
         /// <returns></returns>
-        public IList<PowerGroup> getList()
+        public IList<Channel> getList()
         {
-            string strSql = "select id, name, memo from PowerGroup";
+            string strSql = "select id, name, memo from Channel";
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
-            IList<PowerGroup> list = DynamicBuilder<PowerGroup>.ConvertToList(dr);
+            IList<Channel> list = DynamicBuilder<Channel>.ConvertToList(dr);
             return list;
         }
 
         /// <summary>
-        /// 添加权限组
+        /// 添加渠道类别
         /// </summary>
-        /// <param name="en">权限组</param>
+        /// <param name="en">渠道</param>
         /// <returns></returns>
-        public int add(PowerGroup en)
+        public int add(Channel en)
         {
-            string strSql = "insert into PowerGroup (name, memo) values (@name, @memo)";
+            string strSql = "insert into Channel (name, memo) values (@name, @memo)";
 
             SqlParameter[] param = new SqlParameter[]
             {
@@ -45,13 +45,13 @@ namespace ContractWeb.DataAccess
         }
 
         /// <summary>
-        /// 删除权限组
+        /// 删除渠道类别
         /// </summary>
-        /// <param name="en">地区</param>
+        /// <param name="en">渠道</param>
         /// <returns></returns>
-        public int delete(PowerGroup en)
+        public int delete(Channel en)
         {
-            string strSql = "delete from PowerGroup where id=@id";
+            string strSql = "delete from Channel where id=@id";
 
             SqlParameter[] param = new SqlParameter[]
             {

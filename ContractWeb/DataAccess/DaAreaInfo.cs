@@ -10,29 +10,29 @@ using ND.Lib.Data.SqlHelper;
 
 namespace ContractWeb.DataAccess
 {
-    public class DaPowerGroup
+    public class DaAreaInfo
     {
         /// <summary>
-        /// 获取权限组列表
+        /// 获取地区列表
         /// </summary>
         /// <returns></returns>
-        public IList<PowerGroup> getList()
+        public IList<AreaInfo> getList()
         {
-            string strSql = "select id, name, memo from PowerGroup";
+            string strSql = "select id, name, memo from AreaInfo";
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
-            IList<PowerGroup> list = DynamicBuilder<PowerGroup>.ConvertToList(dr);
+            IList<AreaInfo> list = DynamicBuilder<AreaInfo>.ConvertToList(dr);
             return list;
         }
 
         /// <summary>
-        /// 添加权限组
+        /// 添加地区
         /// </summary>
-        /// <param name="en">权限组</param>
+        /// <param name="en">地区</param>
         /// <returns></returns>
-        public int add(PowerGroup en)
+        public int add(AreaInfo en)
         {
-            string strSql = "insert into PowerGroup (name, memo) values (@name, @memo)";
+            string strSql = "insert into AreaInfo (name, memo) values (@name, @memo)";
 
             SqlParameter[] param = new SqlParameter[]
             {
@@ -45,13 +45,13 @@ namespace ContractWeb.DataAccess
         }
 
         /// <summary>
-        /// 删除权限组
+        /// 删除地区
         /// </summary>
         /// <param name="en">地区</param>
         /// <returns></returns>
-        public int delete(PowerGroup en)
+        public int delete(AreaInfo en)
         {
-            string strSql = "delete from PowerGroup where id=@id";
+            string strSql = "delete from AreaInfo where id=@id";
 
             SqlParameter[] param = new SqlParameter[]
             {

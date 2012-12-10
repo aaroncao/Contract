@@ -2,7 +2,7 @@
 <p />
 
 <!-- Table -->
-<table id="tblUserList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'UserManage/getUserList'" toolbar="#toolbar">
+<table id="UserList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'UserManage/getUserList'" toolbar="#toolbar">
     <thead>
         <tr>
             <th data-options="field:'userID',width:80">用户名</th>
@@ -51,7 +51,7 @@
 
 <script>
     $(function () {
-        $('#tblUserList').datagrid();
+        $('#UserList').datagrid();
     });
 
     var url;
@@ -61,25 +61,3 @@
         url = 'save_user.php';
     }
 </script>
-
-<style type="text/css">  
-    #fm{  
-        margin:0;  
-        padding:10px 30px;  
-    }  
-    .ftitle{  
-        font-size:14px;  
-        font-weight:bold;  
-        color:#666;  
-        padding:5px 0;  
-        margin-bottom:10px;  
-        border-bottom:1px solid #ccc;  
-    }  
-    .fitem{  
-        margin-bottom:15px;  
-    }  
-    .fitem label{  
-        display:inline-block;  
-        width:80px;  
-    }  
-</style>

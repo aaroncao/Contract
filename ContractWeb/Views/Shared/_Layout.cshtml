@@ -9,11 +9,8 @@
     <link href="@Url.Content("~/Content/themes/default/easyui.css")" rel="stylesheet" type="text/css" />
 	<link href="@Url.Content("~/Content/themes/icon.css")" rel="stylesheet" type="text/css" />
 
-
     <script src="@Url.Content("~/Scripts/jquery-1.8.3.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/jquery.easyui.min.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/modernizr-2.5.3.js")" type="text/javascript"></script>
-
 </head>
 <body>
     <div class="page">
@@ -28,11 +25,30 @@
             </div>
             <nav>
                 <ul id="coolMenu">
+                    <li>@Html.ActionLink("系统管理", "", "")
+                        <ul>
+                            <li>@Html.ActionLink("权限组设置", "PowerGroup", "SystemSetting")</li>
+                        </ul>
+                    </li>
                     <li>@Html.ActionLink("用户管理", "", "")
                         <ul>
                             <li>@Html.ActionLink("用户管理", "Index", "UserManage")</li>
-                            <li>@Html.ActionLink("用户密码修改", "ChangePwdView", "UserManage")</li>
-                            <li>@Html.ActionLink("用户个人信息修改", "", "")</li>
+                            <li>@Html.ActionLink("用户密码修改", "EditPwd", "UserManage")</li>
+                            <li>@Html.ActionLink("用户个人信息修改", "EditUserInfo", "UserManage")</li>
+                        </ul>
+                    </li>
+                    <li>@Html.ActionLink("基础设置", "", "")
+                        <ul>
+                            <li>@Html.ActionLink("渠道类别设置", "Channel", "BasicSetting")</li>
+                            <li>@Html.ActionLink("客户有效期设置", "Validity", "BasicSetting")</li>
+                            <li>@Html.ActionLink("权限组设定", "", "")</li>
+                            <li>@Html.ActionLink("地区设定", "Area", "BasicSetting")</li>
+                            <li>@Html.ActionLink("客户状态设定", "State", "BasicSetting")</li>
+                            <li>@Html.ActionLink("广告费结算对象设定", "ADCost", "BasicSetting")</li>
+                            <li>@Html.ActionLink("制作费结算对象设定", "MakeCost", "BasicSetting")</li>
+                            <li>@Html.ActionLink("客户资料管理", "Customer", "BasicSetting")</li>
+                            <li>@Html.ActionLink("影院信息管理", "Cinema", "BasicSetting")</li>
+                            <li>@Html.ActionLink("影厅信息管理", "CinemaRoom", "BasicSetting")</li>
                         </ul>
                     </li>
                 </ul>

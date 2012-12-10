@@ -1,0 +1,59 @@
+﻿
+<div>
+    <fieldset>
+        <legend>新增制作费结算对象</legend>
+
+        <p />
+        <div>
+            <div class="fitem inline">
+                <label>对象:</label>
+                <input id="txtName" class="easyui-validatebox" required="true" />
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>备注:</label>
+                <input id="txtMemo" class="easyui-validatebox" />
+            </div>
+        </div>
+
+        <p>
+            <input type="button" id="btnAdd" onclick="add()" value="新增" />
+            <input type="button" id="btnCancel" onclick="cancel()" value="清空" />
+        </p>
+    </fieldset>
+</div>
+
+<table id="TargetList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getMakeCostList'" toolbar="#toolbar">
+    <thead>
+        <tr>
+            <th data-options="field:'target',width:200">名称</th>
+            <th data-options="field:'memo',width:300">备注</th>
+        </tr>
+    </thead>
+</table>
+
+<script>
+    $(function () {
+        $('#TargetList').datagrid();
+    });
+
+    function add() {
+        var name = $("#txtName").val();
+        var memo = $("#txtMemo").val();
+
+        $.post("/BasicSetting/addMakeCost", "name=" + name + "&memo=" + memo,
+            function (data) {
+                /*
+                if (data == 1)
+                    $("#message").html("修改成功");
+                else
+                    $("#message").html("修改失败");
+                */
+            }
+        );
+    }
+
+    function cancel() {
+        $("#txtName").val("");
+        $("#txtMemo").val("");
+    }
+</script>

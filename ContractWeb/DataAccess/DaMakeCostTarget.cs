@@ -10,33 +10,33 @@ using ND.Lib.Data.SqlHelper;
 
 namespace ContractWeb.DataAccess
 {
-    public class DaPowerGroup
+    public class DaMakeCostTarget
     {
         /// <summary>
-        /// 获取权限组列表
+        /// 获取对象列表
         /// </summary>
         /// <returns></returns>
-        public IList<PowerGroup> getList()
+        public IList<MakeCostTarget> getList()
         {
-            string strSql = "select id, name, memo from PowerGroup";
+            string strSql = "select id, target, memo from MakeCostTarget";
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
-            IList<PowerGroup> list = DynamicBuilder<PowerGroup>.ConvertToList(dr);
+            IList<MakeCostTarget> list = DynamicBuilder<MakeCostTarget>.ConvertToList(dr);
             return list;
         }
 
         /// <summary>
-        /// 添加权限组
+        /// 添加对象
         /// </summary>
-        /// <param name="en">权限组</param>
+        /// <param name="en">对象</param>
         /// <returns></returns>
-        public int add(PowerGroup en)
+        public int add(MakeCostTarget en)
         {
-            string strSql = "insert into PowerGroup (name, memo) values (@name, @memo)";
+            string strSql = "insert into MakeCostTarget (target, memo) values (@target, @memo)";
 
             SqlParameter[] param = new SqlParameter[]
             {
-                new SqlParameter("@name", en.name),
+                new SqlParameter("@target", en.target),
                 new SqlParameter("@memo", en.memo)
             };
 
@@ -45,13 +45,13 @@ namespace ContractWeb.DataAccess
         }
 
         /// <summary>
-        /// 删除权限组
+        /// 删除对象
         /// </summary>
-        /// <param name="en">地区</param>
+        /// <param name="en">对象</param>
         /// <returns></returns>
-        public int delete(PowerGroup en)
+        public int delete(ADCostTarget en)
         {
-            string strSql = "delete from PowerGroup where id=@id";
+            string strSql = "delete from MakeCostTarget where id=@id";
 
             SqlParameter[] param = new SqlParameter[]
             {

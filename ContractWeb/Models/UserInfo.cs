@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 
 namespace ContractWeb.Models
 {
     /// <summary>
-    /// 用户实体
+    /// 用户
     /// </summary>
     public class UserInfo
     {
@@ -64,5 +63,28 @@ namespace ContractWeb.Models
         /// 注册日期
         /// </summary>
         public DateTime date { get; set; }
+
+        /// <summary>
+        /// 实体克隆
+        /// </summary>
+        /// <returns></returns>
+        public UserInfo clone()
+        {
+            UserInfo en = new UserInfo();
+
+            en.id = id;
+            en.userID = userID;
+            en.powergroupID = powergroupID;
+            en.password = password;
+            en.state = state;
+            en.name = name;
+            en.sex = sex;
+            en.card = card;
+            en.tel = tel;
+            en.address = address;
+            en.date = date;
+
+            return en;
+        }
     }
 }

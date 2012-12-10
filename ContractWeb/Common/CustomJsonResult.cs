@@ -26,6 +26,11 @@ namespace ContractWeb.Common
             }
         }
 
+        public CustomJsonResult()
+        {
+            this.JsonRequestBehavior = JsonRequestBehavior.AllowGet; 
+        }
+
         public override void ExecuteResult(ControllerContext context)
         {
             if (context == null)

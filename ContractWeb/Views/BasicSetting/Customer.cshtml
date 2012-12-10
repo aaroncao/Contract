@@ -1,0 +1,121 @@
+﻿<div class="ftitle">用户管理</div>
+<p />
+
+<!-- Table -->
+<table id="CustomerList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getCustomerList'" toolbar="#toolbar">
+    <thead>
+        <tr>
+            <th data-options="field:'name',width:80">名称</th>
+            <th data-options="field:'channelType',width:100">客户类型</th>
+            <th data-options="field:'person',width:50">联系人</th>
+            <th data-options="field:'tel',width:130">联系电话</th>
+            <th data-options="field:'officeTel',width:100">办公电话</th>
+            <th data-options="field:'email',width:200">E-Mail</th>
+            <th data-options="field:'fex',width:120">传真</th>
+            <th data-options="field:'address',width:80">联系地址</th>
+            <th data-options="field:'mDate',width:80">录入日期</th>
+            <th data-options="field:'salesman',width:80">业务员</th>
+            <th data-options="field:'state',width:80">状态</th>
+        </tr>
+    </thead>
+</table>
+
+<!-- Toolbar -->
+<div id="toolbar">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="newCustomer()">新增</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="editUser()">修改</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="destroyUser()">删除</a>
+</div>
+
+<!-- dialog -->
+<div id="dlg" class="easyui-dialog" style="width: 400px; height: 280px; padding: 10px 20px" closed="true" buttons="#dlg-buttons">
+    <div class="ftitle">User Information</div>
+    <form id="fm" method="post" novalidate>
+        <div class="fitem">
+            <label>名称:</label>
+            <input id="txtName" class="easyui-validatebox" required="true" />
+        </div>
+        <div class="fitem">
+            <label>客户类型:</label>
+            <select id="drpType" class="easyui-combobox" style="width:100px;" required="true"></select>
+        </div>
+        <div class="fitem">
+            <label>联系人:</label>
+            <input id="txtPerson" class="easyui-validatebox" />
+        </div>
+        <div class="fitem">
+            <label>联系电话:</label>
+            <input id="txtTel" class="easyui-validatebox" required="true" />
+        </div>
+        <div class="fitem">
+            <label>办公电话:</label>
+            <input id="txtOfficeTel" class="easyui-validatebox" />
+        </div>
+        <div class="fitem">
+            <label>E-Mail:</label>
+            <input id="txtEmail" class="easyui-validatebox" />
+        </div>
+        <div class="fitem">
+            <label>传真:</label>
+            <input id="txtFex" class="easyui-validatebox" />
+        </div>
+        <div class="fitem">
+            <label>客户状态:</label>
+            <select id="drpState" class="easyui-combobox" style="width:100px;"></select>
+        </div>
+        <div class="fitem">
+            <label>联系地址:</label>
+            <input id="txtAddress" class="easyui-validatebox" />
+        </div>
+    </form>
+</div>
+
+<!-- Dialog Buttons -->
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="add()">保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+</div>
+
+
+<script>
+    $(function () {
+        $('#CustomerList').datagrid();
+
+        $('#drpType').combobox({
+            url: '/BasicSetting/getChannelTypeList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        $('#drpState').combobox({
+            url: '/BasicSetting/getdrpStateList',
+            valueField: 'id',
+            textField: 'state'
+        });
+    });
+
+    function newCustomer() {
+        $('#dlg').dialog('open').dialog('setTitle', 'New Customer');
+        $('#fm').form('clear');
+    }
+
+    function add() {
+        var name = $("#txtName").val();
+        var type = $("#drpType").combobox("getValue");
+        var person = $("#txtPerson").val();
+        var tel = $("#txtTel").val();
+        var officeTel = $("#txtOfficeTel").val();
+        var email = $("#txtEmail").val();
+        var fex = $("#txtFex").val();
+        var state = $("#drpState").combobox("getValue");
+        var address = $("#txtAddress").val();
+
+        $.post("/BasicSetting/addCustomer", "name=" + name + "&type=" + type + "&person=" + person + "&tel=" + tel
+            + "&officeTel=" + officeTel + "&email=" + email + "&fex=" + fex + "&state="
+            + state + "&address=" + address,
+            function (data) {
+                alert("OK");
+            }
+        );
+    }
+</script>

@@ -1,0 +1,47 @@
+﻿<div class="ftitle">修改密码</div>
+
+<div class="fitem">
+    <label>用户名:</label>
+    <label>@ViewBag.userID</label>
+</div>
+<div class="fitem">
+    <label>旧密码:</label>
+    <input type="password" id="oldPwd" class="easyui-validatebox" required="true" />
+</div>
+<div class="fitem">
+    <label>新密码:</label>
+    <input type="password" id="newPwd" class="easyui-validatebox" required="true" />
+</div>
+<div class="fitem">
+    <label>确认新密码:</label>
+    <input type="password" id="confirmPwd" class="easyui-validatebox" required="true" />
+</div>
+
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="savePwd()">保存</a>
+</div>
+
+<p/>
+<div id="message"></div>
+
+<script>
+    function savePwd() {
+        $.get("UserManage/test", function (response) {
+            alert("OK");
+        });
+
+        var theOld = $("#oldPwd").val();
+        var theNew = $("#newPwd").val();
+        var theConfirm = $("#confirmPwd").val();
+
+        if (theNew != theConfirm)
+            $("#message").html("请新密码确认一致");
+        
+        $.get("/UserManage/editPassword?oldpwd=" + theOld + "&newPwd=" + theNew, function (data) {
+            $("#message").html(data.msg);
+        });
+    }
+
+</script>
+
+

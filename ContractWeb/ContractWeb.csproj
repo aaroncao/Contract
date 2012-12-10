@@ -106,14 +106,35 @@
     <Compile Include="Common\CustomJsonResult.cs" />
     <Compile Include="Common\DynamicBuilder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BasicSettingController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SystemSettingController.cs" />
     <Compile Include="Controllers\UserManageController.cs" />
+    <Compile Include="DataAccess\DaADCostTarget.cs" />
+    <Compile Include="DataAccess\DaAreaInfo.cs" />
+    <Compile Include="DataAccess\DaChannel.cs" />
+    <Compile Include="DataAccess\DaCinema.cs" />
+    <Compile Include="DataAccess\DaCinemaRoom.cs" />
+    <Compile Include="DataAccess\DaCinemaRoomType.cs" />
+    <Compile Include="DataAccess\DaCustomerInfo.cs" />
+    <Compile Include="DataAccess\DaCustomerState.cs" />
+    <Compile Include="DataAccess\DaMakeCostTarget.cs" />
     <Compile Include="DataAccess\DaPowerGroup.cs" />
     <Compile Include="DataAccess\DaUserInfo.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\ADCostTarget.cs" />
+    <Compile Include="Models\AreaInfo.cs" />
+    <Compile Include="Models\Channel.cs" />
+    <Compile Include="Models\ChannelType.cs" />
+    <Compile Include="Models\Cinema.cs" />
+    <Compile Include="Models\CinemaRoom.cs" />
+    <Compile Include="Models\CinemaRoomType.cs" />
+    <Compile Include="Models\CustomerInfo.cs" />
+    <Compile Include="Models\CustomerState.cs" />
+    <Compile Include="Models\MakeCostTarget.cs" />
     <Compile Include="Models\PowerGroup.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -260,7 +281,18 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\UserManage\Index.cshtml" />
-    <Content Include="Views\UserManage\ChangePwdView.cshtml" />
+    <Content Include="Views\UserManage\EditPwd.cshtml" />
+    <Content Include="Views\UserManage\EditUserInfo.cshtml" />
+    <Content Include="Views\BasicSetting\Channel.cshtml" />
+    <Content Include="Views\BasicSetting\Validity.cshtml" />
+    <Content Include="Views\BasicSetting\Area.cshtml" />
+    <Content Include="Views\BasicSetting\State.cshtml" />
+    <Content Include="Views\BasicSetting\ADCost.cshtml" />
+    <Content Include="Views\BasicSetting\MakeCost.cshtml" />
+    <Content Include="Views\SystemSetting\PowerGroup.cshtml" />
+    <Content Include="Views\BasicSetting\Customer.cshtml" />
+    <Content Include="Views\BasicSetting\Cinema.cshtml" />
+    <Content Include="Views\BasicSetting\CinemaRoom.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

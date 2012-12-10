@@ -1,0 +1,93 @@
+﻿<div class="ftitle">影院管理</div>
+<p />
+
+<!-- Table -->
+<table id="CinemaList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getCinemaRoomList'" toolbar="#toolbar">
+    <thead>
+        <tr>
+            <th data-options="field:'cinema',width:80">名称</th>
+            <th data-options="field:'area',width:100">地区</th>
+            <th data-options="field:'roomNum',width:50">厅数</th>
+            <th data-options="field:'person',width:130">联系人</th>
+            <th data-options="field:'tel',width:100">联系电话</th>
+            <th data-options="field:'address',width:200">联系地址</th>
+        </tr>
+    </thead>
+</table>
+
+<!-- Toolbar -->
+<div id="toolbar">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="newCinema()">新增</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove" plain="true">删除</a>
+</div>
+
+<!-- dialog -->
+<div id="dlg" class="easyui-dialog" style="width: 400px; height: 280px; padding: 10px 20px" closed="true" buttons="#dlg-buttons">
+    <div class="ftitle">Cinema Information</div>
+    <form id="fm" method="post" novalidate>
+        <div class="fitem">
+            <label>名称:</label>
+            <input id="txtName" class="easyui-validatebox" required="true" />
+        </div>
+        <div class="fitem">
+            <label>地区:</label>
+            <select id="drpArea" class="easyui-combobox" style="width:100px;" required="true"></select>
+        </div>
+        <div class="fitem">
+            <label>厅数:</label>
+            <input id="txtNum" class="easyui-validatebox" required="true" />
+        </div>
+        <div class="fitem">
+            <label>联系人:</label>
+            <input id="txtPerson" class="easyui-validatebox" />
+        </div>
+        <div class="fitem">
+            <label>联系电话:</label>
+            <input id="txtTel" class="easyui-validatebox" />
+        </div>
+        <div class="fitem">
+            <label>影院地址:</label>
+            <input id="txtAddress" class="easyui-validatebox" />
+        </div>
+    </form>
+</div>
+
+<!-- Dialog Buttons -->
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="add()">保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+</div>
+
+
+<script>
+    $(function () {
+        $('#CinemaList').datagrid();
+
+        $('#drpArea').combobox({
+            url: '/BasicSetting/getDrpAreaList',
+            valueField: 'id',
+            textField: 'name'
+        });
+    });
+
+    function newCinema() {
+        $('#dlg').dialog('open').dialog('setTitle', 'New Cinema');
+        $('#fm').form('clear');
+    }
+
+    function add() {
+        var name = $("#txtName").val();
+        var area = $("#drpArea").combobox("getValue");
+        var num = $("#txtNum").val();
+        var person = $("#txtPerson").val();
+        var tel = $("#txtTel").val();
+        var address = $("#txtAddress").val();
+
+        $.post("/BasicSetting/addCinema", "name=" + name + "&area=" + area + "&roomNum=" + num + "&person=" + person + "&tel=" + tel + "&address=" + address,
+            function (data) {
+                alert("OK");
+            }
+        );
+    }
+</script>

@@ -10,33 +10,33 @@ using ND.Lib.Data.SqlHelper;
 
 namespace ContractWeb.DataAccess
 {
-    public class DaPowerGroup
+    public class DaCustomerState
     {
         /// <summary>
-        /// 获取权限组列表
+        /// 获取状态列表
         /// </summary>
         /// <returns></returns>
-        public IList<PowerGroup> getList()
+        public IList<CustomerState> getList()
         {
-            string strSql = "select id, name, memo from PowerGroup";
+            string strSql = "select id, state, memo from CustomerState";
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
-            IList<PowerGroup> list = DynamicBuilder<PowerGroup>.ConvertToList(dr);
+            IList<CustomerState> list = DynamicBuilder<CustomerState>.ConvertToList(dr);
             return list;
         }
 
         /// <summary>
-        /// 添加权限组
+        /// 添加状态
         /// </summary>
-        /// <param name="en">权限组</param>
+        /// <param name="en">状态</param>
         /// <returns></returns>
-        public int add(PowerGroup en)
+        public int add(CustomerState en)
         {
-            string strSql = "insert into PowerGroup (name, memo) values (@name, @memo)";
+            string strSql = "insert into CustomerState (state, memo) values (@state, @memo)";
 
             SqlParameter[] param = new SqlParameter[]
             {
-                new SqlParameter("@name", en.name),
+                new SqlParameter("@state", en.state),
                 new SqlParameter("@memo", en.memo)
             };
 
@@ -45,13 +45,13 @@ namespace ContractWeb.DataAccess
         }
 
         /// <summary>
-        /// 删除权限组
+        /// 删除状态
         /// </summary>
-        /// <param name="en">地区</param>
+        /// <param name="en">状态</param>
         /// <returns></returns>
-        public int delete(PowerGroup en)
+        public int delete(CustomerState en)
         {
-            string strSql = "delete from PowerGroup where id=@id";
+            string strSql = "delete from CustomerState where id=@id";
 
             SqlParameter[] param = new SqlParameter[]
             {
@@ -61,5 +61,6 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+
     }
 }

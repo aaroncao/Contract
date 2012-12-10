@@ -1,0 +1,59 @@
+﻿
+<div>
+    <fieldset>
+        <legend>新增渠道类别</legend>
+
+        <p />
+        <div>
+            <div class="fitem inline">
+                <label>名称:</label>
+                <input id="txtName" class="easyui-validatebox" required="true" />
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>备注:</label>
+                <input id="txtMemo" class="easyui-validatebox" />
+            </div>
+        </div>
+
+        <p>
+            <input type="button" id="btnAdd" onclick="add()" value="新增" />
+            <input type="button" id="btnCancel" onclick="cancel()" value="清空" />
+        </p>
+    </fieldset>
+</div>
+
+<table id="ChannelList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getChannelList'" toolbar="#toolbar">
+    <thead>
+        <tr>
+            <th data-options="field:'name',width:200">名称</th>
+            <th data-options="field:'memo',width:300">备注</th>
+        </tr>
+    </thead>
+</table>
+
+<script>
+    $(function () {
+        $('#ChannelList').datagrid();
+    });
+
+    function add() {
+        var name = $("#txtName").val();
+        var memo = $("#txtMemo").val();
+
+        $.post("/BasicSetting/addChannel", "name=" + name + "&memo=" + memo,
+            function (data) {
+                /*
+                if (data == 1)
+                    $("#message").html("修改成功");
+                else
+                    $("#message").html("修改失败");
+                */
+            }
+        );
+    }
+
+    function cancel() {
+        $("#txtName").val("");
+        $("#txtMemo").val("");
+    }
+</script>

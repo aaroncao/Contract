@@ -1,0 +1,60 @@
+﻿
+<div>
+    <fieldset>
+        <legend>新增客户装他</legend>
+
+        <p />
+        <div>
+            <div class="fitem inline">
+                <label>名称:</label>
+                <input id="txtState" class="easyui-validatebox" required="true" />
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>备注:</label>
+                <input id="txtMemo" class="easyui-validatebox" />
+            </div>
+        </div>
+
+        <p>
+            <input type="button" id="btnAdd" onclick="add()" value="新增" />
+            <input type="button" id="btnCancel" onclick="cancel()" value="清空" />
+        </p>
+    </fieldset>
+</div>
+
+<table id="StateList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getStateList'" toolbar="#toolbar">
+    <thead>
+        <tr>
+            <th data-options="field:'state',width:200">名称</th>
+            <th data-options="field:'memo',width:300">备注</th>
+        </tr>
+    </thead>
+</table>
+
+<script>
+    $(function () {
+        $('#StateList').datagrid();
+    });
+
+    function add() {
+        var state = $("#txtState").val();
+        var memo = $("#txtMemo").val();
+
+        $.post("/BasicSetting/addState", "state=" + state + "&memo=" + memo,
+            function (data) {
+                /*
+                if (data == 1)
+                    $("#message").html("修改成功");
+                else
+                    $("#message").html("修改失败");
+                */
+            }
+        );
+    }
+
+    function cancel() {
+        $("#txtState").val("");
+        $("#txtMemo").val("");
+    }
+</script>
+
