@@ -5,50 +5,40 @@
 <table id="CinemaList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getCinemaRoomList'" toolbar="#toolbar">
     <thead>
         <tr>
-            <th data-options="field:'cinema',width:80">名称</th>
-            <th data-options="field:'area',width:100">地区</th>
-            <th data-options="field:'roomNum',width:50">厅数</th>
-            <th data-options="field:'person',width:130">联系人</th>
-            <th data-options="field:'tel',width:100">联系电话</th>
-            <th data-options="field:'address',width:200">联系地址</th>
+            <th data-options="field:'cinema',width:80">所属影院</th>
+            <th data-options="field:'room',width:100">影厅名称</th>
+            <th data-options="field:'type',width:50">影厅属性</th>
+            <th data-options="field:'memo',width:130">备注</th>
         </tr>
     </thead>
 </table>
 
 <!-- Toolbar -->
 <div id="toolbar">
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="newCinema()">新增</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="newCinemaRoom()">新增</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove" plain="true">删除</a>
 </div>
 
 <!-- dialog -->
 <div id="dlg" class="easyui-dialog" style="width: 400px; height: 280px; padding: 10px 20px" closed="true" buttons="#dlg-buttons">
-    <div class="ftitle">Cinema Information</div>
+    <div class="ftitle">Room Information</div>
     <form id="fm" method="post" novalidate>
         <div class="fitem">
-            <label>名称:</label>
+            <label>影厅名称:</label>
             <input id="txtName" class="easyui-validatebox" required="true" />
         </div>
         <div class="fitem">
-            <label>地区:</label>
-            <select id="drpArea" class="easyui-combobox" style="width:100px;" required="true"></select>
+            <label>所属影院:</label>
+            <select id="drpCinema" class="easyui-combobox" style="width:100px;" required="true"></select>
         </div>
         <div class="fitem">
-            <label>厅数:</label>
-            <input id="txtNum" class="easyui-validatebox" required="true" />
+            <label>影厅属性:</label>
+            <select id="drpType" class="easyui-combobox" style="width:100px;"></select>
         </div>
         <div class="fitem">
-            <label>联系人:</label>
-            <input id="txtPerson" class="easyui-validatebox" />
-        </div>
-        <div class="fitem">
-            <label>联系电话:</label>
-            <input id="txtTel" class="easyui-validatebox" />
-        </div>
-        <div class="fitem">
-            <label>影院地址:</label>
-            <input id="txtAddress" class="easyui-validatebox" />
+            <label>备注:</label>
+            <input id="txtMemo" class="easyui-validatebox" />
         </div>
     </form>
 </div>
@@ -64,27 +54,31 @@
     $(function () {
         $('#CinemaList').datagrid();
 
-        $('#drpArea').combobox({
-            url: '/BasicSetting/getDrpAreaList',
+        $('#drpType').combobox({
+            url: '/BasicSetting/getdrpCinemaRoomTypeList',
+            valueField: 'id',
+            textField: 'type'
+        });
+
+        $('#drpCinema').combobox({
+            url: '/BasicSetting/getDrpCinemaList',
             valueField: 'id',
             textField: 'name'
         });
     });
 
-    function newCinema() {
-        $('#dlg').dialog('open').dialog('setTitle', 'New Cinema');
+    function newCinemaRoom() {
+        $('#dlg').dialog('open').dialog('setTitle', 'New Room');
         $('#fm').form('clear');
     }
 
     function add() {
         var name = $("#txtName").val();
-        var area = $("#drpArea").combobox("getValue");
-        var num = $("#txtNum").val();
-        var person = $("#txtPerson").val();
-        var tel = $("#txtTel").val();
-        var address = $("#txtAddress").val();
+        var cinema = $("#drpCinema").combobox("getValue");
+        var type = $("#drpType").combobox("getValue");
+        var memo = $("#txtMemo").val();
 
-        $.post("/BasicSetting/addCinema", "name=" + name + "&area=" + area + "&roomNum=" + num + "&person=" + person + "&tel=" + tel + "&address=" + address,
+        $.post("/BasicSetting/addCinemaRoom", "room=" + name + "&cinemaID=" + cinema + "&typeID=" + type + "&memo=" + memo,
             function (data) {
                 alert("OK");
             }

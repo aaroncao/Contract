@@ -107,6 +107,7 @@
     <Compile Include="Common\DynamicBuilder.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BasicSettingController.cs" />
+    <Compile Include="Controllers\BusinessController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SystemSettingController.cs" />
     <Compile Include="Controllers\UserManageController.cs" />
