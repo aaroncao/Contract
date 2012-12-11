@@ -8,9 +8,11 @@ namespace ContractWeb.Controllers
 {
     public class BusinessController : Controller
     {
-        //
-        // GET: /Business/
-        public ActionResult Index()
+        /// <summary>
+        /// 客户到账登记界面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult CPay()
         {
             return View();
         }

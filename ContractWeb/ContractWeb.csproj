@@ -118,6 +118,7 @@
     <Compile Include="DataAccess\DaCinemaRoom.cs" />
     <Compile Include="DataAccess\DaCinemaRoomType.cs" />
     <Compile Include="DataAccess\DaCustomerInfo.cs" />
+    <Compile Include="DataAccess\DaCustomerPay.cs" />
     <Compile Include="DataAccess\DaCustomerState.cs" />
     <Compile Include="DataAccess\DaMakeCostTarget.cs" />
     <Compile Include="DataAccess\DaPowerGroup.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Models\CinemaRoom.cs" />
     <Compile Include="Models\CinemaRoomType.cs" />
     <Compile Include="Models\CustomerInfo.cs" />
+    <Compile Include="Models\CustomerPay.cs" />
     <Compile Include="Models\CustomerState.cs" />
     <Compile Include="Models\MakeCostTarget.cs" />
     <Compile Include="Models\PowerGroup.cs" />
@@ -294,6 +296,7 @@
     <Content Include="Views\BasicSetting\Customer.cshtml" />
     <Content Include="Views\BasicSetting\Cinema.cshtml" />
     <Content Include="Views\BasicSetting\CinemaRoom.cshtml" />
+    <Content Include="Views\Business\CPay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
