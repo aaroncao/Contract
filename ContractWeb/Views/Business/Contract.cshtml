@@ -1,0 +1,167 @@
+﻿<div class="ftitle">合同管理</div>
+<p />
+
+<!-- Table -->
+<table id="ContractList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/getContractList'" toolbar="#toolbar">
+    <thead>
+        <tr>
+            <th data-options="field:'id',width:80">ID</th>
+            <th data-options="field:'contractID',width:100">合同编号</th>
+            <th data-options="field:'name',width:50">合同名称</th>
+            <th data-options="field:'customerName',width:130">客户名称</th>
+            <th data-options="field:'version',width:100">版本</th>
+            <th data-options="field:'price',width:200">单厅价格</th>
+            <th data-options="field:'roomNum',width:80">每场厅数</th>
+            <th data-options="field:'makeCost',width:100">制作费</th>
+            <th data-options="field:'backMoney',width:50">优惠</th>
+            <th data-options="field:'money',width:130">签署金额</th>
+            <th data-options="field:'typeName',width:100">合同类型</th>
+            <th data-options="field:'channelName',width:200">渠道归类</th>
+            <th data-options="field:'begintime',width:100">合同周期起</th>
+            <th data-options="field:'endtime',width:50">合同周期止</th>
+            <th data-options="field:'ZQ',width:130">周期</th>
+            <th data-options="field:'personName',width:100">经办人</th>
+            <th data-options="field:'mDate',width:200">签署日期</th>
+            <th data-options="field:'memo',width:100">备注</th>
+            <th data-options="field:'billStateName',width:200">发票状态</th>
+        </tr>
+    </thead>
+</table>
+
+<!-- Toolbar -->
+<div id="toolbar">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="newContract()">新增</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove" plain="true">删除</a>
+</div>
+
+<!-- dialog -->
+<div id="dlg" class="easyui-dialog" style="width: 400px; height: 280px; padding: 10px 20px" closed="true" buttons="#dlg-buttons">
+    <div class="ftitle">Contract Information</div>
+    <form id="fm" method="post" novalidate>
+        <div class="fitem">
+            <label>合同编号:</label>
+            <input id="txtID" class="easyui-validatebox" required="true" />
+        </div>
+        <div class="fitem">
+            <label>合同名称:</label>
+            <input id="txtName" class="easyui-validatebox" style="width:100px;" />
+        </div>
+        <div class="fitem">
+            <label>广告版本(秒):</label>
+            <input id="txtVersion" class="easyui-validatebox" />
+        </div>
+        <div class="fitem">
+            <label>每厅价格(元/厅):</label>
+            <input id="txtPrice" class="easyui-validatebox" />
+        </div>
+        <div class="fitem">
+            <label>厅数/场数(厅/场):</label>
+            <input id="txtNum" class="easyui-validatebox" />
+        </div>
+        <div class="fitem">
+            <label>签署金额(元):</label>
+            <input id="txtMoney" class="easyui-validatebox" />
+        </div>
+        <div class="fitem">
+            <label>制作费(元):</label>
+            <input id="txtMake" class="easyui-validatebox" />
+        </div>
+        <div class="fitem">
+            <label>优惠回扣(元):</label>
+            <input id="txtBack" class="easyui-validatebox" />
+        </div>
+        <div class="fitem">
+            <label>合同类型:</label>
+            <select id="drpType" class="easyui-combobox" style="width:100px;"></select>
+        </div>
+        <div class="fitem">
+            <label>渠道归类:</label>
+            <select id="drpChannel" class="easyui-combobox" style="width:100px;"></select>
+        </div>
+        <div class="fitem">
+            <label>合同周期:</label>
+            <input id="txtBegin" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"></input>至<input id="txtEnd" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"></input>
+        </div>
+        <div class="fitem">
+            <label>周期(月):</label>
+            <input id="txtZQ" class="easyui-validatebox"></input>
+        </div>
+        <div class="fitem">
+            <label>经办人:</label>
+            <select id="drpPerson" class="easyui-combobox" style="width:100px;"></select>
+        </div>
+        <div class="fitem">
+            <label>签署日期:</label>
+            <input id="txtDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"></input>
+        </div>
+        <div class="fitem">
+            <label>备注:</label>
+            <input id="txtMemo" class="easyui-validatebox"></input>
+        </div>
+    </form>
+</div>
+
+<!-- Dialog Buttons -->
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="add()">保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+</div>
+
+
+<script>
+    $(function () {
+        $('#ContractList').datagrid();
+
+        $('#drpType').combobox({
+            url: '/Business/getDrpContractTypeList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        $('#drpChannel').combobox({
+            url: '/Business/getDrpChannelList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        $('#drpPerson').combobox({
+            url: '/Business/getDrpPersonList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+    });
+
+    function newContract() {
+        $('#dlg').dialog('open').dialog('setTitle', 'New Cinema');
+        $('#fm').form('clear');
+    }
+
+    function add() {
+        var id = $("#txtID").val();
+        var name = $("#txtName").val();
+        var version = $("#txtVersion").val();
+        var price = $("#txtPrice").val();
+        var num = $("#txtNum").val();
+        var money = $("#txtMoney").val();
+        var make = $("#txtMake").val();
+        var back = $("#txtBack").val();
+        var type = $("#drpType").combobox("getValue");
+        var channel = $("#drpChannel").combobox("getValue");
+        var begintime = $("#txtBegin").datebox("getValue");
+        var endtime = $("#txtEnd").datebox("getValue");
+        var zq = $("#txtZQ").val();
+        var person = $("#drpPerson").combobox("getValue");
+        var mDate = $("#txtDate").datebox("getValue");
+        var memo = $("#txtMemo").val();
+        
+        $.post("/Business/addContract", "id=" + id + "&name=" + name + "&version=" + version + "&price=" + price + "&num=" + num + "&money=" + money +
+            "&make=" + make + "&back=" + back + "&type=" + type + "&channel=" + channel + "&begintime=" + begintime + "&endtime=" + endtime + 
+            "&zq=" + zq + "&person=" + person + "&mDate=" + mDate + "&memo=" + memo,
+            function (data) {
+                alert("OK");
+            }
+        );
+    }
+</script>

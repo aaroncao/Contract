@@ -16,7 +16,7 @@ namespace ContractWeb.DataAccess
         /// 获取用户列表
         /// </summary>
         /// <returns></returns>
-        public IList<UserInfo> getUserList()
+        public IList<UserInfo> getList()
         {
             string strSql = "select id, userID, "
                 + "(case state when 1 then '使用' when 0 then '禁止' end) as state, name, "

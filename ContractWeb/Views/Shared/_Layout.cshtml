@@ -53,7 +53,9 @@
                     </li>
                     <li>@Html.ActionLink("业务管理", "", "")
                         <ul>
+                            <li>@Html.ActionLink("合同信息录入", "Contract", "Business")</li>
                             <li>@Html.ActionLink("客户到账登记", "CPay", "Business")</li>
+                            <li>@Html.ActionLink("开发票登记", "WriteBill", "Business")</li>
                         </ul>
                     </li>
                 </ul>
@@ -63,5 +65,29 @@
             @RenderBody()
         </section>
     </div>
+
+    <script>
+
+        function myformatter(date) {
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            var d = date.getDate();
+            return y + '-' + (m < 10 ? ('0' + m) : m) + '-' + (d < 10 ? ('0' + d) : d);
+        }
+
+        function myparser(s) {
+            if (!s) return new Date();
+            var ss = s.split('-');
+            var y = parseInt(ss[0], 10);
+            var m = parseInt(ss[1], 10);
+            var d = parseInt(ss[2], 10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)) {
+                return new Date(y, m - 1, d);
+            } else {
+                return new Date();
+            }
+        }
+
+    </script>
 </body>
 </html>

@@ -1,5 +1,119 @@
-﻿@{
-    ViewBag.Title = "CPay";
-}
+﻿<div>
+    <fieldset>
+        <legend>客户到账登记</legend>
 
-<h2>CPay</h2>
+        <p />
+        <div>
+            <div class="fitem inline">
+                <label>合同编号:</label>
+                <input id="txtID" class="easyui-validatebox" onkeydown="EnterPress()" />
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>合同名称:</label>
+                <input id="txtName" class="easyui-validatebox" readonly="true" />
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>客户名称:</label>
+                <input id="txtCustomer" class="easyui-validatebox" readonly="true" />
+            </div>
+        </div>
+
+        <p />
+        <div>
+            <div class="fitem inline">
+                <label>广告版本:</label>
+                <input id="txtVersion" class="easyui-validatebox" readonly="true" />
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>签署金额:</label>
+                <input id="txtMoney" class="easyui-validatebox" readonly="true" />
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>制作费:</label>
+                <input id="txtMake" class="easyui-validatebox" readonly="true" />
+            </div>
+        </div>
+
+        <p />
+        <div>
+            <div class="fitem inline">
+                <label>合同类型:</label>
+                <input id="txtType" class="easyui-validatebox" readonly="true" />
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>渠道归类:</label>
+                <input id="txtChannel" class="easyui-validatebox" readonly="true" />
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>业务员:</label>
+                <input id="txtPerson" class="easyui-validatebox" readonly="true" />
+            </div>
+        </div>
+
+        <p />
+        <div>
+            <div class="fitem inline">
+                <label>已到账:</label>
+                <input id="txtCollect" class="easyui-validatebox" readonly="true" />
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>本次到账:</label>
+                <input id="txtThis" class="easyui-validatebox" />
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>到账日期:</label>
+                <input id="txtDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" />
+            </div>
+        </div>
+
+        <p>
+            <input type="button" id="btnAdd" onclick="add()" value="新增" />
+            <input type="button" id="btnCancel" onclick="cancel()" value="清空" />
+        </p>
+    </fieldset>
+</div>
+
+<script>
+
+    function EnterPress(e) {        
+        var e = e || window.event;
+        if (e.keyCode == 13) {
+            $.get("/Business/getContract?id=" + $("#txtID").val(), function (data) {
+                $("#txtName").val(data.name);
+                $("#txtCustomer").val(data.customerName);
+                $("#txtVersion").val(data.version);
+                $("#txtMoney").val(data.money);
+                $("#txtMake").val(data.makeCost);
+                $("#txtType").val(data.typeName);
+                $("#txtChannel").val(data.channelName);
+                $("#txtPerson").val(data.personName);
+            });
+        }
+    }
+
+    function cancel() {
+        $("#txtID").val("");
+        $("#txtName").val("");
+        $("#txtCustomer").val("");
+        $("#txtVersion").val("");
+        $("#txtMoney").val("");
+        $("#txtMake").val("");
+        $("#txtType").val("");
+        $("#txtChannel").val("");
+        $("#txtPerson").val("");
+        $("#txtCollect").val("");
+        $("#txtThis").val("");
+    }
+
+    function add() {
+        var id = $("#txtID").val();
+        var money = $("#txtThis").val();
+        var date = $("#txtDate").datebox("getValue");
+
+        $.post("/Business/addPay", "id=" + id + "&money=" + money + "&date=" + date,
+            function (data) {
+                alert("OK");
+            }
+        );
+    }
+</script>

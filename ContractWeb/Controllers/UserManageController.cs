@@ -60,7 +60,7 @@ namespace ContractWeb.Controllers
         public JsonResult getUserList()
         {
             DaUserInfo dal = new DaUserInfo();
-            IList<UserInfo> users = dal.getUserList();
+            IList<UserInfo> users = dal.getList();
 
             var result = new CustomJsonResult();
             result.dateFormat = "yyyy-MM-dd";

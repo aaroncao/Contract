@@ -1,0 +1,156 @@
+﻿<div class="ftitle">开发票管理</div>
+<p />
+
+<!-- Table -->
+<table id="BillList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/getBillList'" toolbar="#toolbar">
+    <thead>
+        <tr>
+            <th data-options="field:'contractID',width:100">合同编号</th>
+            <th data-options="field:'contractName',width:50">合同名称</th>
+            <th data-options="field:'contractMoney',width:130">签署金额</th>
+            <th data-options="field:'typeName',width:100">开票类型</th>
+            <th data-options="field:'money',width:200">开票金额</th>
+            <th data-options="field:'date',width:80">开票日期</th>
+        </tr>
+    </thead>
+</table>
+
+<!-- Toolbar -->
+<div id="toolbar">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="newBill()">新增</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true">修改</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove" plain="true">删除</a>
+</div>
+
+<!-- dialog -->
+<div id="dlg" class="easyui-dialog" style="width: 400px; height: 280px; padding: 10px 20px" closed="true" buttons="#dlg-buttons">
+    <div class="ftitle">Contract Information</div>
+    <form id="fm" method="post" novalidate>
+        <div class="fitem">
+            <label>合同编号:</label>
+            <input id="txtID" class="easyui-validatebox" onkeydown="EnterPress()" />
+        </div>
+        <div class="fitem">
+            <label>合同名称:</label>
+            <input id="txtName" class="easyui-validatebox" readonly="true" />
+        </div>
+        <div class="fitem">
+            <label>业务员:</label>
+            <input id="txtPerson" class="easyui-validatebox" readonly="true" />
+        </div>
+        <div class="fitem">
+            <label>合同类型:</label>
+            <input id="txtType" class="easyui-validatebox" readonly="true" />
+        </div>
+        <div class="fitem">
+            <label>渠道归类:</label>
+            <input id="txtChannel" class="easyui-validatebox" readonly="ture" />
+        </div>
+        <div class="fitem">
+            <label>签署金额:</label>
+            <input id="txtContractMoney" class="easyui-validatebox" readonly="true" />
+        </div>
+        <div class="fitem">
+            <label>制作费(元):</label>
+            <input id="txtMake" class="easyui-validatebox" readonly="true" />
+        </div>
+        <div class="fitem">
+            <label>已到金额:</label>
+            <input id="txtCollect" class="easyui-validatebox" readonly="true" />
+        </div>
+        <div class="fitem">
+            <label>广告费结算已开金额:</label>
+            <input id="txtADCost" class="easyui-validatebox" readonly="true" />
+        </div>
+        <div class="fitem">
+            <label>制作费结算已开金额:</label>
+            <input id="txtMakeCost" class="easyui-validatebox" readonly="true" />
+        </div>
+        <div class="fitem">
+            <label>已开金额:</label>
+            <input id="txtAllCost" class="easyui-validatebox" readonly="true" />
+        </div>
+        <div class="fitem">
+            <label>是否开完:</label>
+            <input type="radio" id="notFinish" name="isFinish" checked="checked">否</input>
+            <input type="radio" id="Finished" name="isFinish">是</input>
+        </div>
+        <div class="fitem">
+            <label>开票类型:</label>
+            <select id="drpBillType" class="easyui-combobox" style="width:100px;"></select>
+        </div>
+        <div class="fitem">
+            <label>开票金额:</label>
+            <input id="txtMoney" class="easyui-validatebox"></input>
+        </div>
+        <div class="fitem">
+            <label>开票日期:</label>
+            <input id="txtDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" />
+        </div>
+    </form>
+</div>
+
+
+
+<script>
+
+    $(function () {
+        $('#BillList').datagrid();
+
+        $('#drpBillType').combobox({
+            url: '/Business/getDrpBillTypeList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+    });
+
+
+    function newBill() {
+        $('#dlg').dialog('open').dialog('setTitle', 'New Bill');
+        $('#fm').form('clear');
+    }
+
+    function EnterPress(e) {        
+        var e = e || window.event;
+        if (e.keyCode == 13) {
+            $.get("/Business/getContract?id=" + $("#txtID").val(), function (data) {
+                $("#txtName").val(data.name);
+                $("#txtPerson").val(data.personName);
+                $("#txtType").val(data.typeName);
+                $("#txtChannel").val(data.channelName);
+                $("#txtContractMoney").val(data.money);
+                $("#txtMake").val(data.makeCost); 
+            });
+        }
+    }
+
+    function cancel() {
+        $("#txtID").val("");
+        $("#txtName").val("");
+        $("#txtPerson").val("");
+        $("#txtType").val("");
+        $("#txtChannel").val("");
+        $("#txtContractMoney").val("");
+        $("#txtMake").val("");
+        $("#txtCollect").val("");
+        $("#txtADCost").val("");
+        $("#txtMakeCost").val("");
+        $("#txtAllCost").val("");
+        $("#txtMoney").val("");
+        $("#txtDate").val("");
+    }
+
+    function add() {
+        var id = $("#txtID").val();
+        var type = $("#drpBillType").combobox("getValue");
+        var money = $("#txtMoney").val();
+        var date = $("#txtDate").datebox("getValue");
+
+        $.post("/Business/addBill", "id=" + id + "&type=" + type + "&money=" + money + "&date=" + date,
+            function (data) {
+                alert("OK");
+            }
+        );
+    }
+</script>

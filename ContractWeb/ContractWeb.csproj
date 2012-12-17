@@ -113,10 +113,14 @@
     <Compile Include="Controllers\UserManageController.cs" />
     <Compile Include="DataAccess\DaADCostTarget.cs" />
     <Compile Include="DataAccess\DaAreaInfo.cs" />
+    <Compile Include="DataAccess\DaBill.cs" />
+    <Compile Include="DataAccess\DaBillType.cs" />
     <Compile Include="DataAccess\DaChannel.cs" />
     <Compile Include="DataAccess\DaCinema.cs" />
     <Compile Include="DataAccess\DaCinemaRoom.cs" />
     <Compile Include="DataAccess\DaCinemaRoomType.cs" />
+    <Compile Include="DataAccess\DaContractInfo.cs" />
+    <Compile Include="DataAccess\DaContractType.cs" />
     <Compile Include="DataAccess\DaCustomerInfo.cs" />
     <Compile Include="DataAccess\DaCustomerPay.cs" />
     <Compile Include="DataAccess\DaCustomerState.cs" />
@@ -129,11 +133,15 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\ADCostTarget.cs" />
     <Compile Include="Models\AreaInfo.cs" />
+    <Compile Include="Models\Bill.cs" />
+    <Compile Include="Models\BillType.cs" />
     <Compile Include="Models\Channel.cs" />
     <Compile Include="Models\ChannelType.cs" />
     <Compile Include="Models\Cinema.cs" />
     <Compile Include="Models\CinemaRoom.cs" />
     <Compile Include="Models\CinemaRoomType.cs" />
+    <Compile Include="Models\ContractInfo.cs" />
+    <Compile Include="Models\ContractType.cs" />
     <Compile Include="Models\CustomerInfo.cs" />
     <Compile Include="Models\CustomerPay.cs" />
     <Compile Include="Models\CustomerState.cs" />
@@ -297,6 +305,8 @@
     <Content Include="Views\BasicSetting\Cinema.cshtml" />
     <Content Include="Views\BasicSetting\CinemaRoom.cshtml" />
     <Content Include="Views\Business\CPay.cshtml" />
+    <Content Include="Views\Business\Contract.cshtml" />
+    <Content Include="Views\Business\WriteBill.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
