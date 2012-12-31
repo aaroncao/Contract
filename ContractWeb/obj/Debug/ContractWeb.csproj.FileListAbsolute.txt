@@ -22,3 +22,4 @@ E:\NetWorkSpace\ContractWeb\ContractWeb\obj\Debug\ContractWeb.dll
 E:\NetWorkSpace\ContractWeb\ContractWeb\obj\Debug\ContractWeb.pdb
 E:\NetWorkSpace\ContractWeb\ContractWeb\bin\ND.Lib.Data.SqlHelper.dll
 E:\NetWorkSpace\ContractWeb\ContractWeb\bin\Newtonsoft.Json.dll
+E:\NetWorkSpace\ContractWeb\ContractWeb\obj\Debug\ContractWeb.csprojResolveAssemblyReference.cache

@@ -18,10 +18,10 @@ namespace ContractWeb.DataAccess
         /// <returns></returns>
         public IList<Bill> getList()
         {
-            string strSql = "select id, contractID, "
-                + "(select z.name from ContractInfo z where z.id=contractID) as contractName, "
-                + "(select z.money from ContractInfo z where z.id=contractID) as contractMoney, "
-                + "type, (select z.name from BillType z where z.id=type) as typeName, money, date from Bill";
+            string strSql = "select a.id, a.contractID, "
+                + "(select z.name from ContractInfo z where z.contractID=a.contractID) as contractName, "
+                + "(select z.money from ContractInfo z where z.contractID=a.contractID) as contractMoney, "
+                + "a.type, (select z.name from BillType z where z.id=a.type) as typeName, a.money, a.date from Bill a";
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
             IList<Bill> list = DynamicBuilder<Bill>.ConvertToList(dr);

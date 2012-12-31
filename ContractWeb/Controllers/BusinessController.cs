@@ -39,6 +39,15 @@ namespace ContractWeb.Controllers
         }
 
         /// <summary>
+        /// 广告费用结算
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ADCostAccount()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// 获取合同列表
         /// </summary>
         /// <returns></returns>
@@ -229,6 +238,21 @@ namespace ContractWeb.Controllers
             DaBill dal = new DaBill();
             var result = new CustomJsonResult();
             result.Data = dal.add(en);
+            return result;
+        }
+
+        /// <summary>
+        /// 根据编号获取订单
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getOrder()
+        {
+            DaBill dal = new DaBill();
+            IList<Bill> bills = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+            result.Data = new { total = bills.Count, rows = bills };
             return result;
         }
     }

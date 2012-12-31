@@ -146,6 +146,7 @@
     <Compile Include="Models\CustomerPay.cs" />
     <Compile Include="Models\CustomerState.cs" />
     <Compile Include="Models\MakeCostTarget.cs" />
+    <Compile Include="Models\OrderInfo.cs" />
     <Compile Include="Models\PowerGroup.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -307,6 +308,7 @@
     <Content Include="Views\Business\CPay.cshtml" />
     <Content Include="Views\Business\Contract.cshtml" />
     <Content Include="Views\Business\WriteBill.cshtml" />
+    <Content Include="Views\Business\ADCostAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
