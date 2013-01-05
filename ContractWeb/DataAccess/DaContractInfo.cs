@@ -32,7 +32,7 @@ namespace ContractWeb.DataAccess
         }
 
         /// <summary>
-        /// 根据编号获取合同信息
+        /// 根据合同编号获取合同信息
         /// </summary>
         /// <param name="id">编号</param>
         /// <returns></returns>

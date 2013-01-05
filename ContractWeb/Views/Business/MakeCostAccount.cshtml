@@ -1,6 +1,6 @@
 ﻿<div>
     <fieldset>
-        <legend>广告费结算</legend>
+        <legend>制作费结算</legend>
 
         <p />
         <div>
@@ -20,10 +20,6 @@
 
         <p />
         <div>
-            <div class="fitem inline">
-                <label>广告版本:</label>
-                <input id="txtVersion" class="easyui-validatebox" readonly="true" />
-            </div>
             <div class="fitem inline" style="margin-left:30px;">
                 <label>签署金额:</label>
                 <input id="txtMoney" class="easyui-validatebox" readonly="true" />
@@ -32,26 +28,16 @@
                 <label>合同类型:</label>
                 <input id="txtType" class="easyui-validatebox" readonly="true" />
             </div>
-        </div>
-
-        <p />
-        <div>
             <div class="fitem inline">
                 <label>渠道归类:</label>
                 <input id="txtChannel" class="easyui-validatebox" readonly="true" />
             </div>
-            <div class="fitem inline" style="margin-left:30px;">
-                <label>合同周期:</label>
-                <input id="txtBegin" class="easyui-validatebox" readonly="true" />至
-                <input id="txtEnd" class="easyui-validatebox" readonly="true" />
-                <input id="txtZQ" class="easyui-validatebox" readonly="true" />月
-            </div>
         </div>
 
         <p />
         <div>
             <div class="fitem inline" style="margin-left:30px;">
-                <label>广告费结算对象:</label>
+                <label>制作费结算对象:</label>
                 <input id="txtTarget" class="easyui-validatebox" readonly="true" />
             </div>
             <div class="fitem inline">
@@ -70,10 +56,6 @@
             <div class="fitem inline" style="margin-left:30px;">
                 <label>日期:</label>
                 <input id="txtDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" />
-            </div>
-            <div class="fitem inline">
-                <label>备注:</label>
-                <input id="txtMemo" class="easyui-validatebox" />
             </div>
         </div>
 
@@ -114,14 +96,10 @@
 
                 $("#txtContractID").val(contract.contractID);
                 $("#txtContractName").val(contract.name);
-                $("#txtVersion").val(contract.version);
                 $("#txtMoney").val(contract.money);
 
                 $("#txtType").val(contract.typeName);
                 $("#txtChannel").val(contract.channelName);
-                $("#txtBegin").val(contract.begintime);
-                $("#txtEnd").val(contract.endtime);
-                $("#txtZQ").val(contract.ZQ);
 
                 $("#txtTarget").val(order.costTargetName);
 
@@ -140,19 +118,14 @@
         $("#txtOrderID").val("");
         $("#txtContractID").val("");
         $("#txtContractName").val("");
-        $("#txtVersion").val("");
         $("#txtMoney").val("");
 
         $("#txtType").val("");
         $("#txtChannel").val("");
-        $("#txtBegin").val("");
-        $("#txtEnd").val("");
-        $("#txtZQ").val("");
 
         $("#txtTarget").val("");
         $("#txtAccountMoney").val("");
         $("#txtDate").val("");
-        $("#txtMemo").val("");
     }
 
     function add() {
@@ -160,9 +133,8 @@
         var money = $("#txtAccountMoney").val();
         var state = $("#notAccounted")[0].checked ? 1 : 2;
         var date = $("#txtDate").datebox("getValue");
-        var memo = $("#txtMemo").val();
 
-        $.post("/Business/addADCostAccount", "id=" + id + "&money=" + money + "&state=" + state + "&date=" + date + "&memo=" + memo,
+        $.post("/Business/addMakeCostAccount", "id=" + id + "&money=" + money + "&state=" + state + "&date=" + date,
             function (data) {
                 alert("OK");
             }

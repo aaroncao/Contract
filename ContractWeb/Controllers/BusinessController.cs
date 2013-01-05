@@ -21,6 +21,15 @@ namespace ContractWeb.Controllers
         }
 
         /// <summary>
+        /// 下单
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Order()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// 客户到账登记界面
         /// </summary>
         /// <returns></returns>
@@ -39,10 +48,19 @@ namespace ContractWeb.Controllers
         }
 
         /// <summary>
-        /// 广告费用结算
+        /// 广告费结算
         /// </summary>
         /// <returns></returns>
         public ActionResult ADCostAccount()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// 制作费结算
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult MakeCostAccount()
         {
             return View();
         }
@@ -242,17 +260,232 @@ namespace ContractWeb.Controllers
         }
 
         /// <summary>
-        /// 根据编号获取订单
+        /// 根据订单编号获取合同订单信息
         /// </summary>
         /// <returns></returns>
-        public JsonResult getOrder()
+        public JsonResult getContractOrder(string id)
         {
-            DaBill dal = new DaBill();
-            IList<Bill> bills = dal.getList();
+            DaOrderInfo dal = new DaOrderInfo();
+            ContractOrder en = dal.getContractOrder(id);
 
             var result = new CustomJsonResult();
             result.dateFormat = "yyyy-MM-dd";
-            result.Data = new { total = bills.Count, rows = bills };
+            result.Data = en;
+            return result;
+        }
+
+        /// <summary>
+        /// 根据订单编号获取投放列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult getPutinList(string id)
+        {
+            DaPutinInfo dal = new DaPutinInfo();
+            IList<PutinInfo> putins = dal.getList(id);
+
+            var result = new CustomJsonResult();
+            result.Data = new { total = putins.Count, rows = putins };
+            return result;
+        }
+
+        /// <summary>
+        /// 添加广告费结算
+        /// </summary>
+        /// <param name="id">订单编号</param>
+        /// <param name="money">结算金额</param>
+        /// <param name="state">打款状态</param>
+        /// <param name="date">日期</param>
+        /// <param name="memo">备注</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult addADCostAccount(string id, string money, string state, string date, string memo)
+        {
+            ADCostAccount en = new ADCostAccount();
+            en.orderID = id;
+            en.money = Convert.ToDouble(money);
+            en.state = Convert.ToInt32(state);
+            en.date = Convert.ToDateTime(date);
+            en.memo = memo;
+
+            DaADCostAccount dal = new DaADCostAccount();
+            var result = new CustomJsonResult();
+            result.Data = dal.add(en);
+            return result;
+        }
+
+        /// <summary>
+        /// 添加制作费结算
+        /// </summary>
+        /// <param name="id">订单编号</param>
+        /// <param name="money">结算金额</param>
+        /// <param name="state">打款状态</param>
+        /// <param name="date">日期</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult addMakeCostAccount(string id, string money, string state, string date)
+        {
+            MakeCostAccount en = new MakeCostAccount();
+            en.orderID = id;
+            en.money = Convert.ToDouble(money);
+            en.state = Convert.ToInt32(state);
+            en.date = Convert.ToDateTime(date);
+
+            DaMakeCostAccount dal = new DaMakeCostAccount();
+            var result = new CustomJsonResult();
+            result.Data = dal.add(en);
+            return result;
+        }
+
+        /// <summary>
+        /// 获取广告费结算对象列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getDrpADTargetList()
+        {
+            DaADCostTarget dal = new DaADCostTarget();
+            IList<ADCostTarget> targets = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = targets;
+            return result;
+        }
+
+        /// <summary>
+        /// 获取制作费结算对象列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getDrpMakeTargetList()
+        {
+            DaMakeCostTarget dal = new DaMakeCostTarget();
+            IList<MakeCostTarget> targets = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = targets;
+            return result;
+        }
+
+        /// <summary>
+        /// 获取订单编号
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult buildOrderID()
+        {
+            DaOrderInfo dal = new DaOrderInfo();
+            string id = dal.buildOrderIDofDay();
+
+            var result = new CustomJsonResult();
+            result.Data = id;
+            return result;
+        }
+
+        /// <summary>
+        /// 获取影院列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getDrpCinemeList()
+        {
+            DaCinema dal = new DaCinema();
+            IList<Cinema> cinemas = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = cinemas;
+            return result;
+        }
+
+        /// <summary>
+        /// 获取影厅列表
+        /// </summary>
+        /// <param name="id">影院ID</param>
+        /// <returns></returns>
+        public JsonResult getCinemaRoomList(string id)
+        {
+            DaCinemaRoom dal = new DaCinemaRoom();
+            IList<CinemaRoom> rooms = dal.getList(id);
+
+            var result = new CustomJsonResult();
+            result.Data = new { total = rooms.Count, rows = rooms };
+            return result;
+        }
+
+        /// <summary>
+        /// 添加投放影厅
+        /// </summary>
+        /// <param name="contract">合同编号</param>
+        /// <param name="order">订单编号</param>
+        /// <param name="ids">影厅ID，逗号隔开</param>
+        /// <returns></returns>
+        public JsonResult addPutin(string contract, string order, string ids)
+        {
+            string[] id = ids.Split(',');
+
+            DaCinemaRoom dal = new DaCinemaRoom();
+            IList<CinemaRoom> rooms = dal.getList(id);
+
+            List<PutinInfo> list = new List<PutinInfo>();
+            for (int i = 0; i < rooms.Count; i++)
+            {
+                PutinInfo en = new PutinInfo();
+                en.contractID = contract;
+                en.orderID = order;
+                en.cinemaID = rooms[i].cinemaID;
+                en.cinemaRoomID = rooms[i].id;
+                en.roomTypeID = rooms[i].typeID;
+
+                list.Add(en);
+            }
+
+            DaPutinInfo dal1 = new DaPutinInfo();
+            var result = new CustomJsonResult();
+            result.Data = dal1.add(list);
+            return result;
+        }
+
+        /// <summary>
+        /// 获取订单列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getOrderList()
+        {
+            DaOrderInfo dal = new DaOrderInfo();
+            IList<OrderInfo> orders = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = new { total = orders.Count, rows = orders };
+            return result;
+        }
+
+        /// <summary>
+        /// 添加订单
+        /// </summary>
+        /// <param name="contractID">合同编号</param>
+        /// <param name="orderID">订单编号</param>
+        /// <param name="adID">广告费结算对象编号</param>
+        /// <param name="makeID">制作费结算对象编号</param>
+        /// <param name="num">投放厅数</param>
+        /// <param name="begin">下单开始时间</param>
+        /// <param name="end">下单结束时间</param>
+        /// <param name="memo">备注</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult addOrder(string contractID, string orderID, string adID, string makeID, string num, string begin, string end, string memo)
+        {
+            if (num.Trim() == "")
+                num = "0";
+
+            OrderInfo en = new OrderInfo();
+            en.contractID = contractID;
+            en.orderID = orderID;
+            en.costTargetID = Convert.ToInt32(adID);
+            en.makeTargetID = Convert.ToInt32(makeID);
+            en.roomNum = Convert.ToInt32(num);
+            en.begintime = Convert.ToDateTime(begin);
+            en.endtime = Convert.ToDateTime(end);
+            en.memo = memo;
+
+            DaOrderInfo dal = new DaOrderInfo();
+            var result = new CustomJsonResult();
+            result.Data = dal.add(en);
             return result;
         }
     }

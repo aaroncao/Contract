@@ -1,0 +1,238 @@
+﻿<div>
+    <fieldset>
+        <div>
+            <div class="fitem inline">
+                <label>合同编号:</label>
+                <input id="txtContractID" class="easyui-validatebox" onkeydown="EnterPress()" />
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>合同名称:</label>
+                <input id="txtContractName" class="easyui-validatebox" readonly="true" />
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>渠道归类:</label>
+                <input id="txtChannel" class="easyui-validatebox" readonly="true" />
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>合同周期:</label>
+                <input id="txtZQ" class="easyui-validatebox" readonly="true" />月
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>广告版本:</label>
+                <input id="txtVersion" class="easyui-validatebox" readonly="true" />秒
+            </div>
+        </div>
+
+        <p />
+        <div>
+            <div class="fitem inline">
+                <label>下单编号:</label>
+                <input id="txtOrderID" class="easyui-validatebox" readonly="true" />
+            </div>
+            <div class="fitem inline" >
+                <label>广告费结算对象:</label>
+                <select id="drpADTarget" class="easyui-combobox" style="width:100px;"></select>
+            </div>
+            <div class="fitem inline" >
+                <label>制作费结算对象:</label>
+                <select id="drpMakeTarget" class="easyui-combobox" style="width:100px;"></select>
+            </div>
+            <div class="fitem inline" >
+                <label>下单时段:</label>
+                <input id="txtBeginDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" />至
+                <input id="txtEndDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" />
+            </div>
+        </div>
+
+        <p />
+        <div>
+            <div class="fitem inline">
+                <label>备注:</label>
+                <input id="txtMemo" class="easyui-validatebox" />
+            </div>
+
+            <input type="button" id="btnBuild" onclick="build()" value="生成单号" />
+            <input type="button" id="btnAdd" onclick="addOrder()" value="下单" />
+            <input type="button" id="btnCancel" onclick="cancel()" value="清空" />
+        </div>
+    </fieldset>
+</div>
+
+<div>
+    <fieldset>
+        <legend>投放区域</legend>
+
+        <div>
+            <div class="fitem inline">
+                <label>合同编号:</label>
+                <input id="txtPutin_contractID" class="easyui-validatebox" readonly="true" />
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>下单编号:</label>
+                <input id="txtPutin_orderID" class="easyui-validatebox" readonly="true" />
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>已下厅数:</label>
+                <input id="txtPutin_num" class="easyui-validatebox" readonly="true" />
+            </div>
+            <div class="fitem inline" style="margin-left:30px;">
+                <label>投放影院:</label>
+                <select id="drpCinema" class="easyui-combobox" style="width:100px;"></select>
+            </div>
+        </div>
+        
+        <p />
+        <div>
+            <div class="fitem inline">
+                <table id="CinemaRoomList" style="width: 280px; height: 200px;" data-options="singleSelect:false,selectOnCheck:true,checkOnSelect:true,idField:'id'">
+                    <thead>
+                        <tr>
+                            <th data-options="field:'ck',checkbox:true"></th>
+                            <th data-options="field:'cinema',width:80">影院名称</th>
+                            <th data-options="field:'room',width:70">影厅名称</th>
+                            <th data-options="field:'type',width:80">影厅属性</th>
+                        </tr>
+                    </thead>
+                </table>
+                <input type="button" onclick="putin()" value="添加" />
+                <table id="SelectRoomList" style="width: 350px; height: 200px;" data-options="singleSelect:true,idField:'id'">
+                    <thead>
+                        <tr>
+                            <th data-options="field:'orderID',width:80">下单编号</th>
+                            <th data-options="field:'cinema',width:80">投放影院</th>
+                            <th data-options="field:'room',width:80">投放影厅</th>
+                            <th data-options="field:'type',width:80">影厅属性</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+<!-- Table -->
+<table id="OrderList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/getOrderList'" toolbar="#toolbar">
+    <thead>
+        <tr>
+            <th data-options="field:'contractID',width:100">合同编号</th>
+            <th data-options="field:'orderID',width:50">下单编号</th>
+            <th data-options="field:'contractName',width:130">合同名称</th>
+            <th data-options="field:'customerName',width:100">客户名称</th>
+            <th data-options="field:'costTargetName',width:200">广告费结算对象</th>
+            <th data-options="field:'makeTargetName',width:80">制作费结算对象</th>
+            <th data-options="field:'begintime',width:80">下单时段(起)</th>
+            <th data-options="field:'endtime',width:80">下单时段(止)</th>
+            <th data-options="field:'roomNum',width:80">下单厅数</th>
+            <th data-options="field:'memo',width:80">备注</th>
+        </tr>
+    </thead>
+</table>
+
+<script>
+
+    $(function () {
+        $("#CinemaRoomList").datagrid();
+        $("#SelectRoomList").datagrid();
+        $("#OrderList").datagrid();
+
+        $('#drpADTarget').combobox({
+            url: '/Business/getDrpADTargetList',
+            valueField: 'id',
+            textField: 'target'
+        });
+
+        $('#drpMakeTarget').combobox({
+            url: '/Business/getDrpMakeTargetList',
+            valueField: 'id',
+            textField: 'target'
+        });
+                
+        $('#drpCinema').combobox({
+            url: '/Business/getDrpCinemeList',
+            valueField: 'id',
+            textField: 'name',
+            onSelect: getCinemaRoom
+        });
+    });
+
+    function EnterPress(e) {
+        var e = e || window.event;
+        if (e.keyCode == 13) {
+            $.get("/Business/getContract?id=" + $("#txtContractID").val(), function(data) {
+                $("#txtContractName").val(data.name);
+                $("#txtChannel").val(data.channelName);
+                $("#txtZQ").val(data.ZQ);
+                $("#txtVersion").val(data.version);
+            });
+        }
+    }
+
+    function build() {
+        if ($("#txtContractID").val() == "") {
+            alert("请先输入合同编号");
+            return;
+        }
+
+        $.get("/Business/buildOrderID", function (data) {
+            $("#txtPutin_contractID").val($("#txtContractID").val());
+            $("#txtOrderID").val(data);
+            $("#txtPutin_orderID").val(data);
+        });
+    }
+
+    function addOrder() {
+        var contractID = $("#txtContractID").val();
+        var orderID = $("#txtOrderID").val();
+        var adID = $("#drpADTarget").combobox("getValue");
+        var makeID = $("#drpMakeTarget").combobox("getValue");
+        var num = $("#txtPutin_num").val();
+        var begin = $("#txtBeginDate").datebox("getValue");
+        var end = $("#txtEndDate").datebox("getValue");
+        var memo = $("#txtMemo").val();
+
+        $.post("/Business/addOrder", "contractID=" + contractID + "&orderID=" + orderID + "&adID=" + adID + "&makeID=" + makeID + "&num=" + num + "&begin=" + begin + "&end=" + end + "&memo=" + memo,
+            function (data) {
+                alert("OK");
+            }
+        );
+    }
+
+    function cancel() {
+        $("#txtContractID").val("");
+        $("#txtContractName").val("");
+        $("#txtChannel").val("");
+        $("#txtZQ").val("");
+        $("#txtVersion").val("");
+        $("#txtOrderID").val("");
+        $("#drpADTarget").combobox("setValue", "");
+        $("#drpMakeTarget").combobox("setValue", "");
+        $("#txtBeginDate").val("");
+        $("#txtEndDate").val("");
+        $("#txtMemo").val("");
+        $("#txtPutin_contractID").val("");
+        $("#txtPutin_orderID").val("");
+        $("#txtPutin_num").val("");
+        $("#drpCinema").combobox("setValue", "");
+    }
+
+    function getCinemaRoom(rec) {
+        $("#CinemaRoomList").datagrid({
+            url: "/Business/getCinemaRoomList?id=" + rec.id
+        });
+    }
+
+    function putin() {
+        var ids = "";
+        var rows = $('#CinemaRoomList').datagrid('getSelections');
+        for (var i = 0; i < rows.length; i++) {
+            ids += rows[i].id + ",";
+        }
+
+        if (ids != "")
+            ids = ids.substring(0, ids.length - 1);
+
+        $.get("/Business/addPutin?contract=" + $("#txtPutin_contractID").val() + "&order=" + $("#txtPutin_orderID").val() + "&ids=" + ids, function (data) {
+            alert("OK");
+        });
+    }
+</script>

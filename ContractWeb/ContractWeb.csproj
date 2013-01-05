@@ -111,6 +111,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SystemSettingController.cs" />
     <Compile Include="Controllers\UserManageController.cs" />
+    <Compile Include="DataAccess\DaADCostAccount.cs" />
     <Compile Include="DataAccess\DaADCostTarget.cs" />
     <Compile Include="DataAccess\DaAreaInfo.cs" />
     <Compile Include="DataAccess\DaBill.cs" />
@@ -124,13 +125,17 @@
     <Compile Include="DataAccess\DaCustomerInfo.cs" />
     <Compile Include="DataAccess\DaCustomerPay.cs" />
     <Compile Include="DataAccess\DaCustomerState.cs" />
+    <Compile Include="DataAccess\DaMakeCostAccount.cs" />
     <Compile Include="DataAccess\DaMakeCostTarget.cs" />
+    <Compile Include="DataAccess\DaOrderInfo.cs" />
     <Compile Include="DataAccess\DaPowerGroup.cs" />
+    <Compile Include="DataAccess\DaPutinInfo.cs" />
     <Compile Include="DataAccess\DaUserInfo.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\ADCostAccount.cs" />
     <Compile Include="Models\ADCostTarget.cs" />
     <Compile Include="Models\AreaInfo.cs" />
     <Compile Include="Models\Bill.cs" />
@@ -141,13 +146,16 @@
     <Compile Include="Models\CinemaRoom.cs" />
     <Compile Include="Models\CinemaRoomType.cs" />
     <Compile Include="Models\ContractInfo.cs" />
+    <Compile Include="Models\ContractOrder.cs" />
     <Compile Include="Models\ContractType.cs" />
     <Compile Include="Models\CustomerInfo.cs" />
     <Compile Include="Models\CustomerPay.cs" />
     <Compile Include="Models\CustomerState.cs" />
+    <Compile Include="Models\MakeCostAccount.cs" />
     <Compile Include="Models\MakeCostTarget.cs" />
     <Compile Include="Models\OrderInfo.cs" />
     <Compile Include="Models\PowerGroup.cs" />
+    <Compile Include="Models\PutinInfo.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -309,6 +317,8 @@
     <Content Include="Views\Business\Contract.cshtml" />
     <Content Include="Views\Business\WriteBill.cshtml" />
     <Content Include="Views\Business\ADCostAccount.cshtml" />
+    <Content Include="Views\Business\MakeCostAccount.cshtml" />
+    <Content Include="Views\Business\Order.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -20,6 +20,11 @@ namespace ContractWeb.Models
         public string contractID { get; set; }
 
         /// <summary>
+        /// 合同名称
+        /// </summary>
+        public string contractName { get; set; }
+
+        /// <summary>
         /// 订单编号
         /// </summary>
         public string orderID { get; set; }
@@ -33,6 +38,16 @@ namespace ContractWeb.Models
         /// 广告费结算对象ID
         /// </summary>
         public int costTargetID { get; set; }
+
+        /// <summary>
+        /// 客户ID
+        /// </summary>
+        public int customerID { get; set; }
+
+        /// <summary>
+        /// 客户名称
+        /// </summary>
+        public string customerName { get; set; }
 
         /// <summary>
         /// 下单厅数
