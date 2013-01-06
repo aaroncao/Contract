@@ -319,6 +319,7 @@
     <Content Include="Views\Business\ADCostAccount.cshtml" />
     <Content Include="Views\Business\MakeCostAccount.cshtml" />
     <Content Include="Views\Business\Order.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -342,7 +343,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>9003</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:3213/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

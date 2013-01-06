@@ -8,6 +8,11 @@ namespace ContractWeb.Controllers
 {
     public class HomeController : Controller
     {
+        public ActionResult Login()
+        {
+            return View();
+        }
+
         public ActionResult Index()
         {
             ViewBag.Message = "欢迎使用 ASP.NET MVC!";
