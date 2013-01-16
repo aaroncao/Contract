@@ -17,6 +17,7 @@ namespace ContractWeb.Controllers
         /// <returns></returns>
         public ActionResult PowerGroup()
         {
+            ViewBag.menu = 2;
             return View();
         }
 
@@ -53,5 +54,25 @@ namespace ContractWeb.Controllers
             return result;
         }
 
+        /// <summary>
+        /// 更新权限组
+        /// </summary>
+        /// <param name="id">编号</param>
+        /// <param name="name">名称</param>
+        /// <param name="memo">备注</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult updateGroup(string id, string name, string memo)
+        {
+            PowerGroup en = new PowerGroup();
+            en.id = Convert.ToInt32(id);
+            en.name = name;
+            en.memo = memo;
+
+            DaPowerGroup dal = new DaPowerGroup();
+            var result = new CustomJsonResult();
+            result.Data = dal.update(en);
+            return result;
+        }
     }
 }

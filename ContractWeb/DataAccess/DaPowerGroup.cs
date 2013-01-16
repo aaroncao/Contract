@@ -40,14 +40,32 @@ namespace ContractWeb.DataAccess
                 new SqlParameter("@memo", en.memo)
             };
 
-            int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
-            return result;
+            return SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+        }
+
+        /// <summary>
+        /// 更新权限组
+        /// </summary>
+        /// <param name="en">权限组</param>
+        /// <returns></returns>
+        public int update(PowerGroup en)
+        {
+            string strSql = "update PowerGroup set name=@name, memo=@memo where id=@id";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", en.id),
+                new SqlParameter("@name", en.name),
+                new SqlParameter("@memo", en.memo)
+            };
+
+            return SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
         }
 
         /// <summary>
         /// 删除权限组
         /// </summary>
-        /// <param name="en">地区</param>
+        /// <param name="en">权限组</param>
         /// <returns></returns>
         public int delete(PowerGroup en)
         {
@@ -58,8 +76,7 @@ namespace ContractWeb.DataAccess
                 new SqlParameter("@id", en.id)
             };
 
-            int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
-            return result;
+            return SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
         }
     }
 }

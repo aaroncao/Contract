@@ -1,44 +1,48 @@
-﻿<div class="ftitle">修改密码</div>
+﻿
 
-<div class="fitem">
-    <label>用户名:</label>
-    <label>@ViewBag.userID</label>
-</div>
-<div class="fitem">
-    <label>旧密码:</label>
-    <input type="password" id="oldPwd" class="easyui-validatebox" required="true" />
-</div>
-<div class="fitem">
-    <label>新密码:</label>
-    <input type="password" id="newPwd" class="easyui-validatebox" required="true" />
-</div>
-<div class="fitem">
-    <label>确认新密码:</label>
-    <input type="password" id="confirmPwd" class="easyui-validatebox" required="true" />
-</div>
+<div>
+    <fieldset style="width:500px;">
+        <legend>修改密码</legend>
+        <div>
+            <div class="fitem">
+                <label style="width:80px;">旧密码:<font color="red">*</font></label>
+                <input type="password" id="oldPwd" class="easyui-validatebox" required="true" />
+            </div>
+            <div class="fitem">
+                <label style="width:80px;">新密码:<font color="red">*</font></label>
+                <input type="password" id="newPwd" class="easyui-validatebox" required="true" />
+            </div>
+            <div class="fitem">
+                <label style="width:80px;">确认新密码:<font color="red">*</font></label>
+                <input type="password" id="confirmPwd" class="easyui-validatebox" required="true" />
+            </div>
+        </div>
 
-<div id="dlg-buttons">
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="savePwd()">保存</a>
+        <p>
+            <input type="button" id="btnSave" onclick="savePwd()" value="保存" />
+        </p>
+    </fieldset>
+    
 </div>
-
-<p/>
-<div id="message"></div>
 
 <script>
     function savePwd() {
-        $.get("UserManage/test", function (response) {
-            alert("OK");
-        });
-
         var theOld = $("#oldPwd").val();
         var theNew = $("#newPwd").val();
         var theConfirm = $("#confirmPwd").val();
 
-        if (theNew != theConfirm)
-            $("#message").html("请新密码确认一致");
+        if (theOld.trim() == "" || theNew.trim() == "" || theConfirm.trim() == "") {
+            alert("请输入旧密码和新密码");
+            return;
+        }
+
+        if (theNew != theConfirm) {
+            alert("请新密码确认一致");
+            return;
+        }
         
         $.get("/UserManage/editPassword?oldpwd=" + theOld + "&newPwd=" + theNew, function (data) {
-            $("#message").html(data.msg);
+            alert(data.msg);
         });
     }
 

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+</head>
+<body>
+    <div class="page">
+        <header>
+            <div>
+                <div id="title">
+                    <h1>The New ContractWeb</h1>
+                </div>
+                <div id="logindisplay">
+                    @Html.Partial("_LogOnPartial")
+                </div>
+            </div>
+            <nav>
+                <ul id="coolMenu">
+                    <li>@Html.ActionLink("系统管理", "", "")
+                        <ul>
+                            <li>@Html.ActionLink("权限组设置", "PowerGroup", "SystemSetting")</li>
+                        </ul>
+                    </li>
+                    <li>@Html.ActionLink("用户管理", "", "")
+                        <ul>
+                            <li>@Html.ActionLink("用户管理", "Index", "UserManage")</li>
+                            <li>@Html.ActionLink("用户密码修改", "EditPwd", "UserManage")</li>
+                            <li>@Html.ActionLink("用户个人信息修改", "EditUserInfo", "UserManage")</li>
+                        </ul>
+                    </li>
+                    <li>@Html.ActionLink("基础设置", "", "")
+                        <ul>
+                            <li>@Html.ActionLink("渠道类别设置", "Channel", "BasicSetting")</li>
+                            <li>@Html.ActionLink("客户有效期设置", "Validity", "BasicSetting")</li>
+                            <li>@Html.ActionLink("权限组设定", "", "")</li>
+                            <li>@Html.ActionLink("地区设定", "Area", "BasicSetting")</li>
+                            <li>@Html.ActionLink("客户状态设定", "State", "BasicSetting")</li>
+                            <li>@Html.ActionLink("广告费结算对象设定", "ADCost", "BasicSetting")</li>
+                            <li>@Html.ActionLink("制作费结算对象设定", "MakeCost", "BasicSetting")</li>
+                            <li>@Html.ActionLink("客户资料管理", "Customer", "BasicSetting")</li>
+                            <li>@Html.ActionLink("影院信息管理", "Cinema", "BasicSetting")</li>
+                            <li>@Html.ActionLink("影厅信息管理", "CinemaRoom", "BasicSetting")</li>
+                        </ul>
+                    </li>
+                    <li>@Html.ActionLink("业务管理", "", "")
+                        <ul>
+                            <li>@Html.ActionLink("合同信息录入", "Contract", "Business")</li>
+                            <li>@Html.ActionLink("下单", "Order", "Business")</li>
+                            <li>@Html.ActionLink("客户到账登记", "CPay", "Business")</li>
+                            <li>@Html.ActionLink("开发票登记", "WriteBill", "Business")</li>
+                            <li>@Html.ActionLink("广告费结算", "ADCostAccount", "Business")</li>
+                            <li>@Html.ActionLink("制作费结算", "MakeCostAccount", "Business")</li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        
+    </div>
+
+    <script>
+
+        function myformatter(date) {
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            var d = date.getDate();
+            return y + '-' + (m < 10 ? ('0' + m) : m) + '-' + (d < 10 ? ('0' + d) : d);
+        }
+
+        function myparser(s) {
+            if (!s) return new Date();
+            var ss = s.split('-');
+            var y = parseInt(ss[0], 10);
+            var m = parseInt(ss[1], 10);
+            var d = parseInt(ss[2], 10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)) {
+                return new Date(y, m - 1, d);
+            } else {
+                return new Date();
+            }
+        }
+
+    </script>
+</body>
+</html>
