@@ -1,19 +1,28 @@
-﻿
+﻿<style type="text/css">
+    .fieldCSS {
+        width: 500px;
+    }
+
+    .itemTitle {
+        display: inline-block;
+        width: 80px;
+    }
+</style>
 
 <div>
-    <fieldset style="width:500px;">
+    <fieldset class="fieldCSS">
         <legend>修改密码</legend>
         <div>
             <div class="fitem">
-                <label style="width:80px;">旧密码:<font color="red">*</font></label>
+                <label class="itemTitle">旧密码:<font color="red">*</font></label>
                 <input type="password" id="oldPwd" class="easyui-validatebox" required="true" />
             </div>
             <div class="fitem">
-                <label style="width:80px;">新密码:<font color="red">*</font></label>
+                <label class="itemTitle">新密码:<font color="red">*</font></label>
                 <input type="password" id="newPwd" class="easyui-validatebox" required="true" />
             </div>
             <div class="fitem">
-                <label style="width:80px;">确认新密码:<font color="red">*</font></label>
+                <label class="itemTitle">确认新密码:<font color="red">*</font></label>
                 <input type="password" id="confirmPwd" class="easyui-validatebox" required="true" />
             </div>
         </div>

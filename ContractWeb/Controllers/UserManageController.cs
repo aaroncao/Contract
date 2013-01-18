@@ -44,6 +44,7 @@ namespace ContractWeb.Controllers
 
             if (info != null)
             {
+                ViewBag.info = info;
                 ViewBag.userID = info.userID;
                 ViewBag.name = info.name;
                 ViewBag.sex = info.sex;
@@ -52,6 +53,7 @@ namespace ContractWeb.Controllers
                 ViewBag.address = info.address;
             }
 
+            ViewBag.menu = 6;
             return View();
         }
 
@@ -70,25 +72,7 @@ namespace ContractWeb.Controllers
             var result = new CustomJsonResult();
             result.Data = new { isSuccess = re[0], msg = re[1] };
             return result;
-        }       
-        
-        /// <summary>
-        /// 获取用户数据
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getUserList()
-        {
-            DaUserInfo dal = new DaUserInfo();
-            IList<UserInfo> users = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.dateFormat = "yyyy-MM-dd";
-
-            result.Data = new { total = users.Count, rows = users };
-            return result;
         }
-
-        
 
         /// <summary>
         /// 修改个人信息
@@ -114,6 +98,24 @@ namespace ContractWeb.Controllers
             result.Data = dal.edit(info);
             return result;
         }
+        
+        /// <summary>
+        /// 获取用户数据
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getUserList()
+        {
+            DaUserInfo dal = new DaUserInfo();
+            IList<UserInfo> users = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+
+            result.Data = new { total = users.Count, rows = users };
+            return result;
+        }        
+
+        
 
     }
 }
