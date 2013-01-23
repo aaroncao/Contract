@@ -39,7 +39,6 @@ namespace ContractWeb.Controllers
 
                 if (info != null)
                 {
-                    Session["userInfo"] = info;
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
 
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")

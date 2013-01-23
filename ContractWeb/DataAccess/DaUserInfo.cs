@@ -28,13 +28,35 @@ namespace ContractWeb.DataAccess
         }
 
         /// <summary>
+        /// 获取用户列表
+        /// </summary>
+        /// <param name="userID">用户名</param>
+        /// <param name="beginDate">开始日期</param>
+        /// <param name="endDate">结束日期</param>
+        /// <returns></returns>
+        public IList<UserInfo> getList(string userID, string beginDate, string endDate)
+        {
+            string strSql = "select id, userID, "
+                + "(case state when 1 then '使用' when 0 then '禁止' end) as state, name, "
+                + "(case sex when 1 then '男' when 2 then '女' end) as sex, card, tel, address, date from UserInfo "
+                + "where userID like '%" + userID + "%' ";
+
+            if (beginDate.Trim() != "" && endDate.Trim() != "")
+                strSql += "or date between '" + beginDate + "' and '" + endDate + "'";
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
+            IList<UserInfo> list = DynamicBuilder<UserInfo>.ConvertToList(dr);
+            return list;
+        }
+
+        /// <summary>
         /// 添加用户
         /// </summary>
         /// <param name="en">新用户</param>
         /// <returns></returns>
         public int add(UserInfo en)
         {
-            string strSql = "insert into UserInfo (userID, powergroupID, name) values (@userID, @group, @name)";
+            string strSql = "insert into UserInfo (userID, powergroupID, name, date) values (@userID, @group, @name, getDate())";
 
             SqlParameter[] param = new SqlParameter[]
             {
@@ -63,6 +85,24 @@ namespace ContractWeb.DataAccess
                 new SqlParameter("@card", en.card),
                 new SqlParameter("@tel", en.tel),
                 new SqlParameter("@address", en.address),
+                new SqlParameter("@id", en.id)
+            };
+
+            int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+            return result;
+        }
+
+        /// <summary>
+        /// 删除用户
+        /// </summary>
+        /// <param name="en">用户实体</param>
+        /// <returns></returns>
+        public int delete(UserInfo en)
+        {
+            string strSql = "delete from UserInfo where id=@id";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
                 new SqlParameter("@id", en.id)
             };
 

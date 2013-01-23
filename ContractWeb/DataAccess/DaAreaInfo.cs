@@ -45,6 +45,26 @@ namespace ContractWeb.DataAccess
         }
 
         /// <summary>
+        /// 修改地区
+        /// </summary>
+        /// <param name="en">地区</param>
+        /// <returns></returns>
+        public int update(AreaInfo en)
+        {
+            string strSql = "update AreaInfo set name=@name, memo=@memo where id=@id";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", en.id),
+                new SqlParameter("@name", en.name),
+                new SqlParameter("@memo", en.memo)
+            };
+
+            int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+            return result;
+        }
+
+        /// <summary>
         /// 删除地区
         /// </summary>
         /// <param name="en">地区</param>

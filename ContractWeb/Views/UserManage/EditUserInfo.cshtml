@@ -1,9 +1,10 @@
 ﻿<style type="text/css">
+
     .fieldCSS {
-        width: 600px;
+        width: 500px;
     }
 
-    .itemTitle {
+    .fitemTitle {
         display: inline-block;
         width: 70px;
     }
@@ -14,32 +15,33 @@
         <legend>修改个人信息</legend>
         <div>
             <div class="fitem">
-                <label class="itemTitle">用户名:</label>
-                <label id="lblUserID">@ViewBag.userID</label>
+                <label class="fitemTitle">用户名:</label>
+                <label id="lblUserID"></label>
             </div>
             <div class="fitem">
-                <label class="itemTitle">真实姓名:</label>
-                <input type="text" id="txtName" class="easyui-validatebox" />
+                <label class="fitemTitle">真实姓名:</label>
+                <input id="txtName" class="easyui-validatebox" />
             </div>
             <div class="fitem">
-                <label class="itemTitle">性别:</label>
+                <label class="fitemTitle">性别:</label>
                 <select id="drpSex" class="easyui-combobox" style="width:100px;" data-option="">
                     <option value="1">男</option>
                     <option value="2">女</option>
                 </select>
             </div>
             <div class="fitem">
-                <label class="itemTitle">身份证号:</label>
-                <input type="text" id="txtCard" class="easyui-validatebox" />
+                <label class="fitemTitle">身份证号:</label>
+                <input id="txtCard" class="easyui-validatebox" />
             </div>
             <div class="fitem">
-                <label class="itemTitle">联系方式:</label>
-                <input type="text" id="txtTel" class="easyui-validatebox" />
+                <label class="fitemTitle">联系方式:</label>
+                <input id="txtTel" class="easyui-validatebox" />
             </div>
             <div class="fitem">
-                <label class="itemTitle">联系地址:</label>
-                <input type="text" id="txtAddress" class="easyui-validatebox" style="width:500px;" />
+                <label class="fitemTitle">联系地址:</label>
+                <input id="txtAddress" class="easyui-validatebox" />
             </div>
+
         </div>
 
         <p>
@@ -49,13 +51,24 @@
     
 </div>
 
-<script type="text/javascript">
 
+<script>
     $(function () {
-        var sex = 1;
-        if ("@ViewBag.sex" == "女")
-            sex = 2;
-        $('#drpSex').combobox('setValue', sex);
+        $.get("/UserManage/getUserInfo", function (data) {
+            if (data != null) {
+                $("#lblUserID").html(data.userID);
+                $("#txtName").val(data.name);
+                
+                var sex = 1;
+                if (data.sex == "女")
+                    sex = 2;
+                $("#drpSex").combobox("setValue", sex);
+
+                $("#txtCard").val(data.card);
+                $("#txtTel").val(data.tel);
+                $("#txtAddress").val(data.address);
+            }
+        });
     });
 
     function save() {
@@ -69,9 +82,9 @@
             "name=" + name + "&sex=" + sex + "&card=" + card + "&tel=" + tel + "&address=" + address,
             function (data) {
                 if (data == 1)
-                    $("#message").html("修改成功");
+                    alert("修改成功");
                 else
-                    $("#message").html("修改失败");
+                    alert("修改失败");
             }
         );
     }

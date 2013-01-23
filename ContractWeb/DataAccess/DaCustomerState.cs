@@ -45,6 +45,26 @@ namespace ContractWeb.DataAccess
         }
 
         /// <summary>
+        /// 修改状态
+        /// </summary>
+        /// <param name="en">状态</param>
+        /// <returns></returns>
+        public int update(CustomerState en)
+        {
+            string strSql = "update CustomerState set state=@state, memo=@memo where id=@id";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", en.id),
+                new SqlParameter("@state", en.state),
+                new SqlParameter("@memo", en.memo)
+            };
+
+            int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+            return result;
+        }
+
+        /// <summary>
         /// 删除状态
         /// </summary>
         /// <param name="en">状态</param>

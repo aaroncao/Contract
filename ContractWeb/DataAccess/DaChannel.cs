@@ -45,6 +45,26 @@ namespace ContractWeb.DataAccess
         }
 
         /// <summary>
+        /// 修改渠道类别
+        /// </summary>
+        /// <param name="en">渠道</param>
+        /// <returns></returns>
+        public int update(Channel en)
+        {
+            string strSql = "update Channel set name=@name, memo=@memo where id=@id";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", en.id),
+                new SqlParameter("@name", en.name),
+                new SqlParameter("@memo", en.memo)
+            };
+
+            int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+            return result;
+        }
+
+        /// <summary>
         /// 删除渠道类别
         /// </summary>
         /// <param name="en">渠道</param>

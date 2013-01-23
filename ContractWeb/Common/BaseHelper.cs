@@ -20,12 +20,35 @@ namespace ContractWeb.Common
         /// </summary>
         public static string DBConnStr = ConfigurationManager.ConnectionStrings["DBConnection"].ToString();
 
+
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <returns></returns>
+        public static UserInfo getUserInfo()
+        {
+            if (HttpContext.Current.Session["userInfo"] != null)
+                return (UserInfo) HttpContext.Current.Session["userInfo"];
+
+            return null;
+        }
+
+        /// <summary>
+        /// 设置用户信息
+        /// </summary>
+        /// <param name="info"></param>
+        public static void setUserInfo(UserInfo info)
+        {
+            HttpContext.Current.Session["userInfo"] = info;
+        }
+
+
         /// <summary>
         /// 系统菜单
         /// </summary>
         public static MenuItem[] sysMenu = new MenuItem[] {
             new MenuItem(0, "首页", 0, "Index", "Home"),
-            new MenuItem(2, "权限组设置", 0, "PowerGroup", "SystemSetting"),
+            new MenuItem(2, "权限组设置", 0, "PowerGroup", "UserManage"),
 
             new MenuItem(4, "用户管理", 1, "Users", "UserManage"),            
             new MenuItem(5, "用户密码修改", 1, "EditPwd", "UserManage"),
@@ -49,21 +72,6 @@ namespace ContractWeb.Common
             new MenuItem(21, "广告费结算", 3, "ADCostAccount", "Business"),
             new MenuItem(22, "制作费结算", 3, "MakeCostAccount", "Business")
         };
-
-        /// <summary>
-        /// 获取用户信息
-        /// </summary>
-        /// <returns></returns>
-        public static UserInfo getUserInfo()
-        {
-            if (HttpContext.Current.Session["userInfo"] != null)
-            {
-                UserInfo info = (UserInfo) HttpContext.Current.Session["userInfo"];
-                return info;
-            }
-
-            return null;
-        }
 
         /// <summary>
         /// 获取菜单权限
@@ -116,8 +124,11 @@ namespace ContractWeb.Common
         {
             if (t1.type > t2.type)
                 return 1;
+            else if (t1.type == t2.type && t1.id > t2.id)
+                return 1;
             else
                 return 0;
+                
         }
     }
 }

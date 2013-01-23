@@ -11,15 +11,19 @@ namespace ContractWeb.Controllers
 {
     public class BasicSettingController : Controller
     {
+        #region 渠道类别界面
         /// <summary>
         /// 渠道类别界面
         /// </summary>
         /// <returns></returns>
         public ActionResult Channel()
         {
+            ViewBag.menu = 7;
             return View();
         }
+        #endregion
 
+        #region 客户有效期界面
         /// <summary>
         /// 客户有效期界面
         /// </summary>
@@ -28,27 +32,35 @@ namespace ContractWeb.Controllers
         {
             DaCustomerInfo dal = new DaCustomerInfo();
             ViewBag.days = dal.getCustomerValidity();
+            ViewBag.menu = 8;
 
             return View();
         }
+        #endregion
 
+        #region 地区界面
         /// <summary>
         /// 地区界面
         /// </summary>
         /// <returns></returns>
         public ActionResult Area()
         {
+            ViewBag.menu = 9;
             return View();
         }
+        #endregion
 
+        #region 客户状态界面
         /// <summary>
         /// 客户状态界面
         /// </summary>
         /// <returns></returns>
         public ActionResult State()
         {
+            ViewBag.menu = 10;
             return View();
         }
+        #endregion
 
         /// <summary>
         /// 广告费结算对象界面
@@ -95,6 +107,7 @@ namespace ContractWeb.Controllers
             return View();
         }
 
+        #region 获取渠道列表
         /// <summary>
         /// 获取渠道列表
         /// </summary>
@@ -108,7 +121,9 @@ namespace ContractWeb.Controllers
             result.Data = new { total = channels.Count, rows = channels };
             return result;
         }
+        #endregion
 
+        #region 添加渠道类别
         /// <summary>
         /// 添加渠道类别
         /// </summary>
@@ -127,7 +142,50 @@ namespace ContractWeb.Controllers
             result.Data = dal.add(en);
             return result;
         }
+        #endregion
 
+        #region 修改渠道类别
+        /// <summary>
+        /// 修改渠道类别
+        /// </summary>
+        /// <param name="id">编号</param>
+        /// <param name="name">名称</param>
+        /// <param name="memo">备注</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult updateChannel(string id, string name, string memo)
+        {
+            Channel en = new Channel();
+            en.id = Convert.ToInt32(id);
+            en.name = name;
+            en.memo = memo;
+
+            DaChannel dal = new DaChannel();
+            var result = new CustomJsonResult();
+            result.Data = dal.update(en);
+            return result;
+        }
+        #endregion
+
+        #region 删除渠道类别
+        /// <summary>
+        /// 删除渠道类别
+        /// </summary>
+        /// <param name="id">编号</param>
+        /// <returns></returns>
+        public JsonResult deleteChannel(string id)
+        {
+            Channel en = new Channel();
+            en.id = Convert.ToInt32(id);
+
+            DaChannel dal = new DaChannel();
+            var result = new CustomJsonResult();
+            result.Data = dal.delete(en);
+            return result;
+        }
+        #endregion
+
+        #region 设置客户有效期
         /// <summary>
         /// 设置客户有效期
         /// </summary>
@@ -141,7 +199,9 @@ namespace ContractWeb.Controllers
 
             return result;
         }
+        #endregion
 
+        #region 获取地区列表
         /// <summary>
         /// 获取地区列表
         /// </summary>
@@ -155,21 +215,9 @@ namespace ContractWeb.Controllers
             result.Data = new { total = areas.Count, rows = areas };
             return result;
         }
+        #endregion
 
-        /// <summary>
-        /// 获取地区列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getDrpAreaList()
-        {
-            DaAreaInfo dal = new DaAreaInfo();
-            IList<AreaInfo> areas = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.Data = areas;
-            return result;
-        }
-
+        #region 添加地区
         /// <summary>
         /// 添加地区
         /// </summary>
@@ -188,7 +236,50 @@ namespace ContractWeb.Controllers
             result.Data = dal.add(en);
             return result;
         }
+        #endregion
 
+        #region 修改地区
+        /// <summary>
+        /// 修改地区
+        /// </summary>
+        /// <param name="id">编号</param>
+        /// <param name="name">名称</param>
+        /// <param name="memo">备注</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult updateArea(string id, string name, string memo)
+        {
+            AreaInfo en = new AreaInfo();
+            en.id = Convert.ToInt32(id);
+            en.name = name;
+            en.memo = memo;
+
+            DaAreaInfo dal = new DaAreaInfo();
+            var result = new CustomJsonResult();
+            result.Data = dal.update(en);
+            return result;
+        }
+        #endregion
+
+        #region 删除地区
+        /// <summary>
+        /// 删除地区
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult deleteArea(string id)
+        {
+            AreaInfo en = new AreaInfo();
+            en.id = Convert.ToInt32(id);
+
+            DaAreaInfo dal = new DaAreaInfo();
+            var result = new CustomJsonResult();
+            result.Data = dal.delete(en);
+            return result;
+        }
+        #endregion
+
+        #region 获取客户状态列表
         /// <summary>
         /// 获取客户状态列表
         /// </summary>
@@ -202,21 +293,9 @@ namespace ContractWeb.Controllers
             result.Data = new { total = states.Count, rows = states };
             return result;
         }
+        #endregion
 
-        /// <summary>
-        /// 获取客户状态列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getdrpStateList()
-        {
-            DaCustomerState dal = new DaCustomerState();
-            IList<CustomerState> states = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.Data = states;
-            return result;
-        }
-
+        #region 添加客户状态
         /// <summary>
         /// 添加客户状态
         /// </summary>
@@ -235,6 +314,82 @@ namespace ContractWeb.Controllers
             result.Data = dal.add(en);
             return result;
         }
+        #endregion
+
+        #region 修改客户状态
+        /// <summary>
+        /// 修改客户状态
+        /// </summary>
+        /// <param name="id">编号</param>
+        /// <param name="state">名称</param>
+        /// <param name="memo">备注</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult updateState(string id, string state, string memo)
+        {
+            CustomerState en = new CustomerState();
+            en.id = Convert.ToInt32(id);
+            en.state = state;
+            en.memo = memo;
+
+            DaCustomerState dal = new DaCustomerState();
+            var result = new CustomJsonResult();
+            result.Data = dal.update(en);
+            return result;
+        }
+        #endregion
+
+        #region 删除客户状态
+        /// <summary>
+        /// 删除客户状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult deleteState(string id)
+        {
+            CustomerState en = new CustomerState();
+            en.id = Convert.ToInt32(id);
+
+            DaCustomerState dal = new DaCustomerState();
+            var result = new CustomJsonResult();
+            result.Data = dal.delete(en);
+            return result;
+        }
+        #endregion
+
+
+
+        /// <summary>
+        /// 获取地区列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getDrpAreaList()
+        {
+            DaAreaInfo dal = new DaAreaInfo();
+            IList<AreaInfo> areas = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = areas;
+            return result;
+        }
+
+        
+
+        /// <summary>
+        /// 获取客户状态列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getdrpStateList()
+        {
+            DaCustomerState dal = new DaCustomerState();
+            IList<CustomerState> states = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = states;
+            return result;
+        }
+
+        
 
         /// <summary>
         /// 获取广告费结算对象列表
