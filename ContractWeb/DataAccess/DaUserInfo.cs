@@ -38,11 +38,20 @@ namespace ContractWeb.DataAccess
         {
             string strSql = "select id, userID, "
                 + "(case state when 1 then '使用' when 0 then '禁止' end) as state, name, "
-                + "(case sex when 1 then '男' when 2 then '女' end) as sex, card, tel, address, date from UserInfo "
-                + "where userID like '%" + userID + "%' ";
+                + "(case sex when 1 then '男' when 2 then '女' end) as sex, card, tel, address, date from UserInfo ";
+
+            if (userID.Trim() != "" || (beginDate.Trim() != "" && endDate.Trim() != ""))
+                strSql += "where ";
+
+            if (userID.Trim() != "")
+                strSql += "userID like '%" + userID + "%' ";
 
             if (beginDate.Trim() != "" && endDate.Trim() != "")
-                strSql += "or date between '" + beginDate + "' and '" + endDate + "'";
+            {
+                if (userID.Trim() != "")
+                    strSql += "or ";
+                strSql += "date between '" + beginDate + "' and '" + endDate + "'";
+            }
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
             IList<UserInfo> list = DynamicBuilder<UserInfo>.ConvertToList(dr);

@@ -142,6 +142,6 @@ namespace ContractWeb.Models
         /// <summary>
         /// 合同状态修改时间
         /// </summary>
-        public DateTime editTime { get; set; }
+        public DateTime? editTime { get; set; }
     }
 }

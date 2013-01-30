@@ -72,7 +72,7 @@ namespace ContractWeb.DataAccess
                 + "values (@contractID, @name, @customerID, @version, @price, @roomNum, @makeCost, @backMoney, @money, @type, @channelID, @begintime, @endtime, @ZQ, @personID, @memo, @mDate, @billState)";
 
             SqlParameter[] param = new SqlParameter[]
-            {
+            {                
                 new SqlParameter("@contractID", en.contractID),
                 new SqlParameter("@name", en.name),
                 new SqlParameter("@customerID", en.customerID),
@@ -84,14 +84,24 @@ namespace ContractWeb.DataAccess
                 new SqlParameter("@money", en.money),
                 new SqlParameter("@type", en.type),
                 new SqlParameter("@channelID", en.channelID),
-                new SqlParameter("@begintime", en.begintime),
-                new SqlParameter("@endtime", en.endtime),
+                new SqlParameter("@begintime", System.DBNull.Value),                    
+                new SqlParameter("@endtime", System.DBNull.Value),
                 new SqlParameter("@ZQ", en.ZQ),
                 new SqlParameter("@personID", en.personID),
                 new SqlParameter("@memo", en.memo),
-                new SqlParameter("@mDate", en.mDate),
+                new SqlParameter("@mDate", System.DBNull.Value),
                 new SqlParameter("@billState", en.billState)
             };
+
+            if (en.begintime != null)
+                param[11].Value = en.begintime;
+
+            if (en.endtime != null)
+                param[12].Value = en.endtime;
+
+            if (en.mDate != null)
+                param[16].Value = en.mDate;
+
 
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;

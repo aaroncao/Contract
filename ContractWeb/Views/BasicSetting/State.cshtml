@@ -140,9 +140,9 @@
         $.get("/BasicSetting/deleteState", "id=" + selected,
             function (data) {
                 if (data == 0)
-                    alert("修改失败");
+                    alert("删除失败");
                 else
-                    $("#AreaList").datagrid("reload");
+                    $("#StateList").datagrid("reload");
             }
         );
     }

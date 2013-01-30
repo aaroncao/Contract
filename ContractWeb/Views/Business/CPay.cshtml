@@ -1,68 +1,49 @@
-﻿<div>
-    <fieldset>
+﻿<style type="text/css">
+    .fieldCSS {
+        width: 600px;
+    }
+
+    .fitemTitle {
+        display: inline-block;
+        width: 60px;
+    }
+</style>
+
+<div>
+    <fieldset class="fieldCSS">
         <legend>客户到账登记</legend>
-
-        <p />
         <div>
-            <div class="fitem inline">
-                <label>合同编号:</label>
-                <input id="txtID" class="easyui-validatebox" onkeydown="EnterPress()" />
+            <div class="fitem">
+                <label class="fitemTitle">合同编号:</label>
+                <input id="txtID" class="easyui-validatebox" onkeydown="EnterPress()" style="width:100px;margin-right:10px;" />
+                <label class="fitemTitle inline">合同名称:</label>
+                <input id="txtName" class="easyui-validatebox" readonly="true" style="width:100px;margin-right:10px;" />
+                <label class="fitemTitle inline">客户名称:</label>
+                <input id="txtCustomer" class="easyui-validatebox" readonly="true" style="width:100px;" />
             </div>
-            <div class="fitem inline" style="margin-left:30px;">
-                <label>合同名称:</label>
-                <input id="txtName" class="easyui-validatebox" readonly="true" />
+            <div class="fitem">
+                <label class="fitemTitle">广告版本:</label>
+                <input id="txtVersion" class="easyui-validatebox" readonly="true" style="width:100px;margin-right:10px;" />
+                <label class="fitemTitle inline">签署金额:</label>
+                <input id="txtMoney" class="easyui-validatebox" readonly="true" style="width:100px;margin-right:10px;" />
+                <label class="fitemTitle inline">制作费:</label>
+                <input id="txtMake" class="easyui-validatebox" readonly="true" style="width:100px;" />
             </div>
-            <div class="fitem inline" style="margin-left:30px;">
-                <label>客户名称:</label>
-                <input id="txtCustomer" class="easyui-validatebox" readonly="true" />
+            <div class="fitem">
+                <label class="fitemTitle">合同类型:</label>
+                <input id="txtType" class="easyui-validatebox" readonly="true" style="width:100px;margin-right:10px;" />
+                <label class="fitemTitle inline">渠道归类:</label>
+                <input id="txtChannel" class="easyui-validatebox" readonly="true" style="width:100px;margin-right:10px;" />
+                <label class="fitemTitle inline">业务员:</label>
+                <input id="txtPerson" class="easyui-validatebox" readonly="true" style="width:100px;" />
             </div>
-        </div>
-
-        <p />
-        <div>
-            <div class="fitem inline">
-                <label>广告版本:</label>
-                <input id="txtVersion" class="easyui-validatebox" readonly="true" />
-            </div>
-            <div class="fitem inline" style="margin-left:30px;">
-                <label>签署金额:</label>
-                <input id="txtMoney" class="easyui-validatebox" readonly="true" />
-            </div>
-            <div class="fitem inline" style="margin-left:30px;">
-                <label>制作费:</label>
-                <input id="txtMake" class="easyui-validatebox" readonly="true" />
-            </div>
-        </div>
-
-        <p />
-        <div>
-            <div class="fitem inline">
-                <label>合同类型:</label>
-                <input id="txtType" class="easyui-validatebox" readonly="true" />
-            </div>
-            <div class="fitem inline" style="margin-left:30px;">
-                <label>渠道归类:</label>
-                <input id="txtChannel" class="easyui-validatebox" readonly="true" />
-            </div>
-            <div class="fitem inline" style="margin-left:30px;">
-                <label>业务员:</label>
-                <input id="txtPerson" class="easyui-validatebox" readonly="true" />
-            </div>
-        </div>
-
-        <p />
-        <div>
-            <div class="fitem inline">
-                <label>已到账:</label>
-                <input id="txtCollect" class="easyui-validatebox" readonly="true" />
-            </div>
-            <div class="fitem inline" style="margin-left:30px;">
-                <label>本次到账:</label>
-                <input id="txtThis" class="easyui-validatebox" />
-            </div>
-            <div class="fitem inline" style="margin-left:30px;">
-                <label>到账日期:</label>
-                <input id="txtDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" />
+            <div class="fitem">
+                <label class="fitemTitle">已到账:</label>
+                <input id="txtCollect" class="easyui-validatebox" readonly="true" style="width:100px;margin-right:10px;" />
+                <label class="fitemTitle inline">本次到账:</label>
+                <input id="txtThis" class="easyui-validatebox" style="width:100px;margin-right:10px;" />
+                <label class="fitemTitle inline">到账日期:</label>
+                <input id="txtDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" style="width:100px;" />
             </div>
         </div>
 
@@ -72,6 +53,7 @@
         </p>
     </fieldset>
 </div>
+
 
 <script>
 
@@ -112,7 +94,10 @@
 
         $.post("/Business/addPay", "id=" + id + "&money=" + money + "&date=" + date,
             function (data) {
-                alert("OK");
+                if (data == 0)
+                    alert("新增失败");
+                else
+                    alert("新增成功");
             }
         );
     }

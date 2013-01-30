@@ -1,85 +1,115 @@
-﻿<div class="ftitle">用户管理</div>
-<p />
+﻿<style type="text/css">
 
-<!-- Table -->
-<table id="CustomerList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getCustomerList'" toolbar="#toolbar">
-    <thead>
-        <tr>
-            <th data-options="field:'name',width:80">名称</th>
-            <th data-options="field:'channelType',width:100">客户类型</th>
-            <th data-options="field:'person',width:50">联系人</th>
-            <th data-options="field:'tel',width:130">联系电话</th>
-            <th data-options="field:'officeTel',width:100">办公电话</th>
-            <th data-options="field:'email',width:200">E-Mail</th>
-            <th data-options="field:'fex',width:120">传真</th>
-            <th data-options="field:'address',width:80">联系地址</th>
-            <th data-options="field:'mDate',width:80">录入日期</th>
-            <th data-options="field:'salesman',width:80">业务员</th>
-            <th data-options="field:'state',width:80">状态</th>
-        </tr>
-    </thead>
-</table>
+    .fieldCSS {
+        width: 950px;
+    }
 
-<!-- Toolbar -->
-<div id="toolbar">
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="newCustomer()">新增</a>
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="editUser()">修改</a>
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="destroyUser()">删除</a>
-</div>
+    .fitemTitle {
+        display: inline-block;
+        width: 60px;
+    }
+</style>
 
-<!-- dialog -->
-<div id="dlg" class="easyui-dialog" style="width: 400px; height: 280px; padding: 10px 20px" closed="true" buttons="#dlg-buttons">
-    <div class="ftitle">User Information</div>
-    <form id="fm" method="post" novalidate>
-        <div class="fitem">
-            <label>名称:</label>
-            <input id="txtName" class="easyui-validatebox" required="true" />
+<div>
+    <fieldset class="fieldCSS">
+        <legend>客户资料</legend>
+        <div>
+            <div class="fitem">
+                <label class="fitemTitle">公司名称:<font color="red">*</font></label>
+                <input id="txtName" class="easyui-validatebox" required="true" style="width:100px;margin-right:10px;" />
+                <label class="fitemTitle inline">客户类型:<font color="red">*</font></label>
+                <select id="drpType" class="easyui-combobox" required="true"></select>
+                <label class="fitemTitle inline" style="margin-left:10px;">联系人:</label>
+                <input id="txtPerson" class="easyui-validatebox" style="width:108px;margin-right:10px;" />
+                <label class="fitemTitle inline">联系电话:<font color="red">*</font></label>
+                <input id="txtTel" class="easyui-validatebox" required="true" style="width:100px;margin-right:10px;" />
+                <label class="fitemTitle inline">办公电话:</label>
+                <input id="txtOfficeTel" class="easyui-validatebox" style="width:100px;" />
+            </div>
+            <div class="fitem">
+                <label class="fitemTitle">E-Mail:</label>
+                <input id="txtEmail" class="easyui-validatebox" style="width:100px;margin-right:10px;" />
+                <label class="fitemTitle inline">传真:</label>
+                <input id="txtFex" class="easyui-validatebox" style="width:108px;margin-right:10px;" />
+                <label class="fitemTitle inline">客户状态:</label>
+                <select id="drpState" class="easyui-combobox"></select>
+                <label class="fitemTitle inline" style="margin-left:10px;">联系地址:</label>
+                <input id="txtAddress" class="easyui-validatebox" style="width:280px;" />
+            </div>
         </div>
-        <div class="fitem">
-            <label>客户类型:</label>
-            <select id="drpType" class="easyui-combobox" style="width:100px;" required="true"></select>
-        </div>
-        <div class="fitem">
-            <label>联系人:</label>
-            <input id="txtPerson" class="easyui-validatebox" />
-        </div>
-        <div class="fitem">
-            <label>联系电话:</label>
-            <input id="txtTel" class="easyui-validatebox" required="true" />
-        </div>
-        <div class="fitem">
-            <label>办公电话:</label>
-            <input id="txtOfficeTel" class="easyui-validatebox" />
-        </div>
-        <div class="fitem">
-            <label>E-Mail:</label>
-            <input id="txtEmail" class="easyui-validatebox" />
-        </div>
-        <div class="fitem">
-            <label>传真:</label>
-            <input id="txtFex" class="easyui-validatebox" />
-        </div>
-        <div class="fitem">
-            <label>客户状态:</label>
-            <select id="drpState" class="easyui-combobox" style="width:100px;"></select>
-        </div>
-        <div class="fitem">
-            <label>联系地址:</label>
-            <input id="txtAddress" class="easyui-validatebox" />
-        </div>
-    </form>
-</div>
 
-<!-- Dialog Buttons -->
-<div id="dlg-buttons">
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="add()">保存</a>
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+        <p>
+            <input type="button" id="btnAdd" onclick="add()" value="新增" style="margin-right: 20px;" />
+            <input type="button" id="btnEdit" onclick="update()" value="修改" style="margin-right: 20px;" />
+            <input type="button" id="btnCancel" onclick="cancel()" value="清空" />
+        </p>
+    </fieldset>
+
+    <fieldset class="fieldCSS">
+        <legend>列表</legend>
+
+        <div class="fitem">
+            <label class="fitemTitle">客户名称:</label>
+            <input id="srcName" class="easyui-validatebox" style="width:100px;margin-right:10px;" />
+            <label class="fitemTitle inline">客户类型:</label>
+            <select id="srcType" class="easyui-combobox"></select>
+            <label class="fitemTitle inline" style="margin-left:10px;">业务员:</label>
+            <select id="srcSalesman" class="easyui-combobox"></select>
+            <input type="button" value="查询" style="margin-left:10px;" onclick="search()" />
+        </div>
+
+        <table id="CustomerList" style="width: 930px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getCustomerList'" toolbar="#toolbar">
+            <thead>
+                <tr>
+                    <th data-options="field:'name',width:110">名称</th>
+                    <th data-options="field:'channelType',width:80">客户类型</th>
+                    <th data-options="field:'person',width:80">联系人</th>
+                    <th data-options="field:'tel',width:110">联系电话</th>
+                    <th data-options="field:'officeTel',width:100">办公电话</th>
+                    <th data-options="field:'email',width:180">E-Mail</th>
+                    <th data-options="field:'fex',width:100">传真</th>
+                    <th data-options="field:'address',width:230">联系地址</th>
+                    <th data-options="field:'mDate',width:80">录入日期</th>
+                    <th data-options="field:'salesman',width:80">业务员</th>
+                    <th data-options="field:'state',width:80">状态</th>
+                </tr>
+            </thead>
+        </table>
+    </fieldset>
 </div>
 
 
 <script>
+    var selected = -1;
+
     $(function () {
-        $('#CustomerList').datagrid();
+        $("#CustomerList").datagrid({
+            onClickRow: function (rowIndex, rowData) {
+                selected = rowData.id;
+                $("#txtName").val(rowData.name);
+                $("#drpType").combobox("setValue", rowData.channelTypeID);
+                $("#txtPerson").val(rowData.person);
+                $("#txtTel").val(rowData.tel);
+                $("#txtOfficeTel").val(rowData.officeTel);
+                $("#txtEmail").val(rowData.email);
+                $("#txtFex").val(rowData.fex);
+                $("#drpState").combobox("setValue", rowData.stateID);
+                $("#txtAddress").val(rowData.address);
+            },
+            onRowContextMenu: function (e, rowIndex, rowData) {
+                selected = rowData.id;
+                e.preventDefault();
+
+                if (!$('#rmenu').length) {
+                    createRowMenu();//调用添加右击菜单的内容
+                }
+                $('#rmenu').menu('show', {
+                    left: e.pageX,
+                    top: e.pageY
+                });
+
+            }
+        });
 
         $('#drpType').combobox({
             url: '/BasicSetting/getChannelTypeList',
@@ -92,11 +122,44 @@
             valueField: 'id',
             textField: 'state'
         });
+        
+        $('#srcType').combobox({
+            url: '/BasicSetting/getChannelTypeList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        $('#srcSalesman').combobox({
+            url: '/BasicSetting/getdrpUserList',
+            valueField: 'id',
+            textField: 'name'
+        });
     });
 
-    function newCustomer() {
-        $('#dlg').dialog('open').dialog('setTitle', 'New Customer');
-        $('#fm').form('clear');
+    function createRowMenu() {
+        var tmenu = $('<div id="rmenu" style="width:130px;"></div>').appendTo('body');
+        $('<div iconCls="icon-remove"/>').html("删除该客户资料").appendTo(tmenu);
+
+        tmenu.menu({
+            onClick: function (item) {
+                if (item.iconCls == "icon-remove") {
+                    var answer = confirm("确认要删除吗")
+                    if (answer) {
+                        deleteRow();
+                    }
+                }
+            }
+        });
+    }
+
+    function cancel() {
+        $("#txtName").val("");
+        $("#txtPerson").val("");
+        $("#txtTel").val("");
+        $("#txtOfficeTel").val("");
+        $("#txtEmail").val("");
+        $("#txtFex").val("");
+        $("#txtAddress").val("");
     }
 
     function add() {
@@ -110,12 +173,89 @@
         var state = $("#drpState").combobox("getValue");
         var address = $("#txtAddress").val();
 
+        if (name.trim() == "") {
+            alert("公司名称不能为空");
+            return;
+        }
+
+        if (type.trim() == "") {
+            alert("请选择一个客户类型");
+            return;
+        }
+
+        if (tel.trim() == "") {
+            alert("联系电话不能为空");
+            return;
+        }
+
         $.post("/BasicSetting/addCustomer", "name=" + name + "&type=" + type + "&person=" + person + "&tel=" + tel
             + "&officeTel=" + officeTel + "&email=" + email + "&fex=" + fex + "&state="
             + state + "&address=" + address,
             function (data) {
-                alert("OK");
+                if (data == 0)
+                    alert("新增失败");
+                else
+                    $("#CustomerList").datagrid("reload");
             }
         );
+    }
+
+    function add() {
+        var name = $("#txtName").val();
+        var type = $("#drpType").combobox("getValue");
+        var person = $("#txtPerson").val();
+        var tel = $("#txtTel").val();
+        var officeTel = $("#txtOfficeTel").val();
+        var email = $("#txtEmail").val();
+        var fex = $("#txtFex").val();
+        var state = $("#drpState").combobox("getValue");
+        var address = $("#txtAddress").val();
+
+        if (name.trim() == "") {
+            alert("公司名称不能为空");
+            return;
+        }
+
+        if (type.trim() == "") {
+            alert("请选择一个客户类型");
+            return;
+        }
+
+        if (tel.trim() == "") {
+            alert("联系电话不能为空");
+            return;
+        }
+
+        $.post("/BasicSetting/updateCustomer", "id=" + selected + "&name=" + name + "&type=" + type + "&person=" + person + "&tel=" + tel
+            + "&officeTel=" + officeTel + "&email=" + email + "&fex=" + fex + "&state="
+            + state + "&address=" + address,
+            function (data) {
+                if (data == 0)
+                    alert("修改失败");
+                else
+                    $("#CustomerList").datagrid("reload");
+            }
+        );
+    }
+
+    function deleteRow() {
+        $.get("/BasicSetting/deleteCustomer", "id=" + selected,
+            function (data) {
+                if (data == 0)
+                    alert("删除失败");
+                else
+                    $("#CustomerList").datagrid("reload");
+            }
+        );
+    }
+
+    function search() {
+        var name = $("#srcName").val();
+        var type = $("#srcType").combobox("getValue");
+        var sale = $("#srcSalesman").combobox("getValue");
+
+        $('#CustomerList').datagrid({
+            url: "/BasicSetting/searchCustomer?name=" + name + "&type=" + type + "&salesman=" + sale
+        });
     }
 </script>

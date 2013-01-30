@@ -11,41 +11,53 @@ namespace ContractWeb.Controllers
 {
     public class BusinessController : Controller
     {
+        #region 合同管理界面
         /// <summary>
         /// 合同管理界面
         /// </summary>
         /// <returns></returns>
         public ActionResult Contract()
         {
+            ViewBag.menu = 34;
             return View();
         }
+        #endregion
 
+        #region 下单界面
         /// <summary>
-        /// 下单
+        /// 下单界面
         /// </summary>
         /// <returns></returns>
         public ActionResult Order()
         {
+            ViewBag.menu = 18;
             return View();
         }
+        #endregion
 
+        #region 客户到账登记界面
         /// <summary>
         /// 客户到账登记界面
         /// </summary>
         /// <returns></returns>
         public ActionResult CPay()
         {
+            ViewBag.menu = 19;
             return View();
         }
+        #endregion
 
+        #region 开发票登记界面
         /// <summary>
         /// 开发票登记
         /// </summary>
         /// <returns></returns>
         public ActionResult WriteBill()
         {
+            ViewBag.menu = 20;
             return View();
         }
+        #endregion
 
         /// <summary>
         /// 广告费结算
@@ -65,6 +77,11 @@ namespace ContractWeb.Controllers
             return View();
         }
 
+
+
+
+
+        #region 获取合同列表
         /// <summary>
         /// 获取合同列表
         /// </summary>
@@ -79,7 +96,9 @@ namespace ContractWeb.Controllers
             result.Data = new { total = contracts.Count, rows = contracts };
             return result;
         }
+        #endregion
 
+        #region 获取合同类型列表
         /// <summary>
         /// 获取合同类型列表
         /// </summary>
@@ -93,7 +112,9 @@ namespace ContractWeb.Controllers
             result.Data = types;
             return result;
         }
+        #endregion
 
+        #region 获取渠道列表
         /// <summary>
         /// 获取渠道列表
         /// </summary>
@@ -107,9 +128,11 @@ namespace ContractWeb.Controllers
             result.Data = channels;
             return result;
         }
+        #endregion
 
+        #region 获取业务员列表
         /// <summary>
-        /// 获取经办人列表
+        /// 获取业务员列表
         /// </summary>
         /// <returns></returns>
         public JsonResult getDrpPersonList()
@@ -121,7 +144,9 @@ namespace ContractWeb.Controllers
             result.Data = users;
             return result;
         }
+        #endregion
 
+        #region 添加合同
         /// <summary>
         /// 添加合同
         /// </summary>
@@ -151,18 +176,43 @@ namespace ContractWeb.Controllers
             en.contractID = id;
             en.name = name;
             en.version = version;
-            en.price = Convert.ToDouble(price);
-            en.roomNum = Convert.ToInt32(num);
-            en.money = Convert.ToDouble(money);
-            en.makeCost = Convert.ToDouble(make);
-            en.backMoney = Convert.ToDouble(back);
-            en.type = Convert.ToInt32(type);
-            en.channelID = Convert.ToInt32(channel);
-            en.begintime = Convert.ToDateTime(begintime);
-            en.endtime = Convert.ToDateTime(endtime);
-            en.ZQ = Convert.ToDouble(zq);
-            en.personID = Convert.ToInt32(person);
-            en.mDate = Convert.ToDateTime(mDate);
+
+            if (price.Trim() != "")
+                en.price = Convert.ToDouble(price);
+
+            if (num.Trim() != "")
+                en.roomNum = Convert.ToInt32(num);
+
+            if (money.Trim() != "")
+                en.money = Convert.ToDouble(money);
+
+            if (make.Trim() != "")
+                en.makeCost = Convert.ToDouble(make);
+
+            if (back.Trim() != "")
+                en.backMoney = Convert.ToDouble(back);
+
+            if (type.Trim() != "")
+                en.type = Convert.ToInt32(type);
+
+            if (channel.Trim() != "")
+                en.channelID = Convert.ToInt32(channel);
+
+            if (begintime.Trim() != "")
+                en.begintime = Convert.ToDateTime(begintime);
+
+            if (endtime.Trim() != "")
+                en.endtime = Convert.ToDateTime(endtime);
+
+            if (zq.Trim() != "")
+                en.ZQ = Convert.ToDouble(zq);
+
+            if (person.Trim() != "")
+                en.personID = Convert.ToInt32(person);
+
+            if (mDate.Trim() != "")
+                en.mDate = Convert.ToDateTime(mDate);
+
             en.memo = memo;
 
             DaContractInfo dal = new DaContractInfo();
@@ -170,7 +220,9 @@ namespace ContractWeb.Controllers
             result.Data = dal.add(en);
             return result;
         }
+        #endregion
 
+        #region 根据编号获取合同
         /// <summary>
         /// 根据编号获取合同
         /// </summary>
@@ -185,7 +237,9 @@ namespace ContractWeb.Controllers
             result.Data = en;
             return result;
         }
+        #endregion
 
+        #region 添加到账登记
         /// <summary>
         /// 添加到账登记
         /// </summary>
@@ -206,7 +260,9 @@ namespace ContractWeb.Controllers
             result.Data = dal.add(en);
             return result;
         }
+        #endregion
 
+        #region 获取发票列表
         /// <summary>
         /// 获取发票列表
         /// </summary>
@@ -221,7 +277,9 @@ namespace ContractWeb.Controllers
             result.Data = new { total = bills.Count, rows = bills };
             return result;
         }
+        #endregion
 
+        #region 获取开票类型列表
         /// <summary>
         /// 获取开票类型列表
         /// </summary>
@@ -235,7 +293,9 @@ namespace ContractWeb.Controllers
             result.Data = types;
             return result;
         }
+        #endregion
 
+        #region 添加开票登记
         /// <summary>
         /// 添加开票登记
         /// </summary>
@@ -258,7 +318,9 @@ namespace ContractWeb.Controllers
             result.Data = dal.add(en);
             return result;
         }
+        #endregion
 
+        #region 根据订单编号获取合同订单信息
         /// <summary>
         /// 根据订单编号获取合同订单信息
         /// </summary>
@@ -273,7 +335,9 @@ namespace ContractWeb.Controllers
             result.Data = en;
             return result;
         }
+        #endregion
 
+        #region 根据订单编号获取投放列表
         /// <summary>
         /// 根据订单编号获取投放列表
         /// </summary>
@@ -288,6 +352,7 @@ namespace ContractWeb.Controllers
             result.Data = new { total = putins.Count, rows = putins };
             return result;
         }
+        #endregion
 
         /// <summary>
         /// 添加广告费结算

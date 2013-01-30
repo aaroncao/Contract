@@ -93,5 +93,45 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+
+        /// <summary>
+        /// 修改影厅
+        /// </summary>
+        /// <param name="en"></param>
+        /// <returns></returns>
+        public int update(CinemaRoom en)
+        {
+            string strSql = "update CinemaRoom set cinemaID=@cinemaID, room=@room, typeID=@typeID, memo=@memo where id=@id";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", en.id),
+                new SqlParameter("@cinemaID", en.cinemaID),
+                new SqlParameter("@room", en.room),
+                new SqlParameter("@typeID", en.typeID),
+                new SqlParameter("@memo", en.memo)
+            };
+
+            int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+            return result;
+        }
+
+        /// <summary>
+        /// 删除影厅
+        /// </summary>
+        /// <param name="en"></param>
+        /// <returns></returns>
+        public int delete(CinemaRoom en)
+        {
+            string strSql = "delete from CinemaRoom where id=@id";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", en.id)
+            };
+
+            int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+            return result;
+        }
     }
 }

@@ -62,50 +62,68 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        #region 广告费结算对象界面
         /// <summary>
         /// 广告费结算对象界面
         /// </summary>
         /// <returns></returns>
         public ActionResult ADCost()
         {
+            ViewBag.menu = 11;
             return View();
         }
+        #endregion
 
+        #region 制作费结算对象界面
         /// <summary>
         /// 制作费结算对象界面
         /// </summary>
         /// <returns></returns>
         public ActionResult MakeCost()
         {
+            ViewBag.menu = 12;
             return View();
         }
+        #endregion
 
+        #region 客户资料界面
         /// <summary>
         /// 客户资料界面
         /// </summary>
         /// <returns></returns>
         public ActionResult Customer()
         {
+            ViewBag.menu = 13;
             return View();
         }
+        #endregion
 
+        #region 影院信息界面
         /// <summary>
         /// 影院信息界面
         /// </summary>
         /// <returns></returns>
         public ActionResult Cinema()
         {
+            ViewBag.menu = 14;
             return View();
         }
+        #endregion
 
+        #region 影厅信息界面
         /// <summary>
         /// 影厅信息界面
         /// </summary>
         /// <returns></returns>
         public ActionResult CinemaRoom()
         {
+            ViewBag.menu = 15;
             return View();
         }
+        #endregion
+
+
+
 
         #region 获取渠道列表
         /// <summary>
@@ -357,40 +375,7 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-
-
-        /// <summary>
-        /// 获取地区列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getDrpAreaList()
-        {
-            DaAreaInfo dal = new DaAreaInfo();
-            IList<AreaInfo> areas = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.Data = areas;
-            return result;
-        }
-
-        
-
-        /// <summary>
-        /// 获取客户状态列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getdrpStateList()
-        {
-            DaCustomerState dal = new DaCustomerState();
-            IList<CustomerState> states = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.Data = states;
-            return result;
-        }
-
-        
-
+        #region 获取广告费结算对象列表
         /// <summary>
         /// 获取广告费结算对象列表
         /// </summary>
@@ -404,7 +389,9 @@ namespace ContractWeb.Controllers
             result.Data = new { total = targets.Count, rows = targets };
             return result;
         }
+        #endregion
 
+        #region 添加广告费结算对象
         /// <summary>
         /// 添加广告费结算对象
         /// </summary>
@@ -423,7 +410,50 @@ namespace ContractWeb.Controllers
             result.Data = dal.add(en);
             return result;
         }
+        #endregion
 
+        #region 修改广告费结算对象
+        /// <summary>
+        /// 修改广告费结算对象
+        /// </summary>
+        /// <param name="id">编号</param>
+        /// <param name="name">名称</param>
+        /// <param name="memo">备注</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult updateADCost(string id, string name, string memo)
+        {
+            ADCostTarget en = new ADCostTarget();
+            en.id = Convert.ToInt32(id);
+            en.target = name;
+            en.memo = memo;
+
+            DaADCostTarget dal = new DaADCostTarget();
+            var result = new CustomJsonResult();
+            result.Data = dal.update(en);
+            return result;
+        }
+        #endregion
+
+        #region 删除广告费结算对象
+        /// <summary>
+        /// 删除广告费结算对象
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult deleteADCost(string id)
+        {
+            ADCostTarget en = new ADCostTarget();
+            en.id = Convert.ToInt32(id);
+
+            DaADCostTarget dal = new DaADCostTarget();
+            var result = new CustomJsonResult();
+            result.Data = dal.delete(en);
+            return result;
+        }
+        #endregion
+
+        #region 获取制作费结算对象列表
         /// <summary>
         /// 获取制作费结算对象列表
         /// </summary>
@@ -437,7 +467,9 @@ namespace ContractWeb.Controllers
             result.Data = new { total = targets.Count, rows = targets };
             return result;
         }
+        #endregion
 
+        #region 添加制作费结算对象
         /// <summary>
         /// 添加制作费结算对象
         /// </summary>
@@ -456,7 +488,316 @@ namespace ContractWeb.Controllers
             result.Data = dal.add(en);
             return result;
         }
+        #endregion
 
+        #region 修改制作费结算对象
+        /// <summary>
+        /// 修改制作费结算对象
+        /// </summary>
+        /// <param name="id">编号</param>
+        /// <param name="name">名称</param>
+        /// <param name="memo">备注</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult addMakeCost(string id, string name, string memo)
+        {
+            MakeCostTarget en = new MakeCostTarget();
+            en.id = Convert.ToInt32(id);
+            en.target = name;
+            en.memo = memo;
+
+            DaMakeCostTarget dal = new DaMakeCostTarget();
+            var result = new CustomJsonResult();
+            result.Data = dal.update(en);
+            return result;
+        }
+        #endregion
+
+        #region 删除制作费结算对象
+        /// <summary>
+        /// 删除制作费结算对象
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult deleteMakeCost(string id)
+        {
+            MakeCostTarget en = new MakeCostTarget();
+            en.id = Convert.ToInt32(id);
+
+            DaMakeCostTarget dal = new DaMakeCostTarget();
+            var result = new CustomJsonResult();
+            result.Data = dal.delete(en);
+            return result;
+        }
+        #endregion
+
+        #region 获取影院列表
+        /// <summary>
+        /// 获取影院列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getCinemaList()
+        {
+            DaCinema dal = new DaCinema();
+            IList<Cinema> cinemas = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = new { total = cinemas.Count, rows = cinemas };
+            return result;
+        }
+        #endregion
+
+        #region 获取地区列表
+        /// <summary>
+        /// 获取地区列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getDrpAreaList()
+        {
+            DaAreaInfo dal = new DaAreaInfo();
+            IList<AreaInfo> areas = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = areas;
+            return result;
+        }
+        #endregion
+
+        #region 新增影院
+        /// <summary>
+        /// 新增影院
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <param name="area">地区</param>
+        /// <param name="roomNum">厅数</param>
+        /// <param name="person">联系人</param>
+        /// <param name="tel">联系电话</param>
+        /// <param name="address">地址</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult addCinema(string name, string area, string roomNum, string person, string tel, string address)
+        {
+            Cinema en = new Cinema();
+            en.name = name;
+            en.areaID = Convert.ToInt32(area);
+            en.roomNum = Convert.ToInt32(roomNum);
+            en.person = person;
+            en.tel = tel;
+            en.address = address;
+
+            DaCinema dal = new DaCinema();
+            var result = new CustomJsonResult();
+            result.Data = dal.add(en);
+            return result;
+        }
+        #endregion
+
+        #region 修改影院
+        /// <summary>
+        /// 修改影院
+        /// </summary>
+        /// <param name="id">编号</param>
+        /// <param name="name">名称</param>
+        /// <param name="area">地区</param>
+        /// <param name="roomNum">厅数</param>
+        /// <param name="person">联系人</param>
+        /// <param name="tel">联系电话</param>
+        /// <param name="address">地址</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult updateCinema(string id, string name, string area, string roomNum, string person, string tel, string address)
+        {
+            Cinema en = new Cinema();
+            en.id = Convert.ToInt32(id);
+            en.name = name;
+            en.areaID = Convert.ToInt32(area);
+            en.roomNum = Convert.ToInt32(roomNum);
+            en.person = person;
+            en.tel = tel;
+            en.address = address;
+
+            DaCinema dal = new DaCinema();
+            var result = new CustomJsonResult();
+            result.Data = dal.update(en);
+            return result;
+        }
+        #endregion
+
+        #region 删除影院
+        /// <summary>
+        /// 删除影院
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult deleteCinema(string id)
+        {
+            Cinema en = new Cinema();
+            en.id = Convert.ToInt32(id);
+
+            DaCinema dal = new DaCinema();
+            var result = new CustomJsonResult();
+            result.Data = dal.delete(en);
+            return result;
+        }
+        #endregion
+
+        #region 搜索影院
+        /// <summary>
+        /// 搜索影院
+        /// </summary>
+        /// <param name="name">影院名称</param>
+        /// <param name="area">所属地区</param>
+        /// <returns></returns>
+        public JsonResult searchCinema(string name, string area)
+        {
+            Cinema en = new Cinema();
+            en.name = name;
+            en.area = area;
+
+            DaCinema dal = new DaCinema();
+            var result = new CustomJsonResult();
+            result.Data = dal.getList(name, area);
+            return result;
+        }
+        #endregion
+
+        #region 获取影厅列表
+        /// <summary>
+        /// 获取影厅列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getCinemaRoomList()
+        {
+            DaCinemaRoom dal = new DaCinemaRoom();
+            IList<CinemaRoom> rooms = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = new { total = rooms.Count, rows = rooms };
+            return result;
+        }
+        #endregion
+
+        #region 获取影院列表
+        /// <summary>
+        /// 获取影院列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getDrpCinemaList()
+        {
+            DaCinema dal = new DaCinema();
+            IList<Cinema> cinemas = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = cinemas;
+            return result;
+        }
+        #endregion
+
+        #region 获取影厅类型列表
+        /// <summary>
+        /// 获取影厅类型列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getdrpCinemaRoomTypeList()
+        {
+            DaCinemaRoomType dal = new DaCinemaRoomType();
+            IList<CinemaRoomType> types = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = types;
+            return result;
+        }
+        #endregion
+
+        #region 添加影厅
+        /// <summary>
+        /// 添加影厅
+        /// </summary>
+        /// <param name="room">名称</param>
+        /// <param name="cinemaID">影院</param>
+        /// <param name="typeID">影厅类型</param>
+        /// <param name="memo">备注</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult addCinemaRoom(string room, string cinemaID, string typeID, string memo)
+        {
+            CinemaRoom en = new CinemaRoom();
+            en.room = room;
+            en.cinemaID = Convert.ToInt32(cinemaID);
+            en.typeID = Convert.ToInt32(typeID);
+            en.memo = memo;
+
+            DaCinemaRoom dal = new DaCinemaRoom();
+            var result = new CustomJsonResult();
+            result.Data = dal.add(en);
+            return result;
+        }
+        #endregion
+
+        #region 修改影厅
+        /// <summary>
+        /// 修改影厅
+        /// </summary>
+        /// <param name="id">编号</param>
+        /// <param name="name">名称</param>
+        /// <param name="cinema">所属影院</param>
+        /// <param name="type">影厅类型</param>
+        /// <param name="memo">备注</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult updateCinemaRoom(string id, string name, string cinema, string type, string memo)
+        {
+            CinemaRoom en = new CinemaRoom();
+            en.id = Convert.ToInt32(id);
+            en.room = name;
+            en.cinemaID = Convert.ToInt32(cinema);
+            en.typeID = Convert.ToInt32(type);
+            en.memo = memo;
+
+            DaCinemaRoom dal = new DaCinemaRoom();
+            var result = new CustomJsonResult();
+            result.Data = dal.update(en);
+            return result;
+        }
+        #endregion
+
+        #region 删除影厅
+        /// <summary>
+        /// 删除影厅
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult deleteCinemaRoom(string id)
+        {
+            CinemaRoom en = new CinemaRoom();
+            en.id = Convert.ToInt32(id);
+
+            DaCinemaRoom dal = new DaCinemaRoom();
+            var result = new CustomJsonResult();
+            result.Data = dal.delete(en);
+            return result;
+        }
+        #endregion
+
+        #region 搜索影厅
+        /// <summary>
+        /// 搜索影厅
+        /// </summary>
+        /// <param name="cinema">影院名称</param>
+        /// <returns></returns>
+        public JsonResult searchCinemaRoom(string cinema)
+        {
+            CinemaRoom en = new CinemaRoom();
+            en.cinemaID = Convert.ToInt32(cinema);
+
+            DaCinemaRoom dal = new DaCinemaRoom();
+            var result = new CustomJsonResult();
+            result.Data = dal.getList(cinema);
+            return result;
+        }
+        #endregion
+
+        #region 获取客户列表
         /// <summary>
         /// 获取客户列表
         /// </summary>
@@ -471,7 +812,25 @@ namespace ContractWeb.Controllers
             result.Data = new { total = customers.Count, rows = customers };
             return result;
         }
+        #endregion
 
+        #region 获取客户状态列表
+        /// <summary>
+        /// 获取客户状态列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getdrpStateList()
+        {
+            DaCustomerState dal = new DaCustomerState();
+            IList<CustomerState> states = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = states;
+            return result;
+        }
+        #endregion
+
+        #region 获取客户渠道类型数据
         /// <summary>
         /// 获取客户渠道类型数据
         /// </summary>
@@ -485,7 +844,25 @@ namespace ContractWeb.Controllers
             result.Data = types;
             return result;
         }
+        #endregion
 
+        #region 获取业务员列表
+        /// <summary>
+        /// 获取业务员列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getdrpUserList()
+        {
+            DaUserInfo dal = new DaUserInfo();
+            IList<UserInfo> users = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = users;
+            return result;
+        }
+        #endregion
+
+        #region 新增客户
         /// <summary>
         /// 新增客户
         /// </summary>
@@ -518,112 +895,88 @@ namespace ContractWeb.Controllers
             result.Data = dal.add(en);
             return result;
         }
+        #endregion
 
+        #region 修改客户
         /// <summary>
-        /// 获取影院列表
+        /// 修改客户
         /// </summary>
-        /// <returns></returns>
-        public JsonResult getCinemaList()
-        {
-            DaCinema dal = new DaCinema();
-            IList<Cinema> cinemas = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.Data = new { total = cinemas.Count, rows = cinemas };
-            return result;
-        }
-
-        /// <summary>
-        /// 获取影院列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getDrpCinemaList()
-        {
-            DaCinema dal = new DaCinema();
-            IList<Cinema> cinemas = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.Data = cinemas;
-            return result;
-        }
-
-        /// <summary>
-        /// 新增影院
-        /// </summary>
+        /// <param name="id">编号</param>
         /// <param name="name">名称</param>
-        /// <param name="area">地区</param>
-        /// <param name="roomNum">厅数</param>
+        /// <param name="type">渠道类型</param>
         /// <param name="person">联系人</param>
         /// <param name="tel">联系电话</param>
-        /// <param name="address">地址</param>
+        /// <param name="officeTel">办公电话</param>
+        /// <param name="eMail">E-Mail</param>
+        /// <param name="fex">传真</param>
+        /// <param name="address">联系电话</param>
+        /// <param name="state">状态</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult addCinema(string name, string area, string roomNum, string person, string tel, string address)
+        public JsonResult updateCustomer(string id, string name, string type, string person, string tel, string officeTel, string eMail, string fex, string address, string state)
         {
-            Cinema en = new Cinema();
+            CustomerInfo en = new CustomerInfo();
+            en.id = Convert.ToInt32(id);
             en.name = name;
-            en.areaID = Convert.ToInt32(area);
-            en.roomNum = Convert.ToInt32(roomNum);
+            en.channelTypeID = Convert.ToInt32(type);
             en.person = person;
             en.tel = tel;
+            en.officeTel = officeTel;
+            en.email = eMail;
+            en.fex = fex;
             en.address = address;
+            en.stateID = Convert.ToInt32(state);
 
-            DaCinema dal = new DaCinema();
+            DaCustomerInfo dal = new DaCustomerInfo();
             var result = new CustomJsonResult();
-            result.Data = dal.add(en);
+            result.Data = dal.update(en);
             return result;
         }
+        #endregion
 
+        #region 删除客户
         /// <summary>
-        /// 获取影厅类型列表
+        /// 删除客户
         /// </summary>
+        /// <param name="id"></param>
         /// <returns></returns>
-        public JsonResult getdrpCinemaRoomTypeList()
+        public JsonResult deleteCustomer(string id)
         {
-            DaCinemaRoomType dal = new DaCinemaRoomType();
-            IList<CinemaRoomType> types = dal.getList();
+            CustomerInfo en = new CustomerInfo();
+            en.id = Convert.ToInt32(id);
 
+            DaCustomerInfo dal = new DaCustomerInfo();
             var result = new CustomJsonResult();
-            result.Data = types;
+            result.Data = dal.delete(en);
             return result;
         }
+        #endregion
 
+        #region 搜索客户
         /// <summary>
-        /// 获取影厅列表
+        /// 搜索客户
         /// </summary>
+        /// <param name="name">客户名称</param>
+        /// <param name="type">客户类型</param>
+        /// <param name="salesman">业务员</param>
         /// <returns></returns>
-        public JsonResult getCinemaRoomList()
+        public JsonResult searchCustomer(string name, string type, string salesman)
         {
-            DaCinemaRoom dal = new DaCinemaRoom();
-            IList<CinemaRoom> rooms = dal.getList();
+            CustomerInfo en = new CustomerInfo();
+            en.name = name;
+            
+            if (type.Trim() != "")
+                en.channelTypeID = Convert.ToInt32(type);
 
+            if (salesman.Trim() != "")
+                en.salesmanID = Convert.ToInt32(salesman);
+
+            DaCustomerInfo dal = new DaCustomerInfo();
             var result = new CustomJsonResult();
-            result.Data = new { total = rooms.Count, rows = rooms };
+            result.Data = dal.getList(en);
             return result;
         }
-
-        /// <summary>
-        /// 添加影厅
-        /// </summary>
-        /// <param name="room">名称</param>
-        /// <param name="cinemaID">影院</param>
-        /// <param name="typeID">影厅类型</param>
-        /// <param name="memo">备注</param>
-        /// <returns></returns>
-        [HttpPost]
-        public JsonResult addCinemaRoom(string room, string cinemaID, string typeID, string memo)
-        {
-            CinemaRoom en = new CinemaRoom();
-            en.room = room;
-            en.cinemaID = Convert.ToInt32(cinemaID);
-            en.typeID = Convert.ToInt32(typeID);
-            en.memo = memo;
-
-            DaCinemaRoom dal = new DaCinemaRoom();
-            var result = new CustomJsonResult();
-            result.Data = dal.add(en);
-            return result;
-        }
+        #endregion
 
     }
 }

@@ -45,6 +45,26 @@ namespace ContractWeb.DataAccess
         }
 
         /// <summary>
+        /// 修改对象
+        /// </summary>
+        /// <param name="en">对象</param>
+        /// <returns></returns>
+        public int update(ADCostTarget en)
+        {
+            string strSql = "update ADCostTarget set target=@target, memo=@memo where id=@id";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", en.id),
+                new SqlParameter("@target", en.target),
+                new SqlParameter("@memo", en.memo)
+            };
+
+            int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+            return result;
+        }
+
+        /// <summary>
         /// 删除对象
         /// </summary>
         /// <param name="en">对象</param>
