@@ -1,0 +1,91 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>修改合同状态</title>
+
+    <!--   CSS   -->
+
+    <!-- Reset Stylesheet -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/reset.css")" type="text/css" media="screen" />
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/style.css")" type="text/css" media="screen" />
+    
+    <link rel="stylesheet" href="@Url.Content("~/Content/themes/default/easyui.css")" type="text/css" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/themes/icon.css")" type="text/css" />
+    
+    <!--   JavaScript   -->
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.8.3.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.easyui.min.js")"></script>
+    <!-- jQuery Configuration -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/simpla.jquery.configuration.js")"></script>
+    <!-- Facebox jQuery Plugin -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/facebox.js")"></script>
+    <!-- jQuery WYSIWYG Plugin -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.wysiwyg.js")"></script>
+</head>
+<body style="background: #f0f0f0; padding: 20px;">
+    <div>
+        <div class="fitem">
+            <label class="fitemTitle">合同编号:</label>
+            <input id="txtID" class="easyui-validatebox fitemWidth" />
+            <label class="fitemTitle inline">合同名称:</label>
+            <input id="txtName" class="easyui-validatebox fitemWidth" readonly="true" />
+        </div>
+
+        <div class="fitem">
+            <label class="fitemTitle">当前状态：</label>
+            <input id="txtState" class="easyui-validatebox fitemWidth" readonly="true" />
+            <label class="fitemTitle inline">合同状态：</label>
+            <select id="drpState" class="easyui-combobox"></select>
+        </div>
+    </div>
+
+    <p>
+        <input type="button" id="btnAdd" onclick="save()" value="保存" />
+        <input type="button" id="btnCancel" value="关闭" />
+    </p>
+
+    <script>
+
+        $(function () {
+            var vID = location.href.substring(location.href.indexOf("=") + 1, location.href.length);
+
+            $.get("/Select/getContractEn?id=" + vID,
+                function (data) {
+                    $("#txtID").val(data.contractID);
+                    $("#txtName").val(data.name);
+                    $("#txtState").val(data.stateName);
+                }
+            );
+
+            $('#drpState').combobox({
+                url: '/Select/getDrpContractStateList',
+                valueField: 'id',
+                textField: 'name'
+            });
+        });
+
+        function save() {
+            var id = $("#txtID").val();
+            var state = $("#drpState").combobox("getValue");
+
+            $.get("/Select/changeContractState?id=" + id + "&state=" + state,
+                function (data) {
+                    if (data == 1)
+                        alert("修改成功");
+                    else
+                        alert("修改失败");
+                }
+            );
+        }
+    </script>
+</body>
+</html>

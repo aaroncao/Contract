@@ -1,106 +1,99 @@
-﻿<div>
-    <fieldset>
+﻿<style type="text/css">
+    .fieldCSS {
+        width: 800px;
+    }
+
+    .fitemTitle {
+        display: inline-block;
+        width: 60px;
+    }
+
+    .fitemWidth {
+        width: 100px;
+        margin-right: 10px;
+    }
+</style>
+
+<div>
+    <fieldset class="fieldCSS">
         <legend>广告费结算</legend>
-
-        <p />
         <div>
-            <div class="fitem inline">
-                <label>下单编号:</label>
-                <input id="txtOrderID" class="easyui-validatebox" onkeydown="EnterPress()" />
+            <div class="fitem">
+                <label class="fitemTitle">下单编号:</label>
+                <input id="txtOrderID" class="easyui-validatebox fitemWidth" onkeydown="EnterPress()" />
+                <label class="fitemTitle inline">合同编号:</label>
+                <input id="txtContractID" class="easyui-validatebox fitemWidth" readonly="true" />
+                <label class="fitemTitle inline">合同名称:</label>
+                <input id="txtContractName" class="easyui-validatebox fitemWidth" readonly="true" />
             </div>
-            <div class="fitem inline" style="margin-left:30px;">
-                <label>合同编号:</label>
-                <input id="txtContractID" class="easyui-validatebox" readonly="true" />
-            </div>
-            <div class="fitem inline" style="margin-left:30px;">
-                <label>合同名称:</label>
-                <input id="txtContractName" class="easyui-validatebox" readonly="true" />
-            </div>
-        </div>
 
-        <p />
-        <div>
-            <div class="fitem inline">
-                <label>广告版本:</label>
-                <input id="txtVersion" class="easyui-validatebox" readonly="true" />
+            <div class="fitem">
+                <label class="fitemTitle">广告版本:</label>
+                <input id="txtVersion" class="easyui-validatebox fitemWidth" readonly="true" />
+                <label class="fitemTitle inline">签署金额:</label>
+                <input id="txtMoney" class="easyui-validatebox fitemWidth" readonly="true" />
+                <label class="fitemTitle inline">合同类型:</label>
+                <input id="txtType" class="easyui-validatebox fitemWidth" readonly="true" />
             </div>
-            <div class="fitem inline" style="margin-left:30px;">
-                <label>签署金额:</label>
-                <input id="txtMoney" class="easyui-validatebox" readonly="true" />
-            </div>
-            <div class="fitem inline" style="margin-left:30px;">
-                <label>合同类型:</label>
-                <input id="txtType" class="easyui-validatebox" readonly="true" />
-            </div>
-        </div>
 
-        <p />
-        <div>
-            <div class="fitem inline">
-                <label>渠道归类:</label>
-                <input id="txtChannel" class="easyui-validatebox" readonly="true" />
+            <div class="fitem">
+                <label class="fitemTitle">渠道归类:</label>
+                <input id="txtChannel" class="easyui-validatebox fitemWidth" readonly="true" />
+                <label class="fitemTitle inline">合同周期:</label>
+                <input id="txtBegin" class="easyui-validatebox" readonly="true" style="width:100px;" /> 至 
+                <input id="txtEnd" class="easyui-validatebox fitemWidth" readonly="true" />
+                <input id="txtZQ" class="easyui-validatebox" readonly="true" style="width:100px;"/>月
             </div>
-            <div class="fitem inline" style="margin-left:30px;">
-                <label>合同周期:</label>
-                <input id="txtBegin" class="easyui-validatebox" readonly="true" />至
-                <input id="txtEnd" class="easyui-validatebox" readonly="true" />
-                <input id="txtZQ" class="easyui-validatebox" readonly="true" />月
-            </div>
-        </div>
 
-        <p />
-        <div>
-            <div class="fitem inline" style="margin-left:30px;">
-                <label>广告费结算对象:</label>
-                <input id="txtTarget" class="easyui-validatebox" readonly="true" />
-            </div>
-            <div class="fitem inline">
-                <label>结算金额:</label>
-                <input id="txtAccountMoney" class="easyui-validatebox" />
-            </div>
-            <div class="fitem inline" style="margin-left:30px;">
-                <label>打款状态:</label>
+            <div class="fitem">
+                <label class="fitemTitle" style="width:100px;">广告费结算对象:</label>
+                <input id="txtTarget" class="easyui-validatebox fitemWidth" readonly="true" />
+                <label class="fitemTitle inline">结算金额:</label>
+                <input id="txtAccountMoney" class="easyui-validatebox fitemWidth" />
+                <label class="fitemTitle inline">打款状态:</label>
                 <input type="radio" id="notAccounted" name="accountState" checked="checked">未打款</input>
                 <input type="radio" id="Accounted" name="accountState">已打款</input>
             </div>
-        </div>
 
-        <p />
-        <div>
-            <div class="fitem inline" style="margin-left:30px;">
-                <label>日期:</label>
-                <input id="txtDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" />
+            <div class="fitem">
+                <label class="fitemTitle">日期:</label>
+                <input id="txtDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" style="margin-right:10px;" />
+                <label class="fitemTitle inline">备注:</label>
+                <input id="txtMemo" class="easyui-validatebox" style="width:200px;"/>
             </div>
-            <div class="fitem inline">
-                <label>备注:</label>
-                <input id="txtMemo" class="easyui-validatebox" />
-            </div>
-        </div>
 
-        <p>
-            <input type="button" id="btnAdd" onclick="add()" value="新增" />
-            <input type="button" id="btnCancel" onclick="cancel()" value="清空" />
-        </p>
+            <p>
+                <input type="button" id="btnAdd" onclick="add()" value="新增" />
+                <input type="button" id="btnCancel" onclick="cancel()" value="清空" />
+            </p>
+        </div>
+    </fieldset>
+
+    <fieldset class="fieldCSS">
+        <legend>列表</legend>
+
+        <table id="PutinList" style="width:700px; height:300px;" data-options="singleSelect:true,idField:'id'">
+            <thead>
+                <tr>
+                    <th data-options="field:'orderID',width:100">下单编号</th>
+                    <th data-options="field:'cinemaName',width:130">投放影院</th>
+                    <th data-options="field:'cinemaRoomName',width:130">投放影厅</th>
+                    <th data-options="field:'roomType',width:100">影厅属性</th>
+                </tr>
+            </thead>
+        </table>
     </fieldset>
 </div>
 
-<!-- Table -->
-<table id="PutinList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id'">
-    <thead>
-        <tr>
-            <th data-options="field:'orderID',width:100">下单编号</th>
-            <th data-options="field:'cinemaName',width:50">投放影院</th>
-            <th data-options="field:'cinemaRoomName',width:130">投放影厅</th>
-            <th data-options="field:'roomType',width:100">影厅属性</th>
-        </tr>
-    </thead>
-</table>
-
 <script>
-
     $(function () {
         $('#PutinList').datagrid();
 
+        if (location.href.indexOf("id") != -1) {
+            var id = location.href.substring(location.href.indexOf("=") + 1, location.href.length);
+            $("#txtOrderID").val(id);
+            EnterPress();
+        }
     });
 
     function EnterPress() {

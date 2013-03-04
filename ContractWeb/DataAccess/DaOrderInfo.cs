@@ -31,6 +31,67 @@ namespace ContractWeb.DataAccess
         }
 
         /// <summary>
+        /// 搜索订单列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<OrderInfo> getList(string orderID, string contractID, string begin, string end, string person, string adTarget, string makeTarget)
+        {
+            string strSql = "select a.id, a.contractID, a.orderID, b.name as contractName, "
+                + "b.customerID, "
+                + "(select z.name from CustomerInfo z where z.id=a.customerID) as customerName, "
+                + "a.costTargetID, (select z.target from ADCostTarget z where z.id=a.costTargetID) as costTargetName, "
+                + "a.makeTargetID, (select z.target from MakeCostTarget z where z.id=a.makeTargetID) as makeTargetName, "
+                + "a.begintime, a.endtime, a.roomNum, a.memo from OrderInfo a, ContractInfo b where a.contractID=b.contractID ";
+
+            string where = "";
+
+            if (orderID.Trim() != "")
+                where += "a.orderID like '%" + orderID + "%'";
+
+            if (contractID.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "a.contractID like '%" + contractID + "%'";
+            }
+
+            if (begin.Trim() != "" && end.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "(a.endtime>='" + begin + "' and a.begintime<='" + end + "')";
+            }
+
+            if (person.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "b.personID='" + person + "'";
+            }
+
+            if (adTarget.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "a.costTargetID='" + adTarget + "'";
+            }
+
+            if (makeTarget.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "a.makeTargetID='" + makeTarget + "'";
+            }
+
+            if (where != "")
+                strSql += "and (" + where + ")";
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
+            IList<OrderInfo> list = DynamicBuilder<OrderInfo>.ConvertToList(dr);
+            return list;
+        }
+
+        /// <summary>
         /// 根据编号获取信息
         /// </summary>
         /// <param name="id">编号</param>

@@ -29,6 +29,27 @@ namespace ContractWeb.DataAccess
         }
 
         /// <summary>
+        /// 获取发票列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<Bill> getList(string id)
+        {
+            string strSql = "select a.id, a.contractID, "
+                + "(select z.name from ContractInfo z where z.contractID=a.contractID) as contractName, "
+                + "(select z.money from ContractInfo z where z.contractID=a.contractID) as contractMoney, "
+                + "a.type, (select z.name from BillType z where z.id=a.type) as typeName, a.money, a.date from Bill a where a.contractID=@id";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", id)
+            };
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+            IList<Bill> list = DynamicBuilder<Bill>.ConvertToList(dr);
+            return list;
+        }
+
+        /// <summary>
         /// 添加发票
         /// </summary>
         /// <param name="en"></param>

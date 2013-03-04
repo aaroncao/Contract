@@ -59,23 +59,29 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        #region 广告费结算
         /// <summary>
         /// 广告费结算
         /// </summary>
         /// <returns></returns>
         public ActionResult ADCostAccount()
         {
+            ViewBag.menu = 21;
             return View();
         }
+        #endregion
 
+        #region 制作费结算
         /// <summary>
         /// 制作费结算
         /// </summary>
         /// <returns></returns>
         public ActionResult MakeCostAccount()
         {
+            ViewBag.menu = 22;
             return View();
         }
+        #endregion
 
 
 
@@ -354,54 +360,7 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        /// <summary>
-        /// 添加广告费结算
-        /// </summary>
-        /// <param name="id">订单编号</param>
-        /// <param name="money">结算金额</param>
-        /// <param name="state">打款状态</param>
-        /// <param name="date">日期</param>
-        /// <param name="memo">备注</param>
-        /// <returns></returns>
-        [HttpPost]
-        public JsonResult addADCostAccount(string id, string money, string state, string date, string memo)
-        {
-            ADCostAccount en = new ADCostAccount();
-            en.orderID = id;
-            en.money = Convert.ToDouble(money);
-            en.state = Convert.ToInt32(state);
-            en.date = Convert.ToDateTime(date);
-            en.memo = memo;
-
-            DaADCostAccount dal = new DaADCostAccount();
-            var result = new CustomJsonResult();
-            result.Data = dal.add(en);
-            return result;
-        }
-
-        /// <summary>
-        /// 添加制作费结算
-        /// </summary>
-        /// <param name="id">订单编号</param>
-        /// <param name="money">结算金额</param>
-        /// <param name="state">打款状态</param>
-        /// <param name="date">日期</param>
-        /// <returns></returns>
-        [HttpPost]
-        public JsonResult addMakeCostAccount(string id, string money, string state, string date)
-        {
-            MakeCostAccount en = new MakeCostAccount();
-            en.orderID = id;
-            en.money = Convert.ToDouble(money);
-            en.state = Convert.ToInt32(state);
-            en.date = Convert.ToDateTime(date);
-
-            DaMakeCostAccount dal = new DaMakeCostAccount();
-            var result = new CustomJsonResult();
-            result.Data = dal.add(en);
-            return result;
-        }
-
+        #region 获取广告费结算对象列表
         /// <summary>
         /// 获取广告费结算对象列表
         /// </summary>
@@ -415,7 +374,9 @@ namespace ContractWeb.Controllers
             result.Data = targets;
             return result;
         }
+        #endregion
 
+        #region 获取制作费结算对象列表
         /// <summary>
         /// 获取制作费结算对象列表
         /// </summary>
@@ -429,7 +390,9 @@ namespace ContractWeb.Controllers
             result.Data = targets;
             return result;
         }
+        #endregion
 
+        #region 获取订单编号
         /// <summary>
         /// 获取订单编号
         /// </summary>
@@ -443,7 +406,9 @@ namespace ContractWeb.Controllers
             result.Data = id;
             return result;
         }
+        #endregion
 
+        #region 获取影院列表
         /// <summary>
         /// 获取影院列表
         /// </summary>
@@ -457,7 +422,9 @@ namespace ContractWeb.Controllers
             result.Data = cinemas;
             return result;
         }
+        #endregion
 
+        #region 获取影厅列表
         /// <summary>
         /// 获取影厅列表
         /// </summary>
@@ -472,7 +439,9 @@ namespace ContractWeb.Controllers
             result.Data = new { total = rooms.Count, rows = rooms };
             return result;
         }
+        #endregion
 
+        #region 添加投放影厅
         /// <summary>
         /// 添加投放影厅
         /// </summary>
@@ -505,7 +474,9 @@ namespace ContractWeb.Controllers
             result.Data = dal1.add(list);
             return result;
         }
+        #endregion
 
+        #region 获取订单列表
         /// <summary>
         /// 获取订单列表
         /// </summary>
@@ -519,7 +490,9 @@ namespace ContractWeb.Controllers
             result.Data = new { total = orders.Count, rows = orders };
             return result;
         }
+        #endregion
 
+        #region 添加订单
         /// <summary>
         /// 添加订单
         /// </summary>
@@ -553,5 +526,58 @@ namespace ContractWeb.Controllers
             result.Data = dal.add(en);
             return result;
         }
+        #endregion
+
+        #region 添加广告费结算
+        /// <summary>
+        /// 添加广告费结算
+        /// </summary>
+        /// <param name="id">订单编号</param>
+        /// <param name="money">结算金额</param>
+        /// <param name="state">打款状态</param>
+        /// <param name="date">日期</param>
+        /// <param name="memo">备注</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult addADCostAccount(string id, string money, string state, string date, string memo)
+        {
+            ADCostAccount en = new ADCostAccount();
+            en.orderID = id;
+            en.money = Convert.ToDouble(money);
+            en.state = Convert.ToInt32(state);
+            en.date = Convert.ToDateTime(date);
+            en.memo = memo;
+
+            DaADCostAccount dal = new DaADCostAccount();
+            var result = new CustomJsonResult();
+            result.Data = dal.add(en);
+            return result;
+        }
+        #endregion 
+
+        #region 添加制作费结算
+        /// <summary>
+        /// 添加制作费结算
+        /// </summary>
+        /// <param name="id">订单编号</param>
+        /// <param name="money">结算金额</param>
+        /// <param name="state">打款状态</param>
+        /// <param name="date">日期</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult addMakeCostAccount(string id, string money, string state, string date)
+        {
+            MakeCostAccount en = new MakeCostAccount();
+            en.orderID = id;
+            en.money = Convert.ToDouble(money);
+            en.state = Convert.ToInt32(state);
+            en.date = Convert.ToDateTime(date);
+
+            DaMakeCostAccount dal = new DaMakeCostAccount();
+            var result = new CustomJsonResult();
+            result.Data = dal.add(en);
+            return result;
+        }
+        #endregion
     }
 }

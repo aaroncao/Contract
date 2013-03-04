@@ -38,6 +38,18 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        #region 权限组设定
+        /// <summary>
+        /// 权限组设定
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult PowerSetting()
+        {
+            ViewBag.menu = 33;
+            return View();
+        }
+        #endregion
+
         #region 地区界面
         /// <summary>
         /// 地区界面
@@ -977,6 +989,178 @@ namespace ContractWeb.Controllers
             return result;
         }
         #endregion
+
+        #region 获取权限模块列表
+        /// <summary>
+        /// 获取权限模块列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getModuleList()
+        {
+            DaModule dal = new DaModule();
+            IList<Module> modules = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = new { total = modules.Count, rows = modules };
+            return result;
+        }
+        #endregion
+
+        #region 获取权限组列表
+        /// <summary>
+        /// 获取权限组列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getDrpGroupList()
+        {
+            DaPowerGroup dal = new DaPowerGroup();
+            IList<PowerGroup> groups = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = groups;
+            return result;
+        }
+        #endregion
+
+        #region 获取权限组的权限
+        /// <summary>
+        /// 获取权限组的权限
+        /// </summary>
+        /// <param name="id">权限组ID</param>
+        /// <returns></returns>
+        public JsonResult getShowPower(string id)
+        {
+            DaPowerGroupPower dal = new DaPowerGroupPower();
+            IList<PowerGroupPower> groups = dal.getList(id);
+
+            var result = new CustomJsonResult();
+            result.Data = new { total = groups.Count, rows = groups };
+            return result;
+        }
+        #endregion
+
+        #region 添加权限
+        /// <summary>
+        /// 添加权限
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="modules"></param>
+        /// <returns></returns>
+        public JsonResult addPower(string id, string modules)
+        {
+            List<PowerGroupPower> addList = new List<PowerGroupPower>();
+            string[] moduless = modules.Split(',');
+
+            DaPowerGroupPower dal = new DaPowerGroupPower();
+            IList<PowerGroupPower> groups = dal.getList(id);
+
+            for (int i = 0; i < moduless.Length; i++)
+            {
+                bool flag = true;
+
+                for (int j = 0; j < groups.Count; j++)
+                {
+                    if (moduless[i] == groups[i].moduleID.ToString())
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+
+                if (flag)
+                {
+                    PowerGroupPower en = new PowerGroupPower();
+                    en.groupID = Convert.ToInt32(id);
+                    en.moduleID = Convert.ToInt32(moduless[i]);
+                    en.power = 0;
+
+                    addList.Add(en);
+                }
+            }
+
+            dal = new DaPowerGroupPower();
+            dal.add(addList);
+
+            var result = new CustomJsonResult();
+            result.Data = 1;
+            return result;
+        }
+        #endregion
+
+        #region 删除权限
+        /// <summary>
+        /// 删除权限
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="modules"></param>
+        /// <returns></returns>
+        public JsonResult removePower(string id, string modules)
+        {
+            List<PowerGroupPower> list = new List<PowerGroupPower>();
+            string[] moduless = modules.Split(',');
+
+            for (int i = 0; i < moduless.Length; i++)
+            {
+                PowerGroupPower en = new PowerGroupPower();
+                en.groupID = Convert.ToInt32(id);
+                en.moduleID = Convert.ToInt32(moduless[i]);
+
+                list.Add(en);
+            }
+
+            DaPowerGroupPower dal = new DaPowerGroupPower();
+            var result = new CustomJsonResult();
+            result.Data = dal.delete(list);
+            return result;
+        }
+        #endregion
+
+        #region 删除权限
+        /// <summary>
+        /// 删除权限
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="modules"></param>
+        /// <returns></returns>
+        public JsonResult deletePower(string id, string modules)
+        {
+            List<PowerGroupPower> list = new List<PowerGroupPower>();
+            string[] moduless = modules.Split(',');
+
+            for (int i = 0; i < moduless.Length; i++)
+            {
+                PowerGroupPower en = new PowerGroupPower();
+                en.groupID = Convert.ToInt32(id);
+                en.moduleID = Convert.ToInt32(moduless[i]);
+
+                list.Add(en);
+            }
+
+            DaPowerGroupPower dal = new DaPowerGroupPower();
+            var result = new CustomJsonResult();
+            result.Data = dal.delete(list);
+            return result;
+        }
+        #endregion
+
+        #region 获取权限类型列表
+        /// <summary>
+        /// 获取权限类型列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getDrpGroupTypeList()
+        {
+            IList<ModuleType> types = new List<ModuleType>();
+            types.Add(new ModuleType(0, "禁止"));
+            types.Add(new ModuleType(1, "可读"));
+            types.Add(new ModuleType(2, "可写"));
+
+            var result = new CustomJsonResult();
+            result.Data = types;
+            return result;
+        }
+        #endregion
+
 
     }
 }

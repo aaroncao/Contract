@@ -1,0 +1,64 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>客户到账情况</title>
+
+    <!--   CSS   -->
+
+    <!-- Reset Stylesheet -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/reset.css")" type="text/css" media="screen" />
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/style.css")" type="text/css" media="screen" />
+    
+    <link rel="stylesheet" href="@Url.Content("~/Content/themes/default/easyui.css")" type="text/css" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/themes/icon.css")" type="text/css" />
+    
+    <!--   JavaScript   -->
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.8.3.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.easyui.min.js")"></script>
+    <!-- jQuery Configuration -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/simpla.jquery.configuration.js")"></script>
+    <!-- Facebox jQuery Plugin -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/facebox.js")"></script>
+    <!-- jQuery WYSIWYG Plugin -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.wysiwyg.js")"></script>
+</head>
+
+
+<body style="background:#f0f0f0;padding:20px;">
+    <div>
+        <table id="CPayList" style="width: 800px; height: 250px;" data-options="singleSelect:true,idField:'id',url:'/Select/getPayList'">
+            <thead>
+                <tr>
+                    <th data-options="field:'contractID',width:100">合同编号</th>
+                    <th data-options="field:'name',width:180">合同名称</th>
+                    <th data-options="field:'channelName',width:130">渠道归类</th>
+                    <th data-options="field:'personName',width:70">业务员</th>
+                    <th data-options="field:'money',width:100">签署金额</th>
+                    <th data-options="field:'',width:100">到账金额</th>
+                    <th data-options="field:'',width:100">到账比例</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <script>
+
+        $(function () {
+            var vID = location.href.substring(location.href.indexOf("=") + 1, location.href.length);
+
+            $("#CPayList").datagrid({
+                url: "/Select/getPayList?id=" + vID
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+﻿<style type="text/css">
+
+    .fitemTitle {
+        display: inline-block;
+        width: 60px;
+    }
+
+    .fitemWidth {
+        width: 100px;
+        margin-right: 10px;
+    }
+</style>
+
+<div class="ftitle">合同信息查询</div>
+<p />
+
+
+<div class="fitem">
+    <label class="fitemTitle">合同编号:</label>
+    <input id="txtID" class="easyui-validatebox fitemWidth" />
+    <label class="fitemTitle inline">渠道类型:</label>
+    <select id="drpChannel" class="easyui-combobox"></select>
+    <label class="fitemTitle inline" style="margin-left:10px;">合同类型:</label>
+    <select id="drpType" class="easyui-combobox"></select>
+    <label class="fitemTitle inline" style="margin-left:10px;">合同状态:</label>
+    <select id="drpState" class="easyui-combobox"></select>
+</div>
+<div class="fitem">
+    <label class="fitemTitle">业务员:</label>
+    <select id="drpPerson" class="easyui-combobox"></select>
+    <label class="fitemTitle inline" style="margin-left:10px;">发票状态:</label>
+    <select id="drpBillState" class="easyui-combobox"></select>
+    <label class="fitemTitle inline" style="margin-left:10px;">签署日期:</label>
+    <input id="txtDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"></input>
+    <label class="fitemTitle inline" style="width:70px;margin-left:10px;">合同总金额:</label>
+    <input id="txtTotal" class="easyui-validatebox fitemWidth" readonly="true" /> 元
+</div>
+
+<p>
+    <input type="button" value="查询" style="margin-left:10px;" onclick="search()" />
+    <input type="button" value="当日到账明细" style="margin-left:10px;" onclick="search()" />
+    <input type="button" value="导出" style="margin-left:10px;" onclick="search()" />
+</p>
+
+<table id="ContractList" style="width: 1050px; height: 400px;" data-options="singleSelect:true,idField:'id',url:'/Select/getContractList'">
+    <thead>
+        <tr>
+            <th data-options="field:'id',width:50">ID</th>
+            <th data-options="field:'contractID',width:100">合同编号</th>
+            <th data-options="field:'name',width:180">合同名称</th>
+            <th data-options="field:'customerName',width:180">客户名称</th>
+            <th data-options="field:'version',width:50">版本</th>
+            <th data-options="field:'price',width:70">单厅价格</th>
+            <th data-options="field:'roomNum',width:70">每场厅数</th>
+            <th data-options="field:'makeCost',width:70">制作费</th>
+            <th data-options="field:'backMoney',width:70">优惠</th>
+            <th data-options="field:'money',width:100">签署金额</th>
+            <th data-options="field:'typeName',width:70">合同类型</th>
+            <th data-options="field:'channelName',width:130">渠道归类</th>
+            <th data-options="field:'begintime',width:100">合同周期起</th>
+            <th data-options="field:'endtime',width:100">合同周期止</th>
+            <th data-options="field:'ZQ',width:50">周期</th>
+            <th data-options="field:'personName',width:70">经办人</th>
+            <th data-options="field:'mDate',width:100">签署日期</th>
+            <th data-options="field:'memo',width:200">备注</th>
+            <th data-options="field:'billStateName',width:70">发票状态</th>
+            <th data-options="field:'stateName',width:70">合同状态</th>
+            <th data-options="field:'editTime',width:100">状态修改时间</th>
+        </tr>
+    </thead>
+</table>
+
+
+<script>
+    var selected = null;
+
+    $(function () {
+        $('#ContractList').datagrid({
+            onRowContextMenu: function (e, rowIndex, rowData) {
+                selected = rowData;
+                e.preventDefault();
+
+                if (!$('#rmenu').length) {
+                    createRowMenu();//调用添加右击菜单的内容
+                }
+                $('#rmenu').menu('show', {
+                    left: e.pageX,
+                    top: e.pageY
+                });
+
+            }
+        });
+
+        $('#drpType').combobox({
+            url: '/Business/getDrpContractTypeList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        $('#drpChannel').combobox({
+            url: '/Business/getDrpChannelList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        $('#drpPerson').combobox({
+            url: '/Business/getDrpPersonList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        $('#drpState').combobox({
+            url: '/Select/getDrpContractStateList',
+            valueField: 'id',
+            textField: 'name'
+        });
+        
+        $('#drpBillState').combobox({
+            url: '/Select/getDrpBillStateList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        var today = new Date();
+        var todayStr = today.getFullYear() + "-" + (today.getMonth() > 10 ? (today.getMonth + 1) : "0" + (today.getMonth() + 1)) + "-" + (today.getDate() > 10 ? today.getDate() : "0" + today.getDate());
+        $("#txtDate").datebox("setValue", todayStr);
+
+        $.get("/Select/getContractList",
+            function (result) {
+                $("#txtTotal").val(result.money);
+            }
+        );
+    });
+
+    function createRowMenu() {
+        var tmenu = $('<div id="rmenu" style="width:130px;"></div>').appendTo('body');
+        $('<div name="order"/>').html("下单").appendTo(tmenu);
+        $('<div name="edit"/>').html("修改").appendTo(tmenu);
+        $('<div name="pay"/>').html("客户到账登记").appendTo(tmenu);
+        $('<div name="payList"/>').html("客户到账情况").appendTo(tmenu);
+        $('<div name="writeBill"/>').html("开发票登记").appendTo(tmenu);
+        $('<div name="billList"/>').html("开具发票情况").appendTo(tmenu);
+        $('<div name="editBillState"/>').html("修改开票状态").appendTo(tmenu);
+        $('<div name="editContractState"/>').html("修改合同状态").appendTo(tmenu);
+
+        tmenu.menu({
+            onClick: function (item) {
+                switch (item.name) {
+                    case "order":
+                        location.href = "/Business/Order?id=" + selected.contractID;
+                        break;
+                    case "edit":
+                        var answer = confirm("确认要修改吗")
+                        if (answer)
+                            window.open("EditContract?id=" + selected.contractID, "", "width=950,height=300,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        break;
+                    case "pay":
+                        window.open("CPay?id=" + selected.contractID, "", "width=900,height=300,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        break;
+                    case "payList":
+                        window.open("CPayList?id=" + selected.contractID, "", "width=900,height=300,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        break;
+                    case "writeBill":
+                        window.open("WriteBill?id=" + selected.contractID, "", "width=900,height=700,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        break;
+                    case "billList":
+                        window.open("BillList?id=" + selected.contractID, "", "width=900,height=300,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        break;
+                    case "editBillState":
+                        window.open("EditBillState?id=" + selected.contractID, "", "width=900,height=300,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        break;
+                    case "editContractState":
+                        window.open("EditContractState?id=" + selected.contractID, "", "width=900,height=300,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        break;
+                }
+            }
+        });
+    }
+
+    function search() {
+        var id = $("#txtID").val();
+        var channel = $("#drpChannel").combobox("getValue");
+        var type = $("#drpType").combobox("getValue");
+        var state = $("#drpState").combobox("getValue");
+        var person = $("#drpPerson").combobox("getValue");
+        var billState = $("#drpBillState").combobox("getValue");
+        var mDate = $("#txtDate").datebox("getValue");
+
+        $('#ContractList').datagrid({
+            url: "/Select/searchContract?id=" + id + "&channel=" + channel + "&type=" + type + "&state=" + state + "&person=" + person + "&billState=" + billState + "&date=" + mDate
+        });
+
+        $.get("/Select/searchContract?id=" + id + "&channel=" + channel + "&type=" + type + "&state=" + state + "&person=" + person + "&billState=" + billState + "&date=" + mDate,
+            function (result) {
+                $("#txtTotal").val(result.money);
+            }
+        );
+    }
+</script>

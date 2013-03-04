@@ -109,35 +109,45 @@
     <Compile Include="Controllers\BasicSettingController.cs" />
     <Compile Include="Controllers\BusinessController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SelectController.cs" />
     <Compile Include="Controllers\UserManageController.cs" />
+    <Compile Include="DataAccess\DaAccountState.cs" />
     <Compile Include="DataAccess\DaADCostAccount.cs" />
     <Compile Include="DataAccess\DaADCostTarget.cs" />
     <Compile Include="DataAccess\DaAreaInfo.cs" />
     <Compile Include="DataAccess\DaBill.cs" />
+    <Compile Include="DataAccess\DaBillState.cs" />
     <Compile Include="DataAccess\DaBillType.cs" />
     <Compile Include="DataAccess\DaChannel.cs" />
     <Compile Include="DataAccess\DaCinema.cs" />
     <Compile Include="DataAccess\DaCinemaRoom.cs" />
     <Compile Include="DataAccess\DaCinemaRoomType.cs" />
     <Compile Include="DataAccess\DaContractInfo.cs" />
+    <Compile Include="DataAccess\DaContractState.cs" />
     <Compile Include="DataAccess\DaContractType.cs" />
     <Compile Include="DataAccess\DaCustomerInfo.cs" />
     <Compile Include="DataAccess\DaCustomerPay.cs" />
     <Compile Include="DataAccess\DaCustomerState.cs" />
     <Compile Include="DataAccess\DaMakeCostAccount.cs" />
     <Compile Include="DataAccess\DaMakeCostTarget.cs" />
+    <Compile Include="DataAccess\DaModule.cs" />
     <Compile Include="DataAccess\DaOrderInfo.cs" />
+    <Compile Include="DataAccess\DaPayList.cs" />
     <Compile Include="DataAccess\DaPowerGroup.cs" />
+    <Compile Include="DataAccess\DaPowerGroupPower.cs" />
     <Compile Include="DataAccess\DaPutinInfo.cs" />
     <Compile Include="DataAccess\DaUserInfo.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\AccountState.cs" />
+    <Compile Include="Models\ADCost.cs" />
     <Compile Include="Models\ADCostAccount.cs" />
     <Compile Include="Models\ADCostTarget.cs" />
     <Compile Include="Models\AreaInfo.cs" />
     <Compile Include="Models\Bill.cs" />
+    <Compile Include="Models\BillState.cs" />
     <Compile Include="Models\BillType.cs" />
     <Compile Include="Models\Channel.cs" />
     <Compile Include="Models\ChannelType.cs" />
@@ -146,15 +156,21 @@
     <Compile Include="Models\CinemaRoomType.cs" />
     <Compile Include="Models\ContractInfo.cs" />
     <Compile Include="Models\ContractOrder.cs" />
+    <Compile Include="Models\ContractState.cs" />
     <Compile Include="Models\ContractType.cs" />
     <Compile Include="Models\CustomerInfo.cs" />
     <Compile Include="Models\CustomerPay.cs" />
     <Compile Include="Models\CustomerState.cs" />
+    <Compile Include="Models\MakeCost.cs" />
     <Compile Include="Models\MakeCostAccount.cs" />
     <Compile Include="Models\MakeCostTarget.cs" />
     <Compile Include="Models\MenuItem.cs" />
+    <Compile Include="Models\Module.cs" />
+    <Compile Include="Models\ModuleType.cs" />
     <Compile Include="Models\OrderInfo.cs" />
+    <Compile Include="Models\PayList.cs" />
     <Compile Include="Models\PowerGroup.cs" />
+    <Compile Include="Models\PowerGroupPower.cs" />
     <Compile Include="Models\PutinInfo.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -359,6 +375,42 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\UserManage\PowerGroup.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Select\Contract.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Select\EditContract.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Select\CPay.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Select\CPayList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Select\WriteBill.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Select\BillList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Select\EditBillState.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Select\EditContractState.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Select\Order.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Select\ADCost.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Select\MakeCost.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\BasicSetting\PowerSetting.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -145,6 +145,17 @@
             textField: 'name',
             onSelect: getCinemaRoom
         });
+
+        if (location.href.indexOf("id") != -1) {
+            var id = location.href.substring(location.href.indexOf("=")+1, location.href.length);
+            $("#txtContractID").val(id);
+            $.get("/Business/getContract?id=" + id, function (data) {
+                $("#txtContractName").val(data.name);
+                $("#txtChannel").val(data.channelName);
+                $("#txtZQ").val(data.ZQ);
+                $("#txtVersion").val(data.version);
+            });
+        }
     });
 
     function EnterPress(e) {

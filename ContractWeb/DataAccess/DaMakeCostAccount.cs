@@ -33,5 +33,75 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+
+        /// <summary>
+        /// 获取结算列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<MakeCost> getList()
+        {
+            string strSql = "select a.orderID, b.contractID, c.name, "
+                + "(select z.name from Channel z where z.id=c.channelID) as channelName, "
+                + "c.version, "
+                + "c.money as contractMoney, "
+                + "a.money, (select z.name from AccountState z where z.id=a.state) as state, a.date from ADCostAccount a, OrderInfo b, ContractInfo c where a.orderID=b.orderID and b.contractID=c.contractID ";
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
+            IList<MakeCost> list = DynamicBuilder<MakeCost>.ConvertToList(dr);
+            return list;
+        }
+
+        /// <summary>
+        /// 搜索结算列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<MakeCost> getList(string id, string contractID, string channel, string state, string begin, string end)
+        {
+            string strSql = "select a.orderID, b.contractID, c.name, "
+                + "(select z.name from Channel z where z.id=c.channelID) as channelName, "
+                + "c.version, "
+                + "c.money as contractMoney, "
+                + "a.money, (select z.name from AccountState z where z.id=a.state) as state, a.date from ADCostAccount a, OrderInfo b, ContractInfo c where a.orderID=b.orderID and b.contractID=c.contractID ";
+
+            string where = "";
+
+            if (id.Trim() != "")
+                where += "a.orderID like '%" + id + "%'";
+
+            if (contractID.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "c.contractID like '%" + contractID + "%'";
+            }
+
+            if (channel.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "c.channelID=" + channel;
+            }
+
+            if (state.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "a.state=" + state;
+            }
+
+            if (begin.Trim() != "" && end.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "date between '" + begin + "' and '" + end + "'";
+            }
+
+            if (where != "")
+                strSql += "and (" + where + ")";
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
+            IList<MakeCost> list = DynamicBuilder<MakeCost>.ConvertToList(dr);
+            return list;
+        }
     }
 }
