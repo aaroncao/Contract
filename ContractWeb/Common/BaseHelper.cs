@@ -74,6 +74,7 @@ namespace ContractWeb.Common
             new MenuItem(20, "开发票登记", 3, "WriteBill", "Business"),
             new MenuItem(21, "广告费结算", 3, "ADCostAccount", "Business"),
             new MenuItem(22, "制作费结算", 3, "MakeCostAccount", "Business"),
+            new MenuItem(23, "收发票登记", 3, "ReceiveBill", "Business"),
 
             new MenuItem(26, "合同信息查询", 4, "Contract", "Select"),
             new MenuItem(27, "下单信息查询", 4, "Order", "Select"),

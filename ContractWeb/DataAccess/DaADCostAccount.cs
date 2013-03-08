@@ -45,9 +45,33 @@ namespace ContractWeb.DataAccess
                 + "(select z.name from UserInfo z where z.id=c.personID) as personName, "
                 + "c.money as contractMoney, "
                 + "(select z.target from ADCostTarget z where z.id=b.costTargetID) as costTargetName, "
-                + "a.money, (select z.name from AccountState z where z.id=a.state) as state, a.date from ADCostAccount a, OrderInfo b, ContractInfo c where a.orderID=b.orderID and b.contractID=c.contractID ";
+                + "a.money, (select z.name from AccountState z where z.id=a.state) as state, a.date, memo from ADCostAccount a, OrderInfo b, ContractInfo c where a.orderID=b.orderID and b.contractID=c.contractID ";
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
+            IList<ADCost> list = DynamicBuilder<ADCost>.ConvertToList(dr);
+            return list;
+        }
+
+        /// <summary>
+        /// 获取结算列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ADCost> getList(string id)
+        {
+            string strSql = "select a.orderID, b.contractID, c.name, "
+                + "(select z.name from Channel z where z.id=c.channelID) as channelName, "
+                + "(select z.name from UserInfo z where z.id=c.personID) as personName, "
+                + "c.money as contractMoney, "
+                + "(select z.target from ADCostTarget z where z.id=b.costTargetID) as costTargetName, "
+                + "a.money, (select z.name from AccountState z where z.id=a.state) as state, a.date, memo from ADCostAccount a, OrderInfo b, ContractInfo c "
+                + "where a.orderID=b.orderID and b.contractID=c.contractID and a.orderID=@id";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", id)
+            };
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             IList<ADCost> list = DynamicBuilder<ADCost>.ConvertToList(dr);
             return list;
         }

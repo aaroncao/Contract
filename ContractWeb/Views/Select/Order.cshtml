@@ -125,11 +125,13 @@
                         location.href = "/Business/ADCostAccount?id=" + selected.orderID;
                         break;
                     case "adCostList":
+                        window.open("/Business/ADCostList?id=" + selected.orderID, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
                         break;
                     case "makeCost":
                         location.href = "/Business/MakeCostAccount?id=" + selected.orderID;
                         break;
                     case "makeCostList":
+                        window.open("/Business/ADCostList?id=" + selected.orderID, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
                         break;
                     case "bill":
                         window.open("WriteBill?id=" + selected.contractID, "", "width=900,height=700,toolbar=no,menubar=no,scrollbars=no, resizable=no");

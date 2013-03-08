@@ -136,7 +136,29 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        #region 广告费结算情况
+        /// <summary>
+        /// 广告费结算情况
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ADCostList()
+        {
+            return View();
+        }
+        #endregion
 
+        #region 制作费结算情况
+        /// <summary>
+        /// 制作费结算情况
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult MakeCostList()
+        {
+            return View();
+        }
+        #endregion
+
+        
 
 
 
@@ -515,5 +537,39 @@ namespace ContractWeb.Controllers
             return result;
         }
         #endregion
+
+        #region 获取广告结算列表
+        /// <summary>
+        /// 获取广告结算列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult getADCostList(string id)
+        {
+            DaADCostAccount dal = new DaADCostAccount();
+            IList<ADCost> list = dal.getList(id);
+
+            var result = new CustomJsonResult();
+            result.Data = new { total = list.Count, rows = list };
+            return result;
+        }
+        #endregion 
+
+        #region 获取制作结算列表
+        /// <summary>
+        /// 获取制作结算列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult getMakeCostList(string id)
+        {
+            DaMakeCostAccount dal = new DaMakeCostAccount();
+            IList<MakeCost> list = dal.getList(id);
+
+            var result = new CustomJsonResult();
+            result.Data = new { total = list.Count, rows = list };
+            return result;
+        }
+        #endregion 
     }
 }

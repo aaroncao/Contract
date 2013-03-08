@@ -1,0 +1,158 @@
+﻿<style type="text/css">
+    .fieldCSS {
+        width: 800px;
+    }
+
+    .fitemTitle {
+        display: inline-block;
+        width: 60px;
+    }
+
+    .fitemWidth {
+        width: 100px;
+        margin-right: 10px;
+    }
+</style>
+
+<div>
+    <fieldset class="fieldCSS">
+        <legend>收发票管理</legend>
+        <div>
+            <div class="fitem">
+                <label class="fitemTitle">下单编号:</label>
+                <input id="txtOrderID" class="easyui-validatebox fitemWidth" onkeydown="EnterPress()" />
+                <label class="fitemTitle">合同编号:</label>
+                <input id="txtContractID" class="easyui-validatebox fitemWidth" readonly="true" />
+                <label class="fitemTitle inline">合同名称:</label>
+                <input id="txtName" class="easyui-validatebox fitemWidth" readonly="true" />
+            </div>
+            <div class="fitem">
+                <label class="fitemTitle inline">签署金额:</label>
+                <input id="txtContractMoney" class="easyui-validatebox fitemWidth" readonly="true" />
+                <label class="fitemTitle">合同类型:</label>
+                <input id="txtType" class="easyui-validatebox fitemWidth" readonly="true" />
+                <label class="fitemTitle inline">渠道归类:</label>
+                <input id="txtChannel" class="easyui-validatebox fitemWidth" readonly="ture" />                
+            </div>
+            <div class="fitem">
+                <label class="fitemTitle">收票类型:</label>
+                <select id="drpBillType" class="easyui-combobox"></select>
+                <label class="fitemTitle" style="margin-left:10px;">结算对象:</label>
+                <select id="drpTarget" class="easyui-combobox"></select>
+                <label class="fitemTitle inline" style="margin-left:10px;">开票金额:</label>
+                <input id="txtMoney" class="easyui-validatebox fitemWidth"/>
+                <label class="fitemTitle inline">开票日期:</label>
+                <input id="txtDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" />
+            </div>
+            <p>
+                <input type="button" id="btnAdd" onclick="add()" value="新增" style="margin-right: 20px;" />
+                <input type="button" id="btnCancel" onclick="cancel()" value="清空" />
+            </p>
+        </div>
+    </fieldset>
+
+    <fieldset class="fieldCSS">
+        <legend>列表</legend>
+
+        <table id="BillList" style="width: 700px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/getBillList'" toolbar="#toolbar">
+            <thead>
+                <tr>
+                    <th data-options="field:'contractID',width:100">合同编号</th>
+                    <th data-options="field:'contractName',width:180">合同名称</th>
+                    <th data-options="field:'contractMoney',width:100">签署金额</th>
+                    <th data-options="field:'typeName',width:100">开票类型</th>
+                    <th data-options="field:'money',width:100">开票金额</th>
+                    <th data-options="field:'date',width:80">开票日期</th>
+                </tr>
+            </thead>
+        </table>
+    </fieldset>
+</div>
+
+<script>
+
+    $(function () {
+        $('#BillList').datagrid();
+
+        $('#drpBillType').combobox({
+            url: '/Business/getDrpBillTypeList',
+            valueField: 'id',
+            textField: 'name',
+            onChange: getDrpTargetData
+        });
+
+        $('#drpBillType').combobox("setValue", "1");
+
+        
+        $('#drpTarget').combobox({
+            url: '/Business/getDrpADTargetList',
+            valueField: 'id',
+            textField: 'target'
+        });
+
+        var today = new Date();
+        var todayStr = today.getFullYear() + "-" + (today.getMonth() > 10 ? (today.getMonth + 1) : "0" + (today.getMonth() + 1)) + "-" + (today.getDate() > 10 ? today.getDate() : "0" + today.getDate());
+        $("#txtDate").datebox("setValue", todayStr);
+    });
+
+    function EnterPress(e) {        
+        var e = e || window.event;
+        if (e.keyCode == 13) {
+            $.get("/Business/getContract?id=" + $("#txtID").val(), function (data) {
+                $("#txtName").val(data.name);
+                $("#txtPerson").val(data.personName);
+                $("#txtType").val(data.typeName);
+                $("#txtChannel").val(data.channelName);
+                $("#txtContractMoney").val(data.money);
+                $("#txtMake").val(data.makeCost); 
+            });
+        }
+    }
+
+    function getDrpTargetData() {
+        var type = $("#drpBillType").combobox("getValue");
+        var urlStr = "/Business/getDrpADTargetList";
+
+        if (type == "2")
+            urlStr = "/Business/getDrpMakeTargetList";
+
+        $("#drpTarget").combobox({
+            url: urlStr,
+            valueField: 'id',
+            textField: 'target'
+        });
+    }
+
+    function cancel() {
+        $("#txtOrderID").val("");
+        $("#txtContractID").val("");
+        $("#txtName").val("");
+        $("#txtContractMoney").val("");
+        $("#txtType").val("");
+        $("#txtChannel").val("");
+        
+        $("#drpBillType").combobox("setValue", "");
+        $("#txtCollect").val("");
+        $("#txtADCost").val("");
+        $("#txtMakeCost").val("");
+        $("#txtAllCost").val("");
+        $("#txtMoney").val("");
+        $("#txtDate").val("");
+    }
+
+    function add() {
+        var id = $("#txtID").val();
+        var type = $("#drpBillType").combobox("getValue");
+        var money = $("#txtMoney").val();
+        var date = $("#txtDate").datebox("getValue");
+
+        $.post("/Business/addBill", "id=" + id + "&type=" + type + "&money=" + money + "&date=" + date,
+            function (data) {
+                if (data == 0)
+                    alert("新增失败");
+                else
+                    $("#BillList").datagrid("reload");
+            }
+        );
+    }
+</script>

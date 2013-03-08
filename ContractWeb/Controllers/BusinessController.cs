@@ -83,6 +83,18 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        #region 收发票登记
+        /// <summary>
+        /// 收发票登记
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ReceiveBill()
+        {
+            ViewBag.menu = 23;
+            return View();
+        }
+        #endregion
+
 
 
 
@@ -576,6 +588,23 @@ namespace ContractWeb.Controllers
             DaMakeCostAccount dal = new DaMakeCostAccount();
             var result = new CustomJsonResult();
             result.Data = dal.add(en);
+            return result;
+        }
+        #endregion
+
+        #region 获取收发票列表
+        /// <summary>
+        /// 获取收发票列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getReceiveBillList()
+        {
+            DaBill dal = new DaBill();
+            IList<Bill> bills = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+            result.Data = new { total = bills.Count, rows = bills };
             return result;
         }
         #endregion

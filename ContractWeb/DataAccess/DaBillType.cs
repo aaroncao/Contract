@@ -18,7 +18,7 @@ namespace ContractWeb.DataAccess
         /// <returns></returns>
         public IList<BillType> getList()
         {
-            string strSql = "select id, name from BillType";
+            string strSql = "select id, name from BillType order by id";
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
             IList<BillType> list = DynamicBuilder<BillType>.ConvertToList(dr);

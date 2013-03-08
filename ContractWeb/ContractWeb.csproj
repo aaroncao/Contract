@@ -172,6 +172,7 @@
     <Compile Include="Models\PowerGroup.cs" />
     <Compile Include="Models\PowerGroupPower.cs" />
     <Compile Include="Models\PutinInfo.cs" />
+    <Compile Include="Models\ReceiveBill.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -411,6 +412,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\BasicSetting\PowerSetting.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Select\ADCostList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Select\MakeCostList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Business\ReceiveBill.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
