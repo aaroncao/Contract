@@ -1,0 +1,164 @@
+﻿<style type="text/css">
+    .fieldCSS {
+        width: 950px;
+    }
+
+    .fitemTitle {
+        display: inline-block;
+        width: 60px;
+    }
+</style>
+
+<div>
+    <fieldset class="fieldCSS">
+        <legend>合同资料</legend>
+        <div>
+            <div class="fitem">
+                <label class="fitemTitle">合同编号:<font color="red">*</font></label>
+                <input id="txtID" class="easyui-validatebox" required="true" style="width:100px;margin-right:10px;" />
+                <label class="fitemTitle inline">合同名称:</label>
+                <input id="txtName" class="easyui-validatebox" style="width:100px;margin-right:10px;" />
+                <label class="fitemTitle inline">广告版本:</label>
+                <input id="txtVersion" class="easyui-validatebox" style="width:100px;" />
+                <label class="inline" style="margin-right:10px;">秒</label>
+                <label class="fitemTitle inline">每厅价格:</label>
+                <input id="txtPrice" class="easyui-validatebox" style="width:100px;" />
+                <label class="inline" style="margin-right:10px;">元/厅</label>
+            </div>
+            <div class="fitem">
+                <label class="fitemTitle">厅数/场数:</label>
+                <input id="txtNum" class="easyui-validatebox" style="width:100px;"/>
+                <label class="inline" style="margin-right:10px;">厅/场</label>
+                <label class="fitemTitle inline">签署金额:</label>
+                <input id="txtMoney" class="easyui-validatebox" style="width:100px;" />
+                <label class="inline" style="margin-right:10px;">元</label>
+                <label class="fitemTitle inline">制作费:</label>
+                <input id="txtMake" class="easyui-validatebox" style="width:100px;" />
+                <label class="inline" style="margin-right:10px;">元</label>
+                <label class="fitemTitle inline">优惠回扣:</label>
+                <input id="txtBack" class="easyui-validatebox" style="width:100px;" />
+                <label class="inline" style="margin-right:10px;">元</label>
+            </div>
+            <div class="fitem">
+                <label class="fitemTitle">合同类型:</label>
+                <select id="drpType" class="easyui-combobox"></select>
+                <label class="fitemTitle inline" style="margin-left:10px;">渠道归类:</label>
+                <select id="drpChannel" class="easyui-combobox"></select>
+                <label class="fitemTitle inline" style="margin-left:10px;">合同周期:</label>
+                <input id="txtBegin" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"></input> 至 <input id="txtEnd" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"></input>
+                <label class="fitemTitle inline" style="margin-left:10px;">周期:</label>
+                <input id="txtZQ" class="easyui-validatebox" style="width:100px;"></input>
+                <label class="inline">月</label>
+            </div>
+            <div class="fitem">
+                <label class="fitemTitle">业务员:</label>
+                <select id="drpPerson" class="easyui-combobox"></select>
+                <label class="fitemTitle inline" style="margin-left:10px;">签署日期:</label>
+                <input id="txtDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"></input>
+                <label class="fitemTitle inline" style="margin-left:10px;">备注:</label>
+                <input id="txtMemo" class="easyui-validatebox" style="width:270px;"></input>
+            </div>
+        </div>
+
+        <p>
+            <input type="button" id="btnAdd" onclick="add()" value="新增" style="margin-right: 20px;" />
+            <input type="button" id="btnCancel" onclick="cancel()" value="清空" />
+        </p>
+    </fieldset>
+
+    <fieldset class="fieldCSS">
+        <legend>列表</legend>
+
+        <table id="ContractList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/getContractList'">
+            <thead>
+                <tr>
+                    <th data-options="field:'contractID',width:100">合同编号</th>
+                    <th data-options="field:'name',width:180">合同名称</th>
+                    <th data-options="field:'customerName',width:180">客户名称</th>
+                    <th data-options="field:'version',width:50">版本</th>
+                    <th data-options="field:'price',width:70">单厅价格</th>
+                    <th data-options="field:'roomNum',width:70">每场厅数</th>
+                    <th data-options="field:'makeCost',width:70">制作费</th>
+                    <th data-options="field:'backMoney',width:70">优惠</th>
+                    <th data-options="field:'money',width:100">签署金额</th>
+                    <th data-options="field:'typeName',width:70">合同类型</th>
+                    <th data-options="field:'channelName',width:130">渠道归类</th>
+                    <th data-options="field:'begintime',width:100">合同周期起</th>
+                    <th data-options="field:'endtime',width:100">合同周期止</th>
+                    <th data-options="field:'ZQ',width:50">周期</th>
+                    <th data-options="field:'personName',width:70">经办人</th>
+                    <th data-options="field:'mDate',width:100">签署日期</th>
+                    <th data-options="field:'memo',width:200">备注</th>
+                    <th data-options="field:'billStateName',width:70">发票状态</th>
+                </tr>
+            </thead>
+        </table>
+    </fieldset>
+</div>
+
+
+<script>
+    $(function () {
+        $('#ContractList').datagrid();
+
+        $('#drpType').combobox({
+            url: '/Business/getDrpContractTypeList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        $('#drpChannel').combobox({
+            url: '/Business/getDrpChannelList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        $('#drpPerson').combobox({
+            url: '/Business/getDrpPersonList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        var today = new Date();
+        var todayStr = today.getFullYear() + "-" + (today.getMonth() > 10 ? (today.getMonth+1) : "0" + (today.getMonth()+1)) + "-" + (today.getDate() > 10 ? today.getDate() : "0" + today.getDate());
+        $("#txtBegin").datebox("setValue", todayStr);
+        $("#txtEnd").datebox("setValue", todayStr);
+        $("#txtDate").datebox("setValue", todayStr);
+    });
+
+    function add() {
+        var id = $("#txtID").val();
+        var name = $("#txtName").val();
+        var version = $("#txtVersion").val();
+        var price = $("#txtPrice").val();
+        var num = $("#txtNum").val();
+        var money = $("#txtMoney").val();
+        var make = $("#txtMake").val();
+        var back = $("#txtBack").val();
+        var type = $("#drpType").combobox("getValue");
+        var channel = $("#drpChannel").combobox("getValue");
+        var begintime = $("#txtBegin").datebox("getValue");
+        var endtime = $("#txtEnd").datebox("getValue");
+        var zq = $("#txtZQ").val();
+        var person = $("#drpPerson").combobox("getValue");
+        var mDate = $("#txtDate").datebox("getValue");
+        var memo = $("#txtMemo").val();
+
+        if (id.trim() == "") {
+            alert("合同编号不能为空");
+            return;
+        }
+        
+        $.post("/Business/addContract",
+            "id=" + id + "&name=" + name + "&version=" + version + "&price=" + price + "&num=" + num + "&money=" + money +
+            "&make=" + make + "&back=" + back + "&type=" + type + "&channel=" + channel + "&begintime=" + begintime + "&endtime=" + endtime + 
+            "&zq=" + zq + "&person=" + person + "&mDate=" + mDate + "&memo=" + memo,
+            function (data) {
+                if (data == 0)
+                    alert("新增失败");
+                else
+                    $("#ContractList").datagrid("reload");
+            }
+        );
+    }
+</script>

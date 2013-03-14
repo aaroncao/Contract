@@ -31,7 +31,7 @@
     <label class="fitemTitle inline" style="margin-left:10px;">发票状态:</label>
     <select id="drpBillState" class="easyui-combobox"></select>
     <label class="fitemTitle inline" style="margin-left:10px;">签署日期:</label>
-    <input id="txtDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"></input>
+    <input id="txtDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"/>
     <label class="fitemTitle inline" style="width:70px;margin-left:10px;">合同总金额:</label>
     <input id="txtTotal" class="easyui-validatebox fitemWidth" readonly="true" /> 元
 </div>
@@ -39,7 +39,7 @@
 <p>
     <input type="button" value="查询" style="margin-left:10px;" onclick="search()" />
     <input type="button" value="当日到账明细" style="margin-left:10px;" onclick="search()" />
-    <input type="button" value="导出" style="margin-left:10px;" onclick="search()" />
+    <input type="button" value="导出" style="margin-left:10px;" onclick="output()" />
 </p>
 
 <table id="ContractList" style="width: 1050px; height: 400px;" data-options="singleSelect:true,idField:'id',url:'/Select/getContractList'">
@@ -195,5 +195,17 @@
                 $("#txtTotal").val(result.money);
             }
         );
+    }
+
+    function output() {
+        var id = $("#txtID").val();
+        var channel = $("#drpChannel").combobox("getValue");
+        var type = $("#drpType").combobox("getValue");
+        var state = $("#drpState").combobox("getValue");
+        var person = $("#drpPerson").combobox("getValue");
+        var billState = $("#drpBillState").combobox("getValue");
+        var mDate = $("#txtDate").datebox("getValue");
+
+        window.open("/Select/outputContract?id=" + id + "&channel=" + channel + "&type=" + type + "&state=" + state + "&person=" + person + "&billState=" + billState + "&date=" + mDate, "", "width=50,height=50,toolbar=no,menubar=no,scrollbars=no, resizable=no");
     }
 </script>

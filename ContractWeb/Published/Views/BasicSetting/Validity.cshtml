@@ -1,0 +1,28 @@
+﻿<div class="fitem">
+    <label>当前已设置为:</label>
+    <input class="easyui-validatebox" readonly="true" value="@ViewBag.days" />
+    <label>天</label>
+</div>
+<div class="fitem">
+    <label>更改当前设置:</label>
+    <input id="txtDays" class="easyui-validatebox" />
+</div>
+
+<p>
+    <input type="button" id="btnAdd" onclick="add()" value="保存" />
+</p>
+
+<div id="message"></div>
+
+<script type="text/ecmascript">
+    function add() {
+        var days = $("#txtDays").val();
+
+        $.get("/BasicSetting/setValidity?days=" + days, function (data) {
+            if (data == 1)
+                $("#message").html("修改成功");
+            else
+                $("#message").html("修改失败");
+        });
+    }
+</script>

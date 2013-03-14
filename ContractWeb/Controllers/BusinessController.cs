@@ -599,12 +599,38 @@ namespace ContractWeb.Controllers
         /// <returns></returns>
         public JsonResult getReceiveBillList()
         {
-            DaBill dal = new DaBill();
-            IList<Bill> bills = dal.getList();
+            DaReceiveBill dal = new DaReceiveBill();
+            IList<ReceiveBill> bills = dal.getList();
 
             var result = new CustomJsonResult();
             result.dateFormat = "yyyy-MM-dd";
             result.Data = new { total = bills.Count, rows = bills };
+            return result;
+        }
+        #endregion
+
+        #region 添加收票登记
+        /// <summary>
+        /// 添加开票登记
+        /// </summary>
+        /// <param name="orderID">合同编号</param>
+        /// <param name="type">开票类型</param>
+        /// <param name="money">开票金额</param>
+        /// <param name="date">开票日期</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult addReceiveBill(string orderID, string type, string target, string money, string date)
+        {
+            ReceiveBill en = new ReceiveBill();
+            en.orderID = orderID;
+            en.type = Convert.ToInt32(type);
+            en.targetID = Convert.ToInt32(target);
+            en.money = Convert.ToDouble(money);
+            en.date = Convert.ToDateTime(date);
+
+            DaReceiveBill dal = new DaReceiveBill();
+            var result = new CustomJsonResult();
+            result.Data = dal.add(en);
             return result;
         }
         #endregion

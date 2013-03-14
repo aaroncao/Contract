@@ -32,6 +32,23 @@ namespace ContractWeb.DataAccess
         }
 
         /// <summary>
+        /// 获取合同列表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable getDataTable()
+        {
+            string strSql = "select id, contractID, name, customerID, (select z.name from CustomerInfo z where z.id=customerID) as customerName, "
+                + "version, price, roomNum, makeCost, backMoney, money, "
+                + "type, (select z.name from ContractType z where z.id=type) as typeName, "
+                + "channelID, (select z.name from Channel z where z.id=channelID) as channelName, "
+                + "begintime, endtime, ZQ, personID, (select z.name from UserInfo z where z.id=personID) as personName, "
+                + "memo, mDate, billState, (select z.name from BillState z where z.id=billState) as billStateName, "
+                + "state, (select z.name from ContractState z where z.id=state) as stateName, editTime from ContractInfo";
+
+            return SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql).Tables[0];
+        }
+
+        /// <summary>
         /// 搜索合同列表
         /// </summary>
         /// <returns></returns>

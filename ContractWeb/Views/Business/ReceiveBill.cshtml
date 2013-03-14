@@ -54,15 +54,16 @@
     <fieldset class="fieldCSS">
         <legend>列表</legend>
 
-        <table id="BillList" style="width: 700px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/getBillList'" toolbar="#toolbar">
+        <table id="BillList" style="width: 700px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/getReceiveBillList'" toolbar="#toolbar">
             <thead>
                 <tr>
+                    <th data-options="field:'orderID',width:100">下单编号</th>
                     <th data-options="field:'contractID',width:100">合同编号</th>
                     <th data-options="field:'contractName',width:180">合同名称</th>
-                    <th data-options="field:'contractMoney',width:100">签署金额</th>
-                    <th data-options="field:'typeName',width:100">开票类型</th>
-                    <th data-options="field:'money',width:100">开票金额</th>
-                    <th data-options="field:'date',width:80">开票日期</th>
+                    <th data-options="field:'typeName',width:100">收票类型</th>
+                    <th data-options="field:'targetName',width:100">结算对象</th>                    
+                    <th data-options="field:'money',width:100">发票金额</th>
+                    <th data-options="field:'date',width:80">收票日期</th>
                 </tr>
             </thead>
         </table>
@@ -70,7 +71,6 @@
 </div>
 
 <script>
-
     $(function () {
         $('#BillList').datagrid();
 
@@ -98,13 +98,18 @@
     function EnterPress(e) {        
         var e = e || window.event;
         if (e.keyCode == 13) {
-            $.get("/Business/getContract?id=" + $("#txtID").val(), function (data) {
-                $("#txtName").val(data.name);
-                $("#txtPerson").val(data.personName);
-                $("#txtType").val(data.typeName);
-                $("#txtChannel").val(data.channelName);
-                $("#txtContractMoney").val(data.money);
-                $("#txtMake").val(data.makeCost); 
+            var orderID = $("#txtOrderID").val();
+
+            $.get("/Business/getContractOrder?id=" + orderID, function (data) {
+                var contract = data.contract;
+                var order = data.order;
+
+                $("#txtContractID").val(contract.contractID);
+                $("#txtName").val(contract.name);
+                $("#txtContractMoney").val(contract.money);
+
+                $("#txtType").val(contract.typeName);
+                $("#txtChannel").val(contract.channelName);
             });
         }
     }
@@ -132,21 +137,22 @@
         $("#txtChannel").val("");
         
         $("#drpBillType").combobox("setValue", "");
-        $("#txtCollect").val("");
-        $("#txtADCost").val("");
-        $("#txtMakeCost").val("");
-        $("#txtAllCost").val("");
+        $("#drpTarget").combobox("setValue", "");
         $("#txtMoney").val("");
-        $("#txtDate").val("");
+        
+        var today = new Date();
+        var todayStr = today.getFullYear() + "-" + (today.getMonth() > 10 ? (today.getMonth + 1) : "0" + (today.getMonth() + 1)) + "-" + (today.getDate() > 10 ? today.getDate() : "0" + today.getDate());
+        $("#txtDate").datebox("setValue", todayStr);
     }
 
     function add() {
-        var id = $("#txtID").val();
+        var id = $("#txtOrderID").val();
         var type = $("#drpBillType").combobox("getValue");
+        var target = $("#drpTarget").combobox("getValue");
         var money = $("#txtMoney").val();
         var date = $("#txtDate").datebox("getValue");
 
-        $.post("/Business/addBill", "id=" + id + "&type=" + type + "&money=" + money + "&date=" + date,
+        $.post("/Business/addReceiveBill", "orderID=" + id + "&type=" + type + "&target=" + target + "&money=" + money + "&date=" + date,
             function (data) {
                 if (data == 0)
                     alert("新增失败");

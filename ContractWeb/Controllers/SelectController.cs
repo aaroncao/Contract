@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web;
 using System.Web.Mvc;
 
@@ -158,7 +159,24 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        
+        #region 发票收到情况
+        /// <summary>
+        /// 发票收到情况
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ReceiveBillList()
+        {
+            return View();
+        }
+        #endregion
+
+        public void outputContract()
+        {
+            DaContractInfo dal = new DaContractInfo();
+            //Stream  NPOIHelper.ExportDataTableToExcel(dal.getDataTable());
+        }
+
+
 
 
 
@@ -567,6 +585,24 @@ namespace ContractWeb.Controllers
             IList<MakeCost> list = dal.getList(id);
 
             var result = new CustomJsonResult();
+            result.Data = new { total = list.Count, rows = list };
+            return result;
+        }
+        #endregion 
+
+        #region 获取制作结算列表
+        /// <summary>
+        /// 获取制作结算列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult getReceiveBillList(string id)
+        {
+            DaReceiveBill dal = new DaReceiveBill();
+            IList<ReceiveBill> list = dal.getList(id);
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
             result.Data = new { total = list.Count, rows = list };
             return result;
         }

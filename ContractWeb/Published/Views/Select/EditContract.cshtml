@@ -1,0 +1,191 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>修改合同</title>
+
+    <!--   CSS   -->
+
+    <!-- Reset Stylesheet -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/reset.css")" type="text/css" media="screen" />
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/style.css")" type="text/css" media="screen" />
+    
+    <link rel="stylesheet" href="@Url.Content("~/Content/themes/default/easyui.css")" type="text/css" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/themes/icon.css")" type="text/css" />
+    
+    <!--   JavaScript   -->
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.8.3.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.easyui.min.js")"></script>
+    <!-- jQuery Configuration -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/simpla.jquery.configuration.js")"></script>
+    <!-- Facebox jQuery Plugin -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/facebox.js")"></script>
+    <!-- jQuery WYSIWYG Plugin -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.wysiwyg.js")"></script>
+
+    <script>
+
+        function myformatter(date) {
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            var d = date.getDate();
+            return y + '-' + (m < 10 ? ('0' + m) : m) + '-' + (d < 10 ? ('0' + d) : d);
+        }
+
+        function myparser(s) {
+            if (!s) return new Date();
+            var ss = s.split('-');
+            var y = parseInt(ss[0], 10);
+            var m = parseInt(ss[1], 10);
+            var d = parseInt(ss[2], 10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)) {
+                return new Date(y, m - 1, d);
+            } else {
+                return new Date();
+            }
+        }
+
+        String.prototype.trim = function () {
+            return this.replace(/(^\s*)(\s*$)/g, "");
+        }
+    </script>
+
+</head>
+<body style="background:#f0f0f0;padding:20px;">
+    <div>
+        <div class="fitem">
+            <label class="fitemTitle">合同编号:<font color="red">*</font></label>
+            <input id="txtID" class="easyui-validatebox" readonly="true" style="width:100px;margin-right:10px;" />
+            <label class="fitemTitle inline">合同名称:</label>
+            <input id="txtName" class="easyui-validatebox" style="width:100px;margin-right:10px;" />
+            <label class="fitemTitle inline">广告版本:</label>
+            <input id="txtVersion" class="easyui-validatebox" style="width:100px;" />
+            <label class="inline" style="margin-right:10px;">秒</label>
+            <label class="fitemTitle inline">每厅价格:</label>
+            <input id="txtPrice" class="easyui-validatebox" style="width:100px;" />
+            <label class="inline" style="margin-right:10px;">元/厅</label>
+        </div>
+        <div class="fitem">
+            <label class="fitemTitle">厅数/场数:</label>
+            <input id="txtNum" class="easyui-validatebox" style="width:100px;"/>
+            <label class="inline" style="margin-right:10px;">厅/场</label>
+            <label class="fitemTitle inline">签署金额:</label>
+            <input id="txtMoney" class="easyui-validatebox" style="width:100px;" />
+            <label class="inline" style="margin-right:10px;">元</label>
+            <label class="fitemTitle inline">制作费:</label>
+            <input id="txtMake" class="easyui-validatebox" style="width:100px;" />
+            <label class="inline" style="margin-right:10px;">元</label>
+            <label class="fitemTitle inline">优惠回扣:</label>
+            <input id="txtBack" class="easyui-validatebox" style="width:100px;" />
+            <label class="inline" style="margin-right:10px;">元</label>
+        </div>
+        <div class="fitem">
+            <label class="fitemTitle">合同类型:</label>
+            <select id="drpType" class="easyui-combobox"></select>
+            <label class="fitemTitle inline" style="margin-left:10px;">渠道归类:</label>
+            <select id="drpChannel" class="easyui-combobox"></select>
+            <label class="fitemTitle inline" style="margin-left:10px;">合同周期:</label>
+            <input id="txtBegin" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"></input> 至 <input id="txtEnd" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"></input>
+            <label class="fitemTitle inline" style="margin-left:10px;">周期:</label>
+            <input id="txtZQ" class="easyui-validatebox" style="width:100px;"></input>
+            <label class="inline">月</label>
+        </div>
+        <div class="fitem">
+            <label class="fitemTitle">业务员:</label>
+            <select id="drpPerson" class="easyui-combobox"></select>
+            <label class="fitemTitle inline" style="margin-left:10px;">签署日期:</label>
+            <input id="txtDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"></input>
+            <label class="fitemTitle inline" style="margin-left:10px;">备注:</label>
+            <input id="txtMemo" class="easyui-validatebox" style="width:270px;"></input>
+        </div>
+    </div>
+
+
+<p>
+    <input type="button" id="btnAdd" onclick="save()" value="保存" style="margin-right: 20px;" />
+    <input type="button" id="btnClose" value="关闭" />
+</p>
+
+<script>
+    $(function () {
+        var vID = location.href.substring(location.href.indexOf("=") + 1, location.href.length);
+
+        $('#drpType').combobox({
+            url: '/Business/getDrpContractTypeList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        $('#drpChannel').combobox({
+            url: '/Business/getDrpChannelList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        $('#drpPerson').combobox({
+            url: '/Business/getDrpPersonList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        $.get("/Select/getContractEn?id=" + vID,
+            function (data) {
+                $("#txtID").val(data.contractID);
+                $("#txtName").val(data.name);
+                $("#txtVersion").val(data.version);
+                $("#txtPrice").val(data.price);
+                $("#txtNum").val(data.roomNum);
+                $("#txtMoney").val(data.money);
+                $("#txtMake").val(data.makeCost);
+                $("#txtBack").val(data.backMoney);
+                $("#drpType").combobox("setValue", data.type);
+                $("#drpChannel").combobox("setValue", data.channelID);
+                $("#txtBegin").datebox("setValue", data.begintime);
+                $("#txtEnd").datebox("setValue", data.endtime);
+                $("#txtZQ").val(data.zq);
+                $("#drpPerson").combobox("setValue", data.personID);
+                $("#txtDate").datebox("setValue", data.mDate);
+                $("#txtMemo").val(data.memo);
+            }
+        );
+    });
+
+    function save() {
+        var id = $("#txtID").val();
+        var name = $("#txtName").val();
+        var version = $("#txtVersion").val();
+        var price = $("#txtPrice").val();
+        var num = $("#txtNum").val();
+        var money = $("#txtMoney").val();
+        var make = $("#txtMake").val();
+        var back = $("#txtBack").val();
+        var type = $("#drpType").combobox("getValue");
+        var channel = $("#drpChannel").combobox("getValue");
+        var begintime = $("#txtBegin").datebox("getValue");
+        var endtime = $("#txtEnd").datebox("getValue");
+        var zq = $("#txtZQ").val();
+        var person = $("#drpPerson").combobox("getValue");
+        var mDate = $("#txtDate").datebox("getValue");
+        var memo = $("#txtMemo").val();
+
+        $.post("/Select/editContract",
+            "id=" + id + "&name=" + name + "&version=" + version + "&price=" + price + "&num=" + num + "&money=" + money +
+            "&make=" + make + "&back=" + back + "&type=" + type + "&channel=" + channel + "&begintime=" + begintime + "&endtime=" + endtime +
+            "&zq=" + zq + "&person=" + person + "&mDate=" + mDate + "&memo=" + memo,
+            function (data) {
+                if (data == 0)
+                    alert("修改失败");
+            }
+        );
+    }
+
+</script>
+</body>
+</html>

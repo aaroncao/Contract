@@ -22,14 +22,14 @@
     <label class="fitemTitle inline">下单时间:</label>
     从 <input id="txtBeginDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" style="width:100px;" /> 至 
     <input id="txtEndDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" style="width:100px;" />
-    <label class="fitemTitle">业务员:</label>
+    <label class="fitemTitle" style="margin-left:10px;">业务员:</label>
     <select id="drpPerson" class="easyui-combobox"></select>
 </div>
 
 <div class="fitem">
-    <label class="fitemTitle">广告费结算对象:</label>
+    <label class="fitemTitle" style="width:100px;">广告费结算对象:</label>
     <select id="drpADTarget" class="easyui-combobox"></select>
-    <label class="fitemTitle inline">制作费结算对象:</label>
+    <label class="fitemTitle inline" style="width:100px;margin-left:10px;">制作费结算对象:</label>
     <select id="drpMakeTarget" class="easyui-combobox"></select>
 </div>
 
@@ -134,10 +134,10 @@
                         window.open("/Business/ADCostList?id=" + selected.orderID, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
                         break;
                     case "bill":
-                        window.open("WriteBill?id=" + selected.contractID, "", "width=900,height=700,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        location.href = "/Business/ReceiveBill?id=" + selected.orderID;
                         break;
                     case "billList":
-                        window.open("BillList?id=" + selected.contractID, "", "width=900,height=300,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        window.open("ReceiveBillList?id=" + selected.orderID, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
                         break;
                 }
             }

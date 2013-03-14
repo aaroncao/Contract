@@ -1,0 +1,135 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>@ViewBag.Title</title>
+
+    <!--   CSS   -->
+
+    <!-- Reset Stylesheet -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/reset.css")" type="text/css" media="screen" />
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/style.css")" type="text/css" media="screen" />
+    <!-- Invalid Stylesheet. This makes stuff look pretty. Remove it if you want the CSS completely valid -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/invalid.css")" type="text/css" media="screen" />
+    
+    <link rel="stylesheet" href="@Url.Content("~/Content/themes/default/easyui.css")" type="text/css" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/themes/icon.css")" type="text/css" />
+    
+    <!--   JavaScript   -->
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.8.3.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.easyui.min.js")"></script>
+    <!-- jQuery Configuration -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/simpla.jquery.configuration.js")"></script>
+    <!-- Facebox jQuery Plugin -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/facebox.js")"></script>
+    <!-- jQuery WYSIWYG Plugin -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.wysiwyg.js")"></script>
+
+    <script>
+
+        function myformatter(date) {
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            var d = date.getDate();
+            return y + '-' + (m < 10 ? ('0' + m) : m) + '-' + (d < 10 ? ('0' + d) : d);
+        }
+
+        function myparser(s) {
+            if (!s) return new Date();
+            var ss = s.split('-');
+            var y = parseInt(ss[0], 10);
+            var m = parseInt(ss[1], 10);
+            var d = parseInt(ss[2], 10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)) {
+                return new Date(y, m - 1, d);
+            } else {
+                return new Date();
+            }
+        }
+
+        String.prototype.trim = function () {
+            return this.replace(/(^\s*)(\s*$)/g, "");
+        }
+    </script>
+</head>
+<body>
+    <input id="pageNum" style="display:none;" value="@ViewBag.menu" />
+
+    <div id="body-wrapper">
+        <!-- Wrapper for the radial gradient background -->
+        <div id="sidebar">
+            <div id="sidebar-wrapper">
+                <!-- Sidebar with logo and menu -->
+                <h1 id="sidebar-title"><a href="#">Simpla Admin</a></h1>
+                <!-- Logo (221px wide) -->
+                <a href="#">
+                    <img id="logo" src="@Url.Content("~/Content/images/logo.png")" alt="Simpla Admin logo" /></a>
+                <!-- Sidebar Profile links -->
+                <div id="profile-links"><a href="#" title="Edit your profile">admin</a><br />
+                    <div style="height:10px;"></div>
+                    <a href="/UserManage/EditPwd" title="View the Site">修改密码</a> | <a href="#" title="Sign Out">退出</a>
+                </div>
+                <ul id="main-nav">
+                    <script>
+                        $.ajax({
+                            type: "get",
+                            url: "/Home/getMenuData",
+                            async: false,
+                            success: function (data) {
+                                var html = "";
+                                var val = $("#pageNum").val();
+                                var currentType = 0;
+
+                                var types = [
+                                    "<li><a href='#' class='nav-top-item'>系统管理</a><ul>",
+                                    "<li><a href='#' class='nav-top-item'>用户管理</a><ul>",
+                                    "<li><a href='#' class='nav-top-item'>基础设置</a><ul>",
+                                    "<li><a href='#' class='nav-top-item'>业务管理</a><ul>",
+                                    "<li><a href='#' class='nav-top-item'>查询与统计</a><ul>"
+                                ];
+
+                                for (var i = 0; i < data.length; i++) {
+                                    var cls = "";
+                                    var item = data[i];
+
+                                    if (val == item.id) {
+                                        currentType = item.type;
+                                        cls = " class='current' ";
+                                    }
+
+                                    types[item.type] += "<li><a " + cls + " href='/" + item.control + "/" + item.action + "'>" + item.name + "</a></li>";
+                                }
+
+                                types[currentType] = types[currentType].replace("nav-top-item", "nav-top-item current");
+
+                                for (var i = 0; i < types.length; i++) {
+                                    html += types[i] + "</ul></li>";
+                                }
+
+                                document.write(html);
+                            }
+                        });
+                    </script>
+                </ul>
+            </div>
+        </div>
+        <!-- End #sidebar -->
+        <div id="main-content">
+            
+            @RenderBody()
+            
+        </div>
+        <!-- End #main-content -->
+        
+    </div>
+
+</body>
+<!-- Download From www.exet.tk-->
+</html>
+
+
+

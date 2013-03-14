@@ -1,0 +1,109 @@
+﻿<style type="text/css">
+    .fieldCSS {
+        width: 800px;
+    }
+
+    .fitemTitle {
+        display: inline-block;
+        width: 60px;
+    }
+
+    .fitemWidth {
+        width: 100px;
+        margin-right: 10px;
+    }
+</style>
+
+<div class="ftitle">广告费结算查询</div>
+<p />
+
+<div class="fitem">
+    <label class="fitemTitle">下单编号:</label>
+    <input id="txtOrderID" class="easyui-validatebox fitemWidth" />
+    <label class="fitemTitle inline" style="width:100px;">广告费结算对象:</label>
+    <select id="drpTarget" class="easyui-combobox"></select>
+    <label class="fitemTitle inline">渠道归类:</label>
+    <select id="drpChannel" class="easyui-combobox"></select>
+</div>
+
+<div class="fitem">
+    <label class="fitemTitle">打款状态:</label>
+    <select id="drpState" class="easyui-combobox"></select>
+    <label class="fitemTitle inline" style="width:40px;margin-left:10px;">日期:</label>
+    <input id="txtBegin" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"></input> 至 <input id="txtEnd" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"></input>
+    <label class="fitemTitle inline" style="width:40px;margin-left:10px;">金额:</label>
+    <input id="txtTotal" class="easyui-validatebox fitemWidth" readonly="true" /> 元
+</div>
+
+<p>
+    <input type="button" value="查询" style="margin-left:10px;" onclick="search()" />
+    <input type="button" id="btnCancel" value="清空" />
+</p>
+
+<table id="PutinList" style="width:1050px; height:400px;" data-options="singleSelect:true,idField:'id',url:'/Select/getADCostList'">
+    <thead>
+        <tr>
+            <th data-options="field:'orderID',width:100">下单编号</th>
+            <th data-options="field:'contractID',width:130">合同编号</th>
+            <th data-options="field:'name',width:130">合同名称</th>
+            <th data-options="field:'channelName',width:100">渠道归类</th>
+            <th data-options="field:'personName',width:100">业务员</th>
+            <th data-options="field:'contractMoney',width:100">签署金额</th>
+            <th data-options="field:'costTargetName',width:100">结算对象</th>
+            <th data-options="field:'money',width:100">结算金额</th>
+            <th data-options="field:'state',width:100">打款状态</th>
+            <th data-options="field:'date',width:100">打款日期</th>
+        </tr>
+    </thead>
+</table>
+
+<script>
+    $(function () {
+        $('#PutinList').datagrid();
+
+        $('#drpTarget').combobox({
+            url: '/Business/getDrpADTargetList',
+            valueField: 'id',
+            textField: 'target'
+        });
+
+        $('#drpChannel').combobox({
+            url: '/Business/getDrpChannelList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        $('#drpState').combobox({
+            url: '/Select/getDrpAccountStateList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        $.get("/Select/getADCostList",
+            function (result) {
+                $("#txtTotal").val(result.money);
+            }
+        );
+    });
+
+    function search() {
+        var id = $("#txtOrderID").val();
+        var target = $("#drpTarget").combobox("getValue");
+        var channel = $("#drpChannel").combobox("getValue");
+        var state = $("#drpState").combobox("getValue");
+
+        var begin = $("#txtBegin").datebox("getValue");
+        var end = $("#txtEnd").datebox("getValue");
+
+        $('#PutinList').datagrid({
+            url: "/Select/searchADCost?id=" + id + "&target=" + target + "&channel=" + channel + "&state=" + state + "&begin=" + begin + "&end=" + end
+        });
+
+        $.get("/Select/searchADCost?id=" + id + "&target=" + target + "&channel=" + channel + "&state=" + state + "&begin=" + begin + "&end=" + end,
+            function (result) {
+                $("#txtTotal").val(result.money);
+            }
+        );
+    }
+    
+</script>
