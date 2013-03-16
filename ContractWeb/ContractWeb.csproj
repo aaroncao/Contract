@@ -109,7 +109,6 @@
     <Compile Include="Common\BaseHelper.cs" />
     <Compile Include="Common\CustomJsonResult.cs" />
     <Compile Include="Common\DynamicBuilder.cs" />
-    <Compile Include="Common\NPOIHelper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BasicSettingController.cs" />
     <Compile Include="Controllers\BusinessController.cs" />

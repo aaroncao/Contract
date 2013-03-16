@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.IO;
 using System.Web;
+using System.Web.UI.WebControls;
 using System.Web.Mvc;
 
 using ContractWeb.Common;
@@ -170,15 +173,7 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        public void outputContract()
-        {
-            DaContractInfo dal = new DaContractInfo();
-            //Stream  NPOIHelper.ExportDataTableToExcel(dal.getDataTable());
-        }
-
-
-
-
+        
 
         #region 获取合同状态列表
         /// <summary>
@@ -607,5 +602,89 @@ namespace ContractWeb.Controllers
             return result;
         }
         #endregion 
+
+        #region 导出合同信息报表
+        /// <summary>
+        /// 导出合同信息报表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="channel"></param>
+        /// <param name="type"></param>
+        /// <param name="state"></param>
+        /// <param name="person"></param>
+        /// <param name="billState"></param>
+        /// <param name="date"></param>
+        public void outputContract(string id, string channel, string type, string state, string person, string billState, string date)
+        {
+            DaContractInfo dal = new DaContractInfo();
+            DataTable dt = dal.getDataTable(id, channel, type, state, person, billState, date);
+
+            if (dt.Rows.Count > 0)
+            {
+                string filename = "myContractList.xls";
+                System.IO.StringWriter tw = new System.IO.StringWriter();
+                System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+                DataGrid dgGrid = new DataGrid();
+                dgGrid.DataSource = dt;
+                dgGrid.DataBind();
+
+                //Get the HTML for the control.
+                dgGrid.RenderControl(hw);
+                //Write the HTML back to the browser.
+                //Response.ContentType = application/vnd.ms-excel;
+                Response.ContentType = "application/vnd.ms-excel";
+                Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+                Response.Write(tw.ToString());
+            }
+            else
+            {
+                Response.Write("无数据可导出！");
+            }
+
+            Response.End();
+        }
+        #endregion
+
+        #region 导出下单信息报表
+        /// <summary>
+        /// 导出下单信息报表
+        /// </summary>
+        /// <param name="order"></param>
+        /// <param name="contract"></param>
+        /// <param name="begin"></param>
+        /// <param name="end"></param>
+        /// <param name="person"></param>
+        /// <param name="adTarget"></param>
+        /// <param name="makeTarget"></param>
+        public void outputOrder(string order, string contract, string begin, string end, string person, string adTarget, string makeTarget)
+        {
+            DaOrderInfo dal = new DaOrderInfo();
+            DataTable dt = dal.getDataTable(order, contract, begin, end, person, adTarget, makeTarget);
+
+            if (dt.Rows.Count > 0)
+            {
+                string filename = "myOrderList.xls";
+                System.IO.StringWriter tw = new System.IO.StringWriter();
+                System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+                DataGrid dgGrid = new DataGrid();
+                dgGrid.DataSource = dt;
+                dgGrid.DataBind();
+
+                //Get the HTML for the control.
+                dgGrid.RenderControl(hw);
+                //Write the HTML back to the browser.
+                //Response.ContentType = application/vnd.ms-excel;
+                Response.ContentType = "application/vnd.ms-excel";
+                Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+                Response.Write(tw.ToString());
+            }
+            else
+            {
+                Response.Write("无数据可导出！");
+            }
+
+            Response.End();
+        }
+        #endregion
     }
 }

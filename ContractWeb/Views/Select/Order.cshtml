@@ -36,7 +36,7 @@
 <p>
     <input type="button" value="查询" style="margin-left:10px;" onclick="search()" />
     <input type="button" value="当日到账明细" style="margin-left:10px;" onclick="search()" />
-    <input type="button" value="导出" style="margin-left:10px;" onclick="search()" />
+    <input type="button" value="导出" style="margin-left:10px;" onclick="output()" />
 </p>
 
 <table id="OrderList" style="width: 1050px; height: 400px;" data-options="singleSelect:true,idField:'id',url:'/Select/getOrderList'">
@@ -107,6 +107,18 @@
         $('#OrderList').datagrid({
             url: "/Select/searchOrder?order=" + orderID + "&contract=" + contractID + "&begin=" + begin + "&end=" + end + "&person=" + person + "&adTarget=" + adTarget + "&makeTarget=" + makeTarget
         });
+    }
+
+    function output() {
+        var orderID = $("#txtOrderID").val();
+        var contractID = $("#txtContractID").val();
+        var begin = $("#txtBeginDate").datebox("getValue");
+        var end = $("#txtEndDate").datebox("getValue");
+        var person = $("#drpPerson").combobox("getValue");
+        var adTarget = $("#drpADTarget").combobox("getValue");
+        var makeTarget = $("#drpMakeTarget").combobox("getValue");
+
+        window.open("/Select/outputOrder?order=" + orderID + "&contract=" + contractID + "&begin=" + begin + "&end=" + end + "&person=" + person + "&adTarget=" + adTarget + "&makeTarget=" + makeTarget, "", "width=50,height=50,toolbar=no,menubar=no,scrollbars=no, resizable=no");
     }
 
     function createRowMenu() {

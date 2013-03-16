@@ -12,6 +12,7 @@ namespace ContractWeb.DataAccess
 {
     public class DaContractInfo
     {
+        #region 获取合同列表
         /// <summary>
         /// 获取合同列表
         /// </summary>
@@ -30,9 +31,11 @@ namespace ContractWeb.DataAccess
             IList<ContractInfo> list = DynamicBuilder<ContractInfo>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
+        #region 获取合同列表(输出报表)
         /// <summary>
-        /// 获取合同列表
+        /// 获取合同列表(输出报表)
         /// </summary>
         /// <returns></returns>
         public DataTable getDataTable()
@@ -47,7 +50,9 @@ namespace ContractWeb.DataAccess
 
             return SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql).Tables[0];
         }
+        #endregion
 
+        #region 搜索合同列表
         /// <summary>
         /// 搜索合同列表
         /// </summary>
@@ -123,7 +128,85 @@ namespace ContractWeb.DataAccess
             IList<ContractInfo> list = DynamicBuilder<ContractInfo>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
+        #region 搜索合同列表（输出报表）
+        /// <summary>
+        /// 搜索合同列表（输出报表）
+        /// </summary>
+        /// <returns></returns>
+        public DataTable getDataTable(string id, string channel, string type, string state, string person, string billState, string date)
+        {
+            string strSql = "select contractID as [合同编号], name as [合同名称], (select z.name from CustomerInfo z where z.id=customerID) as [客户名称], "
+                + "version as [版本], price as [单厅价格], roomNum as [每场厅数], makeCost as [制作费], backMoney as [优惠], money as [签署金额], "
+                + "(select z.name from ContractType z where z.id=type) as [合同类型], "
+                + "(select z.name from Channel z where z.id=channelID) as [渠道归类], "
+                + "begintime as [合同周期(起)], endtime as [合同周期(止)], ZQ as [周期], (select z.name from UserInfo z where z.id=personID) as [经办人], "
+                + "memo as [备注], (select z.name from BillState z where z.id=billState) as [发票状态], "
+                + "(select z.name from ContractState z where z.id=state) as [合同状态], editTime as [状态修改时间] from ContractInfo ";
+
+            string where = "";
+
+            if (id.Trim() != "")
+                where += "contractID='" + id + "'";
+
+            if (channel.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "channelID=" + channel;
+            }
+
+            if (type.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "type=" + type;
+            }
+
+            if (state.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "state=" + state;
+            }
+
+            if (person.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "personID=" + person;
+            }
+
+            if (billState.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "billState=" + billState;
+            }
+
+            if (billState.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "billState=" + billState;
+            }
+
+            if (date.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "mDate='" + date + "'";
+            }
+
+            if (where != "")
+                strSql += "where " + where;
+
+            return SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql).Tables[0];
+        }
+        #endregion
+
+        #region 根据合同编号获取合同信息
         /// <summary>
         /// 根据合同编号获取合同信息
         /// </summary>
@@ -153,8 +236,9 @@ namespace ContractWeb.DataAccess
             else
                 return null;
         }
+        #endregion
 
-
+        #region 添加合同
         /// <summary>
         /// 添加合同
         /// </summary>
@@ -200,7 +284,9 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+        #endregion
 
+        #region 修改合同
         /// <summary>
         /// 修改合同
         /// </summary>
@@ -248,7 +334,9 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+        #endregion
 
+        #region 修改开票状态
         /// <summary>
         /// 修改开票状态
         /// </summary>
@@ -267,7 +355,9 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+        #endregion
 
+        #region 修改合同状态
         /// <summary>
         /// 修改合同状态
         /// </summary>
@@ -286,5 +376,6 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+        #endregion
     }
 }

@@ -12,6 +12,7 @@ namespace ContractWeb.DataAccess
 {
     public class DaOrderInfo
     {
+        #region 获取订单列表
         /// <summary>
         /// 获取订单列表
         /// </summary>
@@ -29,7 +30,9 @@ namespace ContractWeb.DataAccess
             IList<OrderInfo> list = DynamicBuilder<OrderInfo>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
+        #region 搜索订单列表
         /// <summary>
         /// 搜索订单列表
         /// </summary>
@@ -90,7 +93,69 @@ namespace ContractWeb.DataAccess
             IList<OrderInfo> list = DynamicBuilder<OrderInfo>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
+        #region 搜索订单列表(导出报表)
+        /// <summary>
+        /// 搜索订单列表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable getDataTable(string orderID, string contractID, string begin, string end, string person, string adTarget, string makeTarget)
+        {
+            string strSql = "select a.contractID as [合同编号], a.orderID as [下单编号], b.name as [合同名称], "
+                + "(select z.target from ADCostTarget z where z.id=a.costTargetID) as [广告费结算对象], "
+                + "(select z.target from MakeCostTarget z where z.id=a.makeTargetID) as [制作费结算对象], "
+                + "a.begintime as [下单时段(起)], a.endtime as [下单时段(止)], a.roomNum as [下单厅数], a.memo as [备注] from OrderInfo a, ContractInfo b "
+                + "where a.contractID=b.contractID ";
+
+            string where = "";
+
+            if (orderID.Trim() != "")
+                where += "a.orderID like '%" + orderID + "%'";
+
+            if (contractID.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "a.contractID like '%" + contractID + "%'";
+            }
+
+            if (begin.Trim() != "" && end.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "(a.endtime>='" + begin + "' and a.begintime<='" + end + "')";
+            }
+
+            if (person.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "b.personID='" + person + "'";
+            }
+
+            if (adTarget.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "a.costTargetID='" + adTarget + "'";
+            }
+
+            if (makeTarget.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "a.makeTargetID='" + makeTarget + "'";
+            }
+
+            if (where != "")
+                strSql += "and (" + where + ")";
+
+            return SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql).Tables[0];
+        }
+        #endregion
+
+        #region 根据编号获取信息
         /// <summary>
         /// 根据编号获取信息
         /// </summary>
@@ -124,7 +189,9 @@ namespace ContractWeb.DataAccess
             else
                 return null;
         }
+        #endregion
 
+        #region 生成当天最大的订单编号
         /// <summary>
         /// 生成当天最大的订单编号
         /// </summary>
@@ -145,7 +212,9 @@ namespace ContractWeb.DataAccess
 
             return selectID + (auto > 10 ? auto.ToString() : "0" + auto);
         }
+        #endregion
 
+        #region 添加订单
         /// <summary>
         /// 添加订单
         /// </summary>
@@ -174,5 +243,6 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+        #endregion
     }
 }
