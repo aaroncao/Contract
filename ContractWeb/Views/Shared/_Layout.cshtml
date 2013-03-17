@@ -1,18 +1,14 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>@ViewBag.Title</title>
+    <title>环宇传媒OA办公系统</title>
 
     <!--   CSS   -->
 
-    <!-- Reset Stylesheet -->
     <link rel="stylesheet" href="@Url.Content("~/Content/reset.css")" type="text/css" media="screen" />
-    <!-- Main Stylesheet -->
     <link rel="stylesheet" href="@Url.Content("~/Content/style.css")" type="text/css" media="screen" />
-    <!-- Invalid Stylesheet. This makes stuff look pretty. Remove it if you want the CSS completely valid -->
     <link rel="stylesheet" href="@Url.Content("~/Content/invalid.css")" type="text/css" media="screen" />
     
     <link rel="stylesheet" href="@Url.Content("~/Content/themes/default/easyui.css")" type="text/css" />
@@ -22,39 +18,11 @@
 
     <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.8.3.min.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.easyui.min.js")"></script>
-    <!-- jQuery Configuration -->
     <script type="text/javascript" src="@Url.Content("~/Scripts/simpla.jquery.configuration.js")"></script>
-    <!-- Facebox jQuery Plugin -->
     <script type="text/javascript" src="@Url.Content("~/Scripts/facebox.js")"></script>
-    <!-- jQuery WYSIWYG Plugin -->
     <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.wysiwyg.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/system.js")"></script>
 
-    <script>
-
-        function myformatter(date) {
-            var y = date.getFullYear();
-            var m = date.getMonth() + 1;
-            var d = date.getDate();
-            return y + '-' + (m < 10 ? ('0' + m) : m) + '-' + (d < 10 ? ('0' + d) : d);
-        }
-
-        function myparser(s) {
-            if (!s) return new Date();
-            var ss = s.split('-');
-            var y = parseInt(ss[0], 10);
-            var m = parseInt(ss[1], 10);
-            var d = parseInt(ss[2], 10);
-            if (!isNaN(y) && !isNaN(m) && !isNaN(d)) {
-                return new Date(y, m - 1, d);
-            } else {
-                return new Date();
-            }
-        }
-
-        String.prototype.trim = function () {
-            return this.replace(/(^\s*)(\s*$)/g, "");
-        }
-    </script>
 </head>
 <body>
     <input id="pageNum" style="display:none;" value="@ViewBag.menu" />
@@ -63,15 +31,10 @@
         <!-- Wrapper for the radial gradient background -->
         <div id="sidebar">
             <div id="sidebar-wrapper">
-                <!-- Sidebar with logo and menu -->
-                <h1 id="sidebar-title"><a href="#">Simpla Admin</a></h1>
-                <!-- Logo (221px wide) -->
-                <a href="#">
-                    <img id="logo" src="@Url.Content("~/Content/images/logo.png")" alt="Simpla Admin logo" /></a>
                 <!-- Sidebar Profile links -->
-                <div id="profile-links"><a href="#" title="Edit your profile">admin</a><br />
-                    <div style="height:10px;"></div>
-                    <a href="/UserManage/EditPwd" title="View the Site">修改密码</a> | <a href="#" title="Sign Out">退出</a>
+                <div id="profile-links" style="font-size:12px;margin:20px 0px;">
+                    <label style="float:left;color:white;">admin</label>
+                    <div style="float:right;"><a href="/UserManage/EditPwd">修改密码</a> | <a href="#">退出</a></div>
                 </div>
                 <ul id="main-nav">
                     <script>

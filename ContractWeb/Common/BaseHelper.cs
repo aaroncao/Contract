@@ -63,11 +63,11 @@ namespace ContractWeb.Common
             new MenuItem(10, "客户状态设定", 2, "State", "BasicSetting"),
             new MenuItem(11, "广告费结算对象设定", 2, "ADCost", "BasicSetting"),
             new MenuItem(12, "制作费结算对象设定", 2, "MakeCost", "BasicSetting"),
-            new MenuItem(13, "客户资料管理", 2, "Customer", "BasicSetting"),
             new MenuItem(14, "影院信息管理", 2, "Cinema", "BasicSetting"),
             new MenuItem(15, "影厅信息管理", 2, "CinemaRoom", "BasicSetting"),
             
 
+            new MenuItem(13, "客户资料管理", 3, "Customer", "BasicSetting"),
             new MenuItem(34, "合同信息录入", 3, "Contract", "Business"),
             new MenuItem(18, "下单", 3, "Order", "Business"),
             new MenuItem(19, "客户到账登记", 3, "CPay", "Business"),
@@ -79,7 +79,9 @@ namespace ContractWeb.Common
             new MenuItem(26, "合同信息查询", 4, "Contract", "Select"),
             new MenuItem(27, "下单信息查询", 4, "Order", "Select"),
             new MenuItem(29, "广告费结算查询", 4, "ADCost", "Select"),
-            new MenuItem(30, "制作费结算查询", 4, "MakeCost", "Select")
+            new MenuItem(30, "制作费结算查询", 4, "MakeCost", "Select"),
+            new MenuItem(32, "影院投放统计", 4, "Putin", "Select"),
+            new MenuItem(33, "影院广告情况统计", 4, "AdvList", "Select")
         };
 
         /// <summary>

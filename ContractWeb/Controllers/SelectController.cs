@@ -173,7 +173,31 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        
+        #region 影院投放统计
+        /// <summary>
+        /// 影院投放统计
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Putin()
+        {
+            ViewBag.menu = 32;
+            return View();
+        }
+        #endregion
+
+        #region 影院广告情况统计
+        /// <summary>
+        /// 影院广告情况统计
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AdvList()
+        {
+            ViewBag.menu = 33;
+            return View();
+        }
+        #endregion
+
+
 
         #region 获取合同状态列表
         /// <summary>
@@ -664,6 +688,86 @@ namespace ContractWeb.Controllers
             if (dt.Rows.Count > 0)
             {
                 string filename = "myOrderList.xls";
+                System.IO.StringWriter tw = new System.IO.StringWriter();
+                System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+                DataGrid dgGrid = new DataGrid();
+                dgGrid.DataSource = dt;
+                dgGrid.DataBind();
+
+                //Get the HTML for the control.
+                dgGrid.RenderControl(hw);
+                //Write the HTML back to the browser.
+                //Response.ContentType = application/vnd.ms-excel;
+                Response.ContentType = "application/vnd.ms-excel";
+                Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+                Response.Write(tw.ToString());
+            }
+            else
+            {
+                Response.Write("无数据可导出！");
+            }
+
+            Response.End();
+        }
+        #endregion
+
+        #region 获取影院投放统计列表
+        /// <summary>
+        /// 获取影院投放统计列表
+        /// </summary>
+        /// <param name="cinema"></param>
+        /// <param name="room"></param>
+        /// <param name="version"></param>
+        /// <param name="begin"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public JsonResult searchPutinList(string cinema, string room, string version, string begin, string end)
+        {
+            DaPutinInfo dal = new DaPutinInfo();
+            IList<PutinListItem> list = dal.getList(cinema, room, version, begin, end);
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+            result.Data = new { total = list.Count, rows = list };
+            return result;
+        }
+        #endregion
+
+        #region 获取影院广告情况统计列表
+        /// <summary>
+        /// 获取影院广告情况统计列表
+        /// </summary>
+        /// <param name="cinema"></param>
+        /// <param name="begin"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public JsonResult searchAdvList(string cinema, string begin, string end)
+        {
+            DaAdvListItem dal = new DaAdvListItem();
+            IList<AdvListItem> list = dal.getList(cinema, begin, end);
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+            result.Data = new { total = list.Count, rows = list };
+            return result;
+        }
+        #endregion
+
+        #region 导出影院广告情况统计报表
+        /// <summary>
+        /// 导出影院广告情况统计报表
+        /// </summary>
+        /// <param name="cinema"></param>
+        /// <param name="begin"></param>
+        /// <param name="end"></param>
+        public void outputAdv(string cinema, string begin, string end)
+        {
+            DaAdvListItem dal = new DaAdvListItem();
+            DataTable dt = dal.getDataTable(cinema, begin, end);
+
+            if (dt.Rows.Count > 0)
+            {
+                string filename = "myAdvList.xls";
                 System.IO.StringWriter tw = new System.IO.StringWriter();
                 System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
                 DataGrid dgGrid = new DataGrid();

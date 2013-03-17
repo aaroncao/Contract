@@ -12,6 +12,7 @@ namespace ContractWeb.Controllers
 {
     public class HomeController : Controller
     {
+        #region 登录界面
         /// <summary>
         /// 登录界面
         /// </summary>
@@ -20,9 +21,11 @@ namespace ContractWeb.Controllers
         {
             return View();
         }
+        #endregion
 
+        #region 平台首页
         /// <summary>
-        /// 首页
+        /// 平台首页
         /// </summary>
         /// <returns></returns>
         public ActionResult Index()
@@ -31,7 +34,9 @@ namespace ContractWeb.Controllers
             ViewBag.Message = "欢迎使用系统平台";
             return View();
         }
+        #endregion
 
+        #region 登录验证
         /// <summary>
         /// 登录验证
         /// </summary>
@@ -42,14 +47,12 @@ namespace ContractWeb.Controllers
         {
             DaUserInfo daUser = new DaUserInfo();
             UserInfo info = daUser.checkUserID(userID, password);
-
             var result = new CustomJsonResult();            
 
             if (info != null)
             {
                 Session["userInfo"] = info;
-                FormsAuthentication.SetAuthCookie(userID, false);
-
+                //FormsAuthentication.SetAuthCookie(userID, false);
                 result.Data = 1;
             }
             else
@@ -59,7 +62,9 @@ namespace ContractWeb.Controllers
 
             return result;
         }
+        #endregion
 
+        #region 获取菜单数据
         /// <summary>
         /// 获取菜单数据
         /// </summary>
@@ -72,5 +77,6 @@ namespace ContractWeb.Controllers
             result.Data = list;
             return result;
         }
+        #endregion
     }
 }

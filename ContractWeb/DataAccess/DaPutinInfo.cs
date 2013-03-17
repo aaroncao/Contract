@@ -12,6 +12,7 @@ namespace ContractWeb.DataAccess
 {
     public class DaPutinInfo
     {
+        #region 根据订单编号获取投放信息
         /// <summary>
         /// 根据订单编号获取投放信息
         /// </summary>
@@ -32,7 +33,63 @@ namespace ContractWeb.DataAccess
             IList<PutinInfo> list = DynamicBuilder<PutinInfo>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
+        #region 搜索投放信息
+        /// <summary>
+        /// 搜索投放信息
+        /// </summary>
+        /// <param name="cinema"></param>
+        /// <param name="room"></param>
+        /// <param name="version"></param>
+        /// <param name="begin"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public IList<PutinListItem> getList(string cinema, string room, string version, string begin, string end)
+        {
+            string strSql = "select a.id, a.cinemaID, (select z.name from Cinema z where z.id=a.cinemaID) as cinemaName, "
+                + "a.cinemaRoomID, (select z.room from CinemaRoom z where z.id=a.cinemaRoomID) as cinemaRoomName, "
+                + "b.version, c.begintime, a.orderID, a.contractID, "
+                + "a.roomTypeID, (select z.type from CinemaRoomType z where z.id=a.roomTypeID) as roomType, "
+                + "b.price "
+                + "from PutinInfo a, ContractInfo b, OrderInfo c where a.contractID=b.contractID and b.contractID=c.contractID ";
+
+            string where = "";
+
+            if (cinema.Trim() != "")
+                where += "a.cinemaID='" + cinema + "'";
+
+            if (room.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "a.cinemaRoomID='" + room + "'";
+            }
+
+            if (version.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "b.version='" + version + "'";
+            }
+
+            if (begin.Trim() != "" && end.Trim() != "")
+            {
+                if (where != "")
+                    where += " or ";
+                where += "(c.begintime between'" + begin + "' and '" + end + "')";
+            }
+
+            if (where != "")
+                strSql += "and (" + where + ")";
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
+            IList<PutinListItem> list = DynamicBuilder<PutinListItem>.ConvertToList(dr);
+            return list;
+        }
+        #endregion
+
+        #region 添加投放影厅
         /// <summary>
         /// 添加投放影厅
         /// </summary>
@@ -53,5 +110,6 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql);
             return result;
         }
+        #endregion
     }
 }

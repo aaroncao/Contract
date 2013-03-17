@@ -118,6 +118,7 @@
     <Compile Include="DataAccess\DaAccountState.cs" />
     <Compile Include="DataAccess\DaADCostAccount.cs" />
     <Compile Include="DataAccess\DaADCostTarget.cs" />
+    <Compile Include="DataAccess\DaAdvListItem.cs" />
     <Compile Include="DataAccess\DaAreaInfo.cs" />
     <Compile Include="DataAccess\DaBill.cs" />
     <Compile Include="DataAccess\DaBillState.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="Models\ADCost.cs" />
     <Compile Include="Models\ADCostAccount.cs" />
     <Compile Include="Models\ADCostTarget.cs" />
+    <Compile Include="Models\AdvListItem.cs" />
     <Compile Include="Models\AreaInfo.cs" />
     <Compile Include="Models\Bill.cs" />
     <Compile Include="Models\BillState.cs" />
@@ -177,6 +179,7 @@
     <Compile Include="Models\PowerGroup.cs" />
     <Compile Include="Models\PowerGroupPower.cs" />
     <Compile Include="Models\PutinInfo.cs" />
+    <Compile Include="Models\PutinListItem.cs" />
     <Compile Include="Models\ReceiveBill.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -432,6 +435,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\wqz.pubxml" />
+    <Content Include="Views\Select\Putin.cshtml" />
+    <Content Include="Views\Select\AdvList.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

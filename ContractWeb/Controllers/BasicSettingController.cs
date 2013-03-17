@@ -689,6 +689,23 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        #region 根据影院ID获取影厅列表
+        /// <summary>
+        /// 根据影院ID获取影厅列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult getDrpCinemaRoomList(string id)
+        {
+            DaCinemaRoom dal = new DaCinemaRoom();
+            IList<CinemaRoom> rooms = dal.getList(id);
+
+            var result = new CustomJsonResult();
+            result.Data = rooms;
+            return result;
+        }
+        #endregion
+
         #region 获取影院列表
         /// <summary>
         /// 获取影院列表
