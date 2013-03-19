@@ -20,31 +20,14 @@ namespace ContractWeb.Common
         /// </summary>
         public static string DBConnStr = ConfigurationManager.ConnectionStrings["DBConnection"].ToString();
 
-
         /// <summary>
-        /// 获取用户信息
+        /// 用户信息
         /// </summary>
-        /// <returns></returns>
-        public static UserInfo getUserInfo()
-        {
-            if (HttpContext.Current.Session["userInfo"] != null)
-                return (UserInfo) HttpContext.Current.Session["userInfo"];
+        public static UserInfo user = null;
 
-            return null;
-        }
-
+        #region 系统菜单配置
         /// <summary>
-        /// 设置用户信息
-        /// </summary>
-        /// <param name="info"></param>
-        public static void setUserInfo(UserInfo info)
-        {
-            HttpContext.Current.Session["userInfo"] = info;
-        }
-
-
-        /// <summary>
-        /// 系统菜单
+        /// 系统菜单配置
         /// </summary>
         public static MenuItem[] sysMenu = new MenuItem[] {
             new MenuItem(0, "首页", 0, "Index", "Home"),
@@ -83,6 +66,40 @@ namespace ContractWeb.Common
             new MenuItem(32, "影院投放统计", 4, "Putin", "Select"),
             new MenuItem(33, "影院广告情况统计", 4, "AdvList", "Select")
         };
+        #endregion
+
+        #region 获取用户信息
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <returns></returns>
+        public static UserInfo getUserInfo()
+        {
+            if (BaseHelper.user != null)
+            {
+                return BaseHelper.user;
+            }
+            else if (HttpContext.Current.Session["userInfo"] != null)
+            {
+                return (UserInfo)HttpContext.Current.Session["userInfo"];
+            }
+
+            return null;
+        }
+        #endregion
+
+        #region 设置用户信息
+        /// <summary>
+        /// 设置用户信息
+        /// </summary>
+        /// <param name="info"></param>
+        public static void setUserInfo(UserInfo info)
+        {
+            BaseHelper.user = info;
+            HttpContext.Current.Session["userInfo"] = info;
+        }
+        #endregion        
+
 
         /// <summary>
         /// 获取菜单权限
@@ -96,7 +113,7 @@ namespace ContractWeb.Common
             else
             {
                 //取权限
-                UserInfo info = (UserInfo)HttpContext.Current.Session["userInfo"];
+                UserInfo info = BaseHelper.getUserInfo();
                 string strSql = "select b.moduleID from UserInfo a, PowerGroupPower b where a.powergroupID=b.groupID and a.userID=@userID";
 
                 SqlParameter[] param = new SqlParameter[] {

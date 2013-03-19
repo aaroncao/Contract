@@ -3,10 +3,9 @@
 }
 
 <!DOCTYPE html>
-
 <html>
 <head>
-    <title>系统平台 </title>
+    <title></title>
     
     <!-- Reset Stylesheet -->
     <link rel="stylesheet" href="@Url.Content("~/Content/reset.css")" type="text/css" media="screen" />
@@ -19,14 +18,15 @@
     <script type="text/javascript" src="@Url.Content("~/Scripts/simpla.jquery.configuration.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/facebox.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.wysiwyg.js")"></script>
-    <script src="@Url.Content("~/Scripts/jquery.easyui.min.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.easyui.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/system.js")"></script>
 </head>
 <body id="login">
     <div id="login-wrapper" class="png_bg">
         <div id="login-top">
             <h1>Simpla Admin</h1>
             <!-- Logo (221px width) -->
-            <a href="#"><img id="logo" src="@Url.Content("~/Content/images/logo.png")" alt="Simpla Admin logo" /></a>
+            <!-- <img id="logo" src="@Url.Content("~/Content/images/logo.png")" alt="环宇传媒" /> -->
         </div>
         <!-- End #logn-top -->
         <div id="login-content">
@@ -44,7 +44,7 @@
                 </p>
                 <div class="clear"></div>
                 <p>
-                    <input class="button" type="button" value="Sign In" onclick="login()" />
+                    <input class="button" style="font-size:12px !important;" type="button" value="登 录" onclick="login()" />
                 </p>
         </div>
         <!-- End #login-content -->
@@ -70,7 +70,7 @@
 
         $.get("/Home/LogOn?userID=" + user + "&password=" + password, function (data) {
             if (data == 1)
-                window.location.href = "Home/index";
+                location.href = "/Home/index";
             else
                 $("#msglbl").html("登录失败");
         });

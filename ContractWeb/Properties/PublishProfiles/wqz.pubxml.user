@@ -11,7 +11,7 @@
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/ContractWeb.dll">
-      <publishTime>03/14/2013 17:55:45</publishTime>
+      <publishTime>03/19/2013 20:08:38</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>03/08/2013 00:22:38</publishTime>
@@ -140,7 +140,7 @@
       <publishTime>03/08/2013 00:22:38</publishTime>
     </File>
     <File Include="Content/images/logo.png">
-      <publishTime>03/08/2013 00:22:38</publishTime>
+      <publishTime>03/18/2013 08:34:39</publishTime>
     </File>
     <File Include="Content/images/menu-current-arrow.gif">
       <publishTime>03/08/2013 00:22:38</publishTime>
@@ -581,13 +581,16 @@
       <publishTime>03/08/2013 00:22:38</publishTime>
     </File>
     <File Include="Views/Home/Login.cshtml">
-      <publishTime>03/08/2013 00:22:38</publishTime>
+      <publishTime>03/18/2013 08:46:24</publishTime>
     </File>
     <File Include="Views/Select/ADCost.cshtml">
       <publishTime>03/08/2013 00:22:38</publishTime>
     </File>
     <File Include="Views/Select/ADCostList.cshtml">
       <publishTime>03/08/2013 00:22:38</publishTime>
+    </File>
+    <File Include="Views/Select/AdvList.cshtml">
+      <publishTime>03/18/2013 08:34:39</publishTime>
     </File>
     <File Include="Views/Select/BillList.cshtml">
       <publishTime>03/08/2013 00:22:38</publishTime>
@@ -617,7 +620,10 @@
       <publishTime>03/08/2013 00:22:38</publishTime>
     </File>
     <File Include="Views/Select/Order.cshtml">
-      <publishTime>03/09/2013 14:53:15</publishTime>
+      <publishTime>03/18/2013 08:34:39</publishTime>
+    </File>
+    <File Include="Views/Select/Putin.cshtml">
+      <publishTime>03/18/2013 08:34:39</publishTime>
     </File>
     <File Include="Views/Select/ReceiveBillList.cshtml">
       <publishTime>03/09/2013 14:50:19</publishTime>
@@ -629,7 +635,7 @@
       <publishTime>03/08/2013 00:22:38</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>03/08/2013 00:22:38</publishTime>
+      <publishTime>03/19/2013 19:54:23</publishTime>
     </File>
     <File Include="Views/Shared/_LogOnPartial.cshtml">
       <publishTime>03/08/2013 00:22:38</publishTime>
@@ -653,7 +659,7 @@
       <publishTime>03/08/2013 00:22:38</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>03/14/2013 17:55:46</publishTime>
+      <publishTime>03/19/2013 20:08:39</publishTime>
     </File>
   </ItemGroup>
 </Project>

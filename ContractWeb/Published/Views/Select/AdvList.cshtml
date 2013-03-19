@@ -1,0 +1,79 @@
+﻿<style type="text/css">
+
+    .fitemTitle {
+        display: inline-block;
+        width: 60px;
+    }
+
+    .fitemWidth {
+        width: 100px;
+        margin-right: 10px;
+    }
+</style>
+
+<div class="ftitle">影院广告情况统计</div>
+<p />
+
+
+<div class="fitem">
+    <label class="fitemTitle">投放影院:</label>
+    <select id="drpCinema" class="easyui-combobox"></select>
+    <label class="fitemTitle" style="margin-left:10px;width:90px;">下画时间段:</label>
+    <input id="txtBegin" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" style="width:100px;" /> 至
+    <input id="txtEnd" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" style="width:100px;" />
+</div>
+
+<p>
+    <input type="button" value="查询" style="margin-left:10px;" onclick="search()" />
+    <input type="button" value="导出" style="margin-left:10px;" onclick="output()" />
+</p>
+
+<table id="AdvList" style="width: 800px; height: 400px;" data-options="singleSelect:true,idField:'id'">
+    <thead>
+        <tr>
+            <th data-options="field:'contractID',width:100">合同编号</th>
+            <th data-options="field:'contractName',width:130">合同名称</th>
+            <th data-options="field:'orderID',width:100">下单编号</th>
+            <th data-options="field:'cinemaName',width:120">投放影院</th>
+            <th data-options="field:'begintime',width:80">下单时间(起)</th>
+            <th data-options="field:'endtime',width:80">下单时间(止)</th>
+            <th data-options="field:'version',width:80">广告版本(秒)</th>
+        </tr>
+    </thead>
+</table>
+
+
+<script>
+    $(function () {
+        $("#AdvList").datagrid();
+
+        $("#drpCinema").combobox({
+            url: '/BasicSetting/getDrpCinemaList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        var today = new Date();
+        var todayStr = today.getFullYear() + "-" + (today.getMonth() > 10 ? (today.getMonth + 1) : "0" + (today.getMonth() + 1)) + "-" + (today.getDate() > 10 ? today.getDate() : "0" + today.getDate());
+        $("#txtBegin").datebox("setValue", todayStr);
+        $("#txtEnd").datebox("setValue", todayStr);
+    });
+
+    function search() {
+        var cinema = $("#drpCinema").combobox("getValue");
+        var begin = $("#txtBegin").datebox("getValue");
+        var end = $("#txtEnd").datebox("getValue");
+
+        $('#AdvList').datagrid({
+            url: "/Select/searchAdvList?cinema=" + cinema + "&begin=" + begin + "&end=" + end
+        });
+    }
+
+    function output() {
+        var cinema = $("#drpCinema").combobox("getValue");
+        var begin = $("#txtBegin").datebox("getValue");
+        var end = $("#txtEnd").datebox("getValue");
+
+        window.open("/Select/outputAdv?cinema=" + cinema + "&begin=" + begin + "&end=" + end + "&end=" + end, "", "width=50,height=50,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+    }
+</script>

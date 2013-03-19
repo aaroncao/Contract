@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>环宇传媒OA办公系统</title>
+    <title></title>
 
     <!--   CSS   -->
 
@@ -25,73 +25,36 @@
 
 </head>
 <body>
-    <input id="pageNum" style="display:none;" value="@ViewBag.menu" />
+    <input id="moduleNum" style="display:none;" value="@ViewBag.menu" />
+    @{
+        int module = ViewBag.menu;
+        ContractWeb.Models.UserInfo info = ContractWeb.Common.BaseHelper.getUserInfo();
+        //List<ContractWeb.Models.MenuItem> menus = ContractWeb.Common.BaseHelper.getMenuData();
+    }
 
     <div id="body-wrapper">
         <!-- Wrapper for the radial gradient background -->
         <div id="sidebar">
             <div id="sidebar-wrapper">
                 <!-- Sidebar Profile links -->
-                <div id="profile-links" style="font-size:12px;margin:20px 0px;">
-                    <label style="float:left;color:white;">admin</label>
+                <div id="profile-links" style="font-size:12px;margin:20px 0px;">                    
+                    <div style="float:left;"><img src="@Url.Content("~/Content/images/user.png")" /></div>
+                    <div style="float:left;color:white;">@info.userID</div>
                     <div style="float:right;"><a href="/UserManage/EditPwd">修改密码</a> | <a href="#">退出</a></div>
                 </div>
                 <ul id="main-nav">
-                    <script>
-                        $.ajax({
-                            type: "get",
-                            url: "/Home/getMenuData",
-                            async: false,
-                            success: function (data) {
-                                var html = "";
-                                var val = $("#pageNum").val();
-                                var currentType = 0;
-
-                                var types = [
-                                    "<li><a href='#' class='nav-top-item'>系统管理</a><ul>",
-                                    "<li><a href='#' class='nav-top-item'>用户管理</a><ul>",
-                                    "<li><a href='#' class='nav-top-item'>基础设置</a><ul>",
-                                    "<li><a href='#' class='nav-top-item'>业务管理</a><ul>",
-                                    "<li><a href='#' class='nav-top-item'>查询与统计</a><ul>"
-                                ];
-
-                                for (var i = 0; i < data.length; i++) {
-                                    var cls = "";
-                                    var item = data[i];
-
-                                    if (val == item.id) {
-                                        currentType = item.type;
-                                        cls = " class='current' ";
-                                    }
-
-                                    types[item.type] += "<li><a " + cls + " href='/" + item.control + "/" + item.action + "'>" + item.name + "</a></li>";
-                                }
-
-                                types[currentType] = types[currentType].replace("nav-top-item", "nav-top-item current");
-
-                                for (var i = 0; i < types.length; i++) {
-                                    html += types[i] + "</ul></li>";
-                                }
-
-                                document.write(html);
-                            }
-                        });
-                    </script>
-                </ul>
+                    
+                </ul>                    
             </div>
         </div>
         <!-- End #sidebar -->
         <div id="main-content">
-            
             @RenderBody()
-            
         </div>
         <!-- End #main-content -->
         
     </div>
-
 </body>
-<!-- Download From www.exet.tk-->
 </html>
 
 

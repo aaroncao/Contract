@@ -1,0 +1,91 @@
+﻿<style type="text/css">
+
+    .fitemTitle {
+        display: inline-block;
+        width: 60px;
+    }
+
+    .fitemWidth {
+        width: 100px;
+        margin-right: 10px;
+    }
+</style>
+
+<div class="ftitle">影院投放统计</div>
+<p />
+
+
+<div class="fitem">
+    <label class="fitemTitle">投放影院:</label>
+    <select id="drpCinema" class="easyui-combobox"></select>
+    <label class="fitemTitle inline" style="margin-left:10px;">投放影厅:</label>
+    <select id="drpRoom" class="easyui-combobox"></select>
+    <label class="fitemTitle inline" style="margin-left:10px;">广告版本:</label>
+    <input id="txtVersion" class="easyui-validatebox">
+</div>
+<div class="fitem">
+    <label class="fitemTitle">投放时间:</label>
+    <input id="txtBegin" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" style="width:100px;" /> 至
+    <input id="txtEnd" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" style="width:100px;" />
+    <label class="fitemTitle inline" style="width:90px;margin-left:10px;">累计投放金额:</label>
+    <input id="txtTotal" class="easyui-validatebox fitemWidth" readonly="true" /> 元
+</div>
+
+<p>
+    <input type="button" value="查询" style="margin-left:10px;" onclick="search()" />
+</p>
+
+<table id="PutinList" style="width: 800px; height: 400px;" data-options="singleSelect:true,idField:'id'">
+    <thead>
+        <tr>
+            <th data-options="field:'id',width:50">ID</th>
+            <th data-options="field:'cinemaName',width:120">投放影院</th>
+            <th data-options="field:'cinemaRoomName',width:100">投放影厅</th>
+            <th data-options="field:'version',width:80">广告版本(秒)</th>
+            <th data-options="field:'begintime',width:80">投放时间</th>
+            <th data-options="field:'orderID',width:100">下单编号</th>
+            <th data-options="field:'contractID',width:100">合同编号</th>
+            <th data-options="field:'roomType',width:70">影厅属性</th>
+            <th data-options="field:'price',width:70">单厅价格</th>
+        </tr>
+    </thead>
+</table>
+
+
+<script>
+    $(function () {
+        $("#PutinList").datagrid();
+
+        $("#drpCinema").combobox({
+            url: '/BasicSetting/getDrpCinemaList',
+            valueField: 'id',
+            textField: 'name',
+            onChange: getDrpRoomData
+        });
+
+        var today = new Date();
+        var todayStr = today.getFullYear() + "-" + (today.getMonth() > 10 ? (today.getMonth + 1) : "0" + (today.getMonth() + 1)) + "-" + (today.getDate() > 10 ? today.getDate() : "0" + today.getDate());
+        $("#txtBegin").datebox("setValue", todayStr);
+        $("#txtEnd").datebox("setValue", todayStr);
+    });
+
+    function getDrpRoomData() {
+        $("#drpRoom").combobox({
+            url: "/BasicSetting/getDrpCinemaRoomList?id=" + $("#drpCinema").combobox("getValue"),
+            valueField: 'id',
+            textField: 'room'
+        });
+    }
+
+    function search() {
+        var cinema = $("#drpCinema").combobox("getValue");
+        var room = $("#drpRoom").combobox("getValue");
+        var version = $("#txtVersion").val();
+        var begin = $("#txtBegin").datebox("getValue");
+        var end = $("#txtEnd").datebox("getValue");
+
+        $('#PutinList').datagrid({
+            url: "/Select/searchPutinList?cinema=" + cinema + "&room=" + room + "&version=" + version + "&begin=" + begin + "&end=" + end
+        });
+    }
+</script>

@@ -51,6 +51,7 @@ namespace ContractWeb.Controllers
 
             if (info != null)
             {
+                BaseHelper.user = info;
                 Session["userInfo"] = info;
                 //FormsAuthentication.SetAuthCookie(userID, false);
                 result.Data = 1;
@@ -78,5 +79,6 @@ namespace ContractWeb.Controllers
             return result;
         }
         #endregion
+
     }
 }
