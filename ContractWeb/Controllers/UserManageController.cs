@@ -42,8 +42,7 @@ namespace ContractWeb.Controllers
         /// <returns></returns>
         public ActionResult EditPwd()
         {
-            if (BaseHelper.getUserInfo() != null)
-                ViewBag.userID = BaseHelper.getUserInfo().userID;
+            ViewBag.userID = ((UserInfo)Session["info"]).userID;
 
             ViewBag.menu = 5;
             return View();
@@ -72,7 +71,7 @@ namespace ContractWeb.Controllers
         public JsonResult editPassword(string oldPwd, string newPwd)
         {
             DaUserInfo dal = new DaUserInfo();
-            string[] re = dal.editPassword(BaseHelper.getUserInfo(), oldPwd, newPwd);
+            string[] re = dal.editPassword((UserInfo)Session["info"], oldPwd, newPwd);
 
             var result = new CustomJsonResult();
             result.Data = new { isSuccess = re[0], msg = re[1] };
@@ -89,7 +88,7 @@ namespace ContractWeb.Controllers
         {
             var result = new CustomJsonResult();
 
-            result.Data = BaseHelper.getUserInfo();
+            result.Data = (UserInfo)Session["info"];
             return result;
         }
         #endregion
@@ -107,7 +106,7 @@ namespace ContractWeb.Controllers
         [HttpPost]
         public JsonResult editInfo(string name, string sex, string card, string tel, string address)
         {
-            UserInfo info = BaseHelper.getUserInfo().clone();
+            UserInfo info = ((UserInfo)Session["info"]).clone();
             info.name = name;
             info.sex = sex;
             info.card = card;
@@ -118,7 +117,7 @@ namespace ContractWeb.Controllers
             int isAccess = dal.edit(info);
 
             if (isAccess == 1)
-                BaseHelper.setUserInfo(info);
+                Session["info"] = info;
 
             var result = new CustomJsonResult();
             result.Data = isAccess;            

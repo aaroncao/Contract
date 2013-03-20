@@ -36,6 +36,15 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        public ActionResult Exit()
+        {
+            HttpCookie cookie = Request.Cookies["info"];
+            cookie.Expires = DateTime.Now.AddDays(-1);
+            Response.Cookies.Add(cookie);
+
+            return View();
+        }
+
         #region 登录验证
         /// <summary>
         /// 登录验证
@@ -51,9 +60,10 @@ namespace ContractWeb.Controllers
 
             if (info != null)
             {
-                BaseHelper.user = info;
                 Session["userInfo"] = info;
                 //FormsAuthentication.SetAuthCookie(userID, false);
+                Response.AppendCookie(saveCookie(info)); 
+
                 result.Data = 1;
             }
             else
@@ -65,6 +75,44 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        #region 保存Cookie
+        /// <summary>
+        /// 保存Cookie
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public HttpCookie saveCookie(UserInfo info)
+        {
+            HttpCookie cookie = new HttpCookie("info");
+            TimeSpan ts = new TimeSpan(1, 0, 0, 0, 0);
+            cookie.Expires = DateTime.Now.Add(ts);
+            cookie.Values.Add("userID", info.userID);
+            cookie.Values.Add("powergroupID", info.powergroupID);
+
+            return cookie;
+        }
+        #endregion
+
+        #region 获取Cookie
+        /// <summary>
+        /// 获取Cookie
+        /// </summary>
+        /// <returns></returns>
+        public UserInfo getCookie()
+        {
+            UserInfo info = null;
+
+            if (Request.Cookies["info"] != null)
+            {
+                info = new UserInfo();
+                info.userID = Request.Cookies["info"].Values["userID"];
+                info.powergroupID = Request.Cookies["info"].Values["powergroupID"];
+            }
+
+            return info;
+        }
+        #endregion
+
         #region 获取菜单数据
         /// <summary>
         /// 获取菜单数据
@@ -72,13 +120,13 @@ namespace ContractWeb.Controllers
         /// <returns></returns>
         public JsonResult getMenuData()
         {
-            List<MenuItem> list = BaseHelper.getMenuData();
+            UserInfo info = getCookie();
+            List<MenuItem> list = BaseHelper.getMenuData(info.userID);
 
             var result = new CustomJsonResult();
             result.Data = list;
             return result;
         }
         #endregion
-
     }
 }

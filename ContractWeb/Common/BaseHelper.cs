@@ -20,11 +20,6 @@ namespace ContractWeb.Common
         /// </summary>
         public static string DBConnStr = ConfigurationManager.ConnectionStrings["DBConnection"].ToString();
 
-        /// <summary>
-        /// 用户信息
-        /// </summary>
-        public static UserInfo user = null;
-
         #region 系统菜单配置
         /// <summary>
         /// 系统菜单配置
@@ -68,63 +63,26 @@ namespace ContractWeb.Common
         };
         #endregion
 
-        #region 获取用户信息
-        /// <summary>
-        /// 获取用户信息
-        /// </summary>
-        /// <returns></returns>
-        public static UserInfo getUserInfo()
-        {
-            if (BaseHelper.user != null)
-            {
-                return BaseHelper.user;
-            }
-            else if (HttpContext.Current.Session["userInfo"] != null)
-            {
-                return (UserInfo)HttpContext.Current.Session["userInfo"];
-            }
-
-            return null;
-        }
-        #endregion
-
-        #region 设置用户信息
-        /// <summary>
-        /// 设置用户信息
-        /// </summary>
-        /// <param name="info"></param>
-        public static void setUserInfo(UserInfo info)
-        {
-            BaseHelper.user = info;
-            HttpContext.Current.Session["userInfo"] = info;
-        }
-        #endregion        
-
-
+        #region 获取菜单权限
         /// <summary>
         /// 获取菜单权限
         /// </summary>
-        public static List<MenuItem> getMenuData()
+        public static List<MenuItem> getMenuData(string userID)
         {
-            if (HttpContext.Current.Session["menu"] != null)
-            {
-                return (List<MenuItem>)HttpContext.Current.Session["menu"];
-            }
-            else
+            List<MenuItem> menus = new List<MenuItem>();
+
+            if (!string.IsNullOrEmpty(userID))
             {
                 //取权限
-                UserInfo info = BaseHelper.getUserInfo();
                 string strSql = "select b.moduleID from UserInfo a, PowerGroupPower b where a.powergroupID=b.groupID and a.userID=@userID";
 
                 SqlParameter[] param = new SqlParameter[] {
-                    new SqlParameter("@userID", info.userID)
+                    new SqlParameter("@userID", userID)
                 };
 
                 DataTable dt = SqlHelper.ExecuteDataset(DBConnStr, CommandType.Text, strSql, param).Tables[0];
 
                 //配数据
-                List<MenuItem> menus = new List<MenuItem>();
-
                 for (int i = 0; i < sysMenu.Length; i++)
                 {
                     if (sysMenu[i].id == 0)
@@ -136,11 +94,12 @@ namespace ContractWeb.Common
 
                 //排序
                 //menus.Sort(new MenuCompare());
-
                 HttpContext.Current.Session["menu"] = menus;
-                return menus;
             }
+
+            return menus;
         }
+        #endregion
     }
 
     /// <summary>

@@ -12,6 +12,7 @@ namespace ContractWeb.DataAccess
 {
     public class DaUserInfo
     {
+        #region 获取用户列表
         /// <summary>
         /// 获取用户列表
         /// </summary>
@@ -26,7 +27,9 @@ namespace ContractWeb.DataAccess
             IList<UserInfo> list = DynamicBuilder<UserInfo>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
+        #region 获取用户列表
         /// <summary>
         /// 获取用户列表
         /// </summary>
@@ -57,7 +60,9 @@ namespace ContractWeb.DataAccess
             IList<UserInfo> list = DynamicBuilder<UserInfo>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
+        #region 添加用户
         /// <summary>
         /// 添加用户
         /// </summary>
@@ -77,9 +82,11 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+        #endregion
 
+        #region 编辑用户
         /// <summary>
-        /// 修改用户信息
+        /// 编辑用户
         /// </summary>
         /// <param name="en">用户实体</param>
         /// <returns></returns>
@@ -100,7 +107,9 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+        #endregion
 
+        #region 删除用户
         /// <summary>
         /// 删除用户
         /// </summary>
@@ -118,39 +127,9 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+        #endregion
 
-        /// <summary>
-        /// 登录验证
-        /// </summary>
-        /// <param name="userID">用户ID</param>
-        /// <param name="pwd">密码</param>
-        /// <returns></returns>
-        public UserInfo checkUserID(string userID, string pwd)
-        {
-            UserInfo info = null;
-
-            string strSql = "select id, userID, "
-                + "(case state when 1 then '使用' when 0 then '禁止' end) as state, name, "
-                + "(case sex when 1 then '男' when 2 then '女' end) as sex, card, tel, address, date from UserInfo "
-                + "where userID=@userID and password=@pwd";
-
-            SqlParameter[] param = new SqlParameter[]
-            {
-                new SqlParameter("@userID", userID),
-                new SqlParameter("@pwd", pwd)
-            };
-
-            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
-            IList<UserInfo> list = DynamicBuilder<UserInfo>.ConvertToList(dr);
-            
-            if (list != null && list.Count > 0)
-            {
-                info = list[0];
-            }
-            
-            return info;
-        }
-
+        #region 修改密码
         /// <summary>
         /// 修改密码
         /// </summary>
@@ -169,7 +148,7 @@ namespace ContractWeb.DataAccess
             };
 
             DataSet ds = SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
-            
+
             if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 ds.Dispose();
@@ -190,7 +169,44 @@ namespace ContractWeb.DataAccess
             else
             {
                 return new string[] { "-1", "旧密码不对" };
-            }            
+            }
         }
+        #endregion
+
+        #region 登录验证
+        /// <summary>
+        /// 登录验证
+        /// </summary>
+        /// <param name="userID">用户ID</param>
+        /// <param name="pwd">密码</param>
+        /// <returns></returns>
+        public UserInfo checkUserID(string userID, string pwd)
+        {
+            UserInfo info = null;
+
+            string strSql = "select id, userID, powergroupID, password, "
+                + "(case state when 1 then '使用' when 0 then '禁止' end) as state, name, "
+                + "(case sex when 1 then '男' when 2 then '女' end) as sex, card, tel, address, date "
+                + "from UserInfo a "
+                + "where userID=@userID and password=@pwd";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@userID", userID),
+                new SqlParameter("@pwd", pwd)
+            };
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+            IList<UserInfo> list = DynamicBuilder<UserInfo>.ConvertToList(dr);
+            
+            if (list != null && list.Count > 0)
+            {
+                info = list[0];
+            }
+            
+            return info;
+        }
+        #endregion
+
     }
 }

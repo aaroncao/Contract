@@ -47,10 +47,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>Libs\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NPOI, Version=2.0.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\NPOI.dll</HintPath>
-    </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -334,6 +330,7 @@
     <Content Include="Scripts\jquery.easyui.min.js" />
     <Content Include="Scripts\jquery.wysiwyg.js" />
     <Content Include="Scripts\simpla.jquery.configuration.js" />
+    <Content Include="Scripts\system.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -435,6 +432,7 @@
     <None Include="Properties\PublishProfiles\wqz.pubxml" />
     <Content Include="Views\Select\Putin.cshtml" />
     <Content Include="Views\Select\AdvList.cshtml" />
+    <Content Include="Views\Home\Exit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
