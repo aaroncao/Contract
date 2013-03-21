@@ -43,7 +43,7 @@
 </div>
 
 <!-- dialog -->
-<div id="dlg" class="easyui-dialog" style="width: 400px; height: 280px; padding: 10px 20px" closed="true" buttons="#dlg-buttons">
+<div id="dlg" class="easyui-dialog" style="width: 450px; height: 330px; padding: 10px 20px" closed="true" buttons="#dlg-buttons">
     <div class="fitem">
         <label class="fitemTitle">用户名:<font color="red">*</font></label>
         <input id="txtUserID" class="easyui-validatebox" />
@@ -159,8 +159,8 @@
 
     function search() {
         var userID = $("#srcUserID").val();
-        var begin = $("#srcBegin").val();
-        var end = $("#srcEnd").val();
+        var begin = $("#srcBegin").datebox("getValue");
+        var end = $("#srcEnd").datebox("getValue");
 
         $('#UserList').datagrid({
             url: "/UserManage/searchList?userID=" + userID + "&beginDate=" + begin + "&endDate=" + end

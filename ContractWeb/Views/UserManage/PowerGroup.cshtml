@@ -1,5 +1,4 @@
 ﻿<style type="text/css">
-
     .fieldCSS {
         width: 500px;
     }
@@ -99,7 +98,7 @@
             return;
         }
 
-        $.post("/SystemSetting/updateGroup", "id=" + selected + "&name=" + name + "&memo=" + memo,
+        $.post("/UserManage/updateGroup", "id=" + selected + "&name=" + name + "&memo=" + memo,
             function (data) {
                 if (data == 0)
                     alert("修改失败");

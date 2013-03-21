@@ -25,7 +25,7 @@ namespace ContractWeb.Common
         /// 系统菜单配置
         /// </summary>
         public static MenuItem[] sysMenu = new MenuItem[] {
-            new MenuItem(0, "首页", 0, "Index", "Home"),
+            new MenuItem(0, "平台首页", 0, "Index", "Home"),
             new MenuItem(2, "权限组设置", 0, "PowerGroup", "UserManage"),
 
 

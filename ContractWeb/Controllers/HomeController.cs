@@ -36,6 +36,11 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        #region 退出系统
+        /// <summary>
+        /// 退出系统
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Exit()
         {
             HttpCookie cookie = Request.Cookies["info"];
@@ -44,6 +49,7 @@ namespace ContractWeb.Controllers
 
             return View();
         }
+        #endregion
 
         #region 登录验证
         /// <summary>

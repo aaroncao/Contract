@@ -19,9 +19,10 @@ namespace ContractWeb.DataAccess
         /// <returns></returns>
         public IList<UserInfo> getList()
         {
-            string strSql = "select id, userID, "
+            string strSql = "select id, userID, powergroupID, password, "
                 + "(case state when 1 then '使用' when 0 then '禁止' end) as state, name, "
-                + "(case sex when 1 then '男' when 2 then '女' end) as sex, card, tel, address, date from UserInfo";
+                + "(case sex when 1 then '男' when 2 then '女' end) as sex, card, tel, address, date "
+                + "from UserInfo";
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
             IList<UserInfo> list = DynamicBuilder<UserInfo>.ConvertToList(dr);
@@ -39,22 +40,25 @@ namespace ContractWeb.DataAccess
         /// <returns></returns>
         public IList<UserInfo> getList(string userID, string beginDate, string endDate)
         {
-            string strSql = "select id, userID, "
+            string strSql = "select id, userID, powergroupID, password, "
                 + "(case state when 1 then '使用' when 0 then '禁止' end) as state, name, "
-                + "(case sex when 1 then '男' when 2 then '女' end) as sex, card, tel, address, date from UserInfo ";
+                + "(case sex when 1 then '男' when 2 then '女' end) as sex, card, tel, address, date "
+                + "from UserInfo ";
 
-            if (userID.Trim() != "" || (beginDate.Trim() != "" && endDate.Trim() != ""))
-                strSql += "where ";
+            string where = "";
 
             if (userID.Trim() != "")
-                strSql += "userID like '%" + userID + "%' ";
+                where += " userID like '%" + userID + "%' ";
 
             if (beginDate.Trim() != "" && endDate.Trim() != "")
             {
                 if (userID.Trim() != "")
-                    strSql += "or ";
-                strSql += "date between '" + beginDate + "' and '" + endDate + "'";
+                    where += "or ";
+                where += " date between '" + beginDate + "' and '" + endDate + "'";
             }
+
+            if (!string.IsNullOrEmpty(where))
+                strSql += "where" + where;
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
             IList<UserInfo> list = DynamicBuilder<UserInfo>.ConvertToList(dr);
@@ -187,7 +191,7 @@ namespace ContractWeb.DataAccess
             string strSql = "select id, userID, powergroupID, password, "
                 + "(case state when 1 then '使用' when 0 then '禁止' end) as state, name, "
                 + "(case sex when 1 then '男' when 2 then '女' end) as sex, card, tel, address, date "
-                + "from UserInfo a "
+                + "from UserInfo "
                 + "where userID=@userID and password=@pwd";
 
             SqlParameter[] param = new SqlParameter[]
