@@ -12,6 +12,7 @@ namespace ContractWeb.DataAccess
 {
     public class DaPowerGroup
     {
+        #region 获取权限组列表
         /// <summary>
         /// 获取权限组列表
         /// </summary>
@@ -24,7 +25,9 @@ namespace ContractWeb.DataAccess
             IList<PowerGroup> list = DynamicBuilder<PowerGroup>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
+        #region 添加权限组
         /// <summary>
         /// 添加权限组
         /// </summary>
@@ -42,7 +45,9 @@ namespace ContractWeb.DataAccess
 
             return SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
         }
+        #endregion
 
+        #region 更新权限组
         /// <summary>
         /// 更新权限组
         /// </summary>
@@ -61,7 +66,9 @@ namespace ContractWeb.DataAccess
 
             return SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
         }
+        #endregion
 
+        #region 删除权限组
         /// <summary>
         /// 删除权限组
         /// </summary>
@@ -69,14 +76,22 @@ namespace ContractWeb.DataAccess
         /// <returns></returns>
         public int delete(PowerGroup en)
         {
-            string strSql = "delete from PowerGroup where id=@id";
-
             SqlParameter[] param = new SqlParameter[]
             {
                 new SqlParameter("@id", en.id)
             };
 
+            string strSql = "select count(id) from UserInfo where powergroupID=@id";
+            DataTable dt = SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql, param).Tables[0];
+
+            //还有用户在使用权限组，就不能删除
+            if (dt != null && Convert.ToInt32(dt.Rows[0][0]) > 0)
+                return 0;
+
+            strSql = "delete from PowerGroup where id=@id ";
+            strSql += "delete from PowerGroupPower where groupID=@id ";
             return SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
         }
+        #endregion
     }
 }

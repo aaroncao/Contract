@@ -88,6 +88,8 @@ namespace ContractWeb.DataAccess
         }
         #endregion
 
+
+
         #region 编辑用户
         /// <summary>
         /// 编辑用户
@@ -96,18 +98,34 @@ namespace ContractWeb.DataAccess
         /// <returns></returns>
         public int edit(UserInfo en)
         {
-            string strSql = "update UserInfo set name=@name, sex=@sex, card=@card, tel=@tel, address=@address where id=@id";
+            SqlParameter[] param = new SqlParameter[6];
+            string strSql = "update UserInfo set name=@name, sex=@sex, card=@card, tel=@tel, address=@address where userID=@id";
 
-            SqlParameter[] param = new SqlParameter[]
-            {
-                new SqlParameter("@name", en.name),
-                new SqlParameter("@sex", en.sex),
-                new SqlParameter("@card", en.card),
-                new SqlParameter("@tel", en.tel),
-                new SqlParameter("@address", en.address),
-                new SqlParameter("@id", en.id)
-            };
+            if (en.name.Length == 0)
+                param[0] = new SqlParameter("@name", System.DBNull.Value);
+            else
+                param[0] = new SqlParameter("@name", en.name);
 
+            param[1] = new SqlParameter("@sex", en.sex);
+
+            if (en.card.Length == 0)
+                param[2] = new SqlParameter("@card", System.DBNull.Value);
+            else
+                param[2] = new SqlParameter("@card", en.card);
+
+            if (en.tel.Length == 0)
+                param[3] = new SqlParameter("@tel", System.DBNull.Value);
+            else
+                param[3] = new SqlParameter("@tel", en.tel);
+
+            if (en.address.Length == 0)
+                param[4] = new SqlParameter("@address", System.DBNull.Value);
+            else
+                param[4] = new SqlParameter("@address", en.address);
+
+            param[5] = new SqlParameter("@id", en.userID);
+
+            
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
@@ -174,6 +192,31 @@ namespace ContractWeb.DataAccess
             {
                 return new string[] { "-1", "旧密码不对" };
             }
+        }
+        #endregion
+
+        #region 修改密码
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="id">用户编码</param>
+        /// <param name="theNew">新密码</param>
+        /// <returns></returns>
+        public string[] editPassword(int id, string theNew)
+        {
+            string strSql = "update UserInfo set password=@pwd where id=@id";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", id),
+                new SqlParameter("@pwd", theNew)
+            };
+
+            int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+            if (result == 1)
+                return new string[] { "1", "修改成功" };
+            else
+                return new string[] { "-1", "修改失败" };
         }
         #endregion
 

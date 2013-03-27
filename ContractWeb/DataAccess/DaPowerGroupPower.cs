@@ -12,13 +12,14 @@ namespace ContractWeb.DataAccess
 {
     public class DaPowerGroupPower
     {
+        #region 获取权限列表
         /// <summary>
         /// 获取权限列表
         /// </summary>
         /// <returns></returns>
         public IList<PowerGroupPower> getList(string id)
         {
-            string strSql = "select id, groupID, moduleID, power from PowerGroupPower where groupID=@group";
+            string strSql = "select a.id, a.groupID, a.moduleID, b.name as moduleName, a.power from PowerGroupPower a, SystemModule b where a.moduleID=b.id and a.groupID=@group";
 
             SqlParameter[] param = new SqlParameter[]
             {
@@ -29,7 +30,9 @@ namespace ContractWeb.DataAccess
             IList<PowerGroupPower> list = DynamicBuilder<PowerGroupPower>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
+        #region 添加权限
         /// <summary>
         /// 添加权限
         /// </summary>
@@ -38,7 +41,7 @@ namespace ContractWeb.DataAccess
         public int add(List<PowerGroupPower> list)
         {
             SqlParameter[] param = null;
-            string strSql = "insert into PowerGroupPower values (@group, @module, @power)";
+            string strSql = "insert into PowerGroupPower (groupID, moduleID, power) values (@group, @module, @power)";
 
             for (int i = 0; i < list.Count; i++)
             {
@@ -54,6 +57,7 @@ namespace ContractWeb.DataAccess
 
             return 1;
         }
+        #endregion
 
         /// <summary>
         /// 设置权限

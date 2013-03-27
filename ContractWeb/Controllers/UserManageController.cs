@@ -23,6 +23,18 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        #region 管理员修改密码界面
+        /// <summary>
+        /// 管理员修改密码界面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult EditUserPwd()
+        {
+            ViewBag.menu = 3;
+            return View();
+        }
+        #endregion
+
         #region 用户管理界面
         /// <summary>
         /// 用户管理界面
@@ -42,8 +54,6 @@ namespace ContractWeb.Controllers
         /// <returns></returns>
         public ActionResult EditPwd()
         {
-            ViewBag.userID = ((UserInfo)Session["info"]).userID;
-
             ViewBag.menu = 5;
             return View();
         }
@@ -56,6 +66,7 @@ namespace ContractWeb.Controllers
         /// <returns></returns>
         public ActionResult EditUserInfo()
         {
+            ViewBag.userInfo = BaseHelper.getCookie();
             ViewBag.menu = 6;
             return View();
         }
@@ -71,7 +82,25 @@ namespace ContractWeb.Controllers
         public JsonResult editPassword(string oldPwd, string newPwd)
         {
             DaUserInfo dal = new DaUserInfo();
-            string[] re = dal.editPassword((UserInfo)Session["info"], oldPwd, newPwd);
+            string[] re = dal.editPassword(BaseHelper.getCookie(), oldPwd, newPwd);
+
+            var result = new CustomJsonResult();
+            result.Data = new { isSuccess = re[0], msg = re[1] };
+            return result;
+        }
+        #endregion
+
+        #region 修改密码
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="id">用户编号</param>
+        /// <param name="newPwd">新密码</param>
+        /// <returns></returns>
+        public JsonResult editUserPassword(string id, string newPwd)
+        {
+            DaUserInfo dal = new DaUserInfo();
+            string[] re = dal.editPassword(Convert.ToInt32(id), newPwd);
 
             var result = new CustomJsonResult();
             result.Data = new { isSuccess = re[0], msg = re[1] };
@@ -86,9 +115,11 @@ namespace ContractWeb.Controllers
         /// <returns></returns>
         public JsonResult getUserInfo()
         {
+            DaUserInfo dal = new DaUserInfo();
+            UserInfo info = BaseHelper.getCookie();
             var result = new CustomJsonResult();
 
-            result.Data = (UserInfo)Session["info"];
+            result.Data = dal.checkUserID(info.userID, info.password);
             return result;
         }
         #endregion
@@ -104,20 +135,24 @@ namespace ContractWeb.Controllers
         /// <param name="address">联系地址</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult editInfo(string name, string sex, string card, string tel, string address)
+        public JsonResult editInfo(string id, string name, string sex, string card, string tel, string address)
         {
-            UserInfo info = ((UserInfo)Session["info"]).clone();
-            info.name = name;
-            info.sex = sex;
-            info.card = card;
-            info.tel = tel;
-            info.address = address;
+            UserInfo info = BaseHelper.getCookie().clone();
+            info.userID = id.Trim();
+            info.name = name.Trim();
+            info.sex = sex.Trim();
+            info.card = card.Trim();
+            info.tel = tel.Trim();
+            info.address = address.Trim();
 
             DaUserInfo dal = new DaUserInfo();
             int isAccess = dal.edit(info);
 
             if (isAccess == 1)
+            {
                 Session["info"] = info;
+                BaseHelper.saveCookie(info);
+            }
 
             var result = new CustomJsonResult();
             result.Data = isAccess;            
@@ -221,6 +256,24 @@ namespace ContractWeb.Controllers
             DaPowerGroup dal = new DaPowerGroup();
             var result = new CustomJsonResult();
             result.Data = dal.update(en);
+            return result;
+        }
+        #endregion
+
+        #region 删除权限组
+        /// <summary>
+        /// 删除权限组
+        /// </summary>
+        /// <param name="id">权限组ID</param>
+        /// <returns></returns>
+        public JsonResult deleteGroup(string id)
+        {
+            PowerGroup en = new PowerGroup();
+            en.id = Convert.ToInt32(id);
+
+            DaPowerGroup dal = new DaPowerGroup();
+            var result = new CustomJsonResult();
+            result.Data = dal.delete(en);
             return result;
         }
         #endregion

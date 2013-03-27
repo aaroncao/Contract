@@ -26,12 +26,14 @@ namespace ContractWeb.Common
         /// </summary>
         public static MenuItem[] sysMenu = new MenuItem[] {
             new MenuItem(0, "平台首页", 0, "Index", "Home"),
-            new MenuItem(2, "权限组设置", 0, "PowerGroup", "UserManage"),
+            new MenuItem(2, "操作岗位管理", 0, "PowerGroup", "UserManage"),
+            new MenuItem(3, "管理员修改密码", 0, "EditUserPwd", "UserManage"),
+            new MenuItem(2000, "退出系统", 0, "Exit", "Home"),
 
 
-            new MenuItem(4, "用户管理", 1, "Users", "UserManage"),            
-            new MenuItem(5, "用户密码修改", 1, "EditPwd", "UserManage"),
-            new MenuItem(6, "用户个人信息修改", 1, "EditUserInfo", "UserManage"),
+            new MenuItem(4, "系统用户管理", 1, "Users", "UserManage"),            
+            new MenuItem(5, "个人密码修改", 1, "EditPwd", "UserManage"),
+            new MenuItem(6, "个人信息修改", 1, "EditUserInfo", "UserManage"),
 
 
             new MenuItem(7, "渠道类别设置", 2, "Channel", "BasicSetting"),
@@ -59,7 +61,7 @@ namespace ContractWeb.Common
             new MenuItem(29, "广告费结算查询", 4, "ADCost", "Select"),
             new MenuItem(30, "制作费结算查询", 4, "MakeCost", "Select"),
             new MenuItem(32, "影院投放统计", 4, "Putin", "Select"),
-            new MenuItem(33, "影院广告情况统计", 4, "AdvList", "Select")
+            new MenuItem(38, "影院广告情况统计", 4, "AdvList", "Select")
         };
         #endregion
 
@@ -85,7 +87,7 @@ namespace ContractWeb.Common
                 //配数据
                 for (int i = 0; i < sysMenu.Length; i++)
                 {
-                    if (sysMenu[i].id == 0)
+                    if (sysMenu[i].id == 0 || sysMenu[i].id >= 2000)
                         menus.Add(sysMenu[i]);
 
                     if (dt.Select("moduleID=" + sysMenu[i].id).Length > 0)
@@ -98,6 +100,50 @@ namespace ContractWeb.Common
             }
 
             return menus;
+        }
+        #endregion
+
+        #region 保存Cookie
+        /// <summary>
+        /// 保存Cookie
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
+        public static HttpCookie saveCookie(UserInfo info)
+        {
+            HttpCookie cookie = new HttpCookie("info");
+            TimeSpan ts = new TimeSpan(1, 0, 0, 0, 0);
+            cookie.Expires = DateTime.Now.Add(ts);
+            cookie.Values.Add("id", info.id.ToString());
+            cookie.Values.Add("userID", info.userID);
+            cookie.Values.Add("password", info.password);
+            cookie.Values.Add("powergroupID", info.powergroupID);
+
+            return cookie;
+        }
+        #endregion
+
+        #region 获取Cookie
+        /// <summary>
+        /// 获取Cookie
+        /// </summary>
+        /// <returns></returns>
+        public static UserInfo getCookie()
+        {
+            UserInfo info = null;
+
+            if (HttpContext.Current.Request.Cookies["info"] != null)
+            {
+                HttpCookie cookie = HttpContext.Current.Request.Cookies["info"];
+
+                info = new UserInfo();
+                info.id = Convert.ToInt32(cookie.Values["id"]);
+                info.userID = cookie.Values["userID"];
+                info.password = cookie.Values["password"];
+                info.powergroupID = cookie.Values["powergroupID"];
+            }
+
+            return info;
         }
         #endregion
     }

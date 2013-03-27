@@ -105,7 +105,6 @@
     <Compile Include="Common\BaseHelper.cs" />
     <Compile Include="Common\CustomJsonResult.cs" />
     <Compile Include="Common\DynamicBuilder.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BasicSettingController.cs" />
     <Compile Include="Controllers\BusinessController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -433,6 +432,7 @@
     <Content Include="Views\Select\Putin.cshtml" />
     <Content Include="Views\Select\AdvList.cshtml" />
     <Content Include="Views\Home\Exit.cshtml" />
+    <Content Include="Views\UserManage\EditUserPwd.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

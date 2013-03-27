@@ -58,7 +58,7 @@ namespace ContractWeb.Controllers
         /// <param name="userID">用户ID</param>
         /// <param name="password">密码</param>
         /// <returns></returns>
-        public JsonResult LogOn(string userID, string password)
+        public JsonResult LogOn(string userID, string password, string time)
         {
             DaUserInfo daUser = new DaUserInfo();
             UserInfo info = daUser.checkUserID(userID, password);
@@ -68,7 +68,7 @@ namespace ContractWeb.Controllers
             {
                 Session["userInfo"] = info;
                 //FormsAuthentication.SetAuthCookie(userID, false);
-                Response.AppendCookie(saveCookie(info)); 
+                Response.AppendCookie(BaseHelper.saveCookie(info)); 
 
                 result.Data = 1;
             }
@@ -81,44 +81,6 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        #region 保存Cookie
-        /// <summary>
-        /// 保存Cookie
-        /// </summary>
-        /// <param name="info"></param>
-        /// <returns></returns>
-        public HttpCookie saveCookie(UserInfo info)
-        {
-            HttpCookie cookie = new HttpCookie("info");
-            TimeSpan ts = new TimeSpan(1, 0, 0, 0, 0);
-            cookie.Expires = DateTime.Now.Add(ts);
-            cookie.Values.Add("userID", info.userID);
-            cookie.Values.Add("powergroupID", info.powergroupID);
-
-            return cookie;
-        }
-        #endregion
-
-        #region 获取Cookie
-        /// <summary>
-        /// 获取Cookie
-        /// </summary>
-        /// <returns></returns>
-        public UserInfo getCookie()
-        {
-            UserInfo info = null;
-
-            if (Request.Cookies["info"] != null)
-            {
-                info = new UserInfo();
-                info.userID = Request.Cookies["info"].Values["userID"];
-                info.powergroupID = Request.Cookies["info"].Values["powergroupID"];
-            }
-
-            return info;
-        }
-        #endregion
-
         #region 获取菜单数据
         /// <summary>
         /// 获取菜单数据
@@ -126,11 +88,27 @@ namespace ContractWeb.Controllers
         /// <returns></returns>
         public JsonResult getMenuData()
         {
-            UserInfo info = getCookie();
+            UserInfo info = BaseHelper.getCookie();
             List<MenuItem> list = BaseHelper.getMenuData(info.userID);
 
             var result = new CustomJsonResult();
             result.Data = list;
+            return result;
+        }
+        #endregion
+
+        #region 获取业务员列表
+        /// <summary>
+        /// 获取业务员列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getDrpPersonList()
+        {
+            DaUserInfo dal = new DaUserInfo();
+            IList<UserInfo> users = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = users;
             return result;
         }
         #endregion

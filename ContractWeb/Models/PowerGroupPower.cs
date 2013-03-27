@@ -8,7 +8,7 @@ namespace ContractWeb.Models
     /// <summary>
     /// 权限设置
     /// </summary>
-    public class PowerGroupPower
+    public class  PowerGroupPower
     {
         /// <summary>
         /// 编号
@@ -24,6 +24,11 @@ namespace ContractWeb.Models
         /// 模块ID
         /// </summary>
         public int moduleID { get; set; }
+
+        /// <summary>
+        /// 模块名称
+        /// </summary>
+        public string moduleName { get; set; }
 
         /// <summary>
         /// 权限

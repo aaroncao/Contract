@@ -1,5 +1,4 @@
 ﻿<style type="text/css">
-
     .fieldCSS {
         width: 500px;
     }
@@ -14,13 +13,13 @@
     <div class="fitem">
         <input type="button" value="权限组" onclick="goPower()"/>
         <label class="fitemTitle" style="width:80px;margin-left:10px;">权限组名称:</label>
-        <select id="drpGroup" class="easyui-combobox" onchange="showPower()"></select>
+        <select id="drpGroup" class="easyui-combobox"></select>
         <input type="button" id="btnAdd" value="保存" style="margin-left:10px;" onclick="save()" />
     </div>
 
     <table class="fitem">
         <tr>
-            <td style="width:350px;">
+            <td style="width:335px;">
                 <table id="ModuleList" style="width:300px; height:200px; float:left;" data-options="singleSelect:false,selectOnCheck:true,checkOnSelect:true,idField:'id',url:'/BasicSetting/getModuleList'">
                     <thead>
                         <tr>
@@ -30,7 +29,7 @@
                     </thead>
                 </table>
             </td>
-            <td style="width:70px;">
+            <td style="width:80px;vertical-align:middle;">
                 <input type="button" id="btnAdd" value="添加" onclick="addPower()"/>
                 <input type="button" id="btnRemove" value="移除" onclick="removePower()" />
             </td>       
@@ -39,9 +38,10 @@
                     <thead>
                         <tr>
                             <th data-options="field:'ck',checkbox:true"></th>
-                            <th data-options="field:'name',width:110">模块名称</th>
-                            <th data-options="field:'productid',width:100,  
-                                formatter:function(value,row){  
+                            <th data-options="field:'moduleName',width:110">模块名称</th>
+                            <th data-options="field:'power',width:100,  
+                                formatter:function(value, row){  
+                                debugger;
                                     return row.productname;  
                                 },  
                                 editor:{  
@@ -62,7 +62,6 @@
 </div>
 
 <script>
-
     $(function () {
         $("#ModuleList").datagrid();
         $("#ModuledList").datagrid();
@@ -70,7 +69,8 @@
         $('#drpGroup').combobox({
             url: '/BasicSetting/getDrpGroupList',
             valueField: 'id',
-            textField: 'name'
+            textField: 'name',
+            onChange:showPower
         });
     });
 

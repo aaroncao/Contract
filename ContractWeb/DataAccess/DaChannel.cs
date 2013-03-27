@@ -12,6 +12,7 @@ namespace ContractWeb.DataAccess
 {
     public class DaChannel
     {
+        #region 获取渠道类别列表
         /// <summary>
         /// 获取渠道类别列表
         /// </summary>
@@ -24,7 +25,9 @@ namespace ContractWeb.DataAccess
             IList<Channel> list = DynamicBuilder<Channel>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
+        #region 添加渠道类别
         /// <summary>
         /// 添加渠道类别
         /// </summary>
@@ -43,7 +46,9 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+        #endregion
 
+        #region 修改渠道类别
         /// <summary>
         /// 修改渠道类别
         /// </summary>
@@ -63,7 +68,9 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+        #endregion
 
+        #region 删除渠道类别
         /// <summary>
         /// 删除渠道类别
         /// </summary>
@@ -71,15 +78,21 @@ namespace ContractWeb.DataAccess
         /// <returns></returns>
         public int delete(Channel en)
         {
-            string strSql = "delete from Channel where id=@id";
-
             SqlParameter[] param = new SqlParameter[]
             {
                 new SqlParameter("@id", en.id)
             };
 
+            string strSql = "select count(id) from ContractInfo where channelID=@id";
+            DataTable dt = SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql, param).Tables[0];
+
+            if (dt != null && Convert.ToInt32(dt.Rows[0][0]) > 0)
+                return 0;
+
+            strSql = "delete from Channel where id=@id";
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+        #endregion
     }
 }

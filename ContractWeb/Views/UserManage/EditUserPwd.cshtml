@@ -11,11 +11,11 @@
 
 <div>
     <fieldset class="fieldCSS">
-        <legend>修改密码</legend>
+        <legend>管理员修改密码</legend>
         <div>
             <div class="fitem">
-                <label class="fitemTitle">旧密码:<font color="red">*</font></label>
-                <input type="password" id="oldPwd" class="easyui-validatebox" required="true" />
+                <label class="fitemTitle">用户:<font color="red">*</font></label>
+                <select id="drpPerson" class="easyui-combobox"></select>
             </div>
             <div class="fitem">
                 <label class="fitemTitle">新密码:<font color="red">*</font></label>
@@ -35,13 +35,26 @@
 </div>
 
 <script>
+    $(function () {
+        $("#drpPerson").combobox({
+            url: "/Home/getDrpPersonList",
+            valueField: "id",
+            textField: "name"
+        });
+    });
+
     function savePwd() {
-        var theOld = $("#oldPwd").val();
+        var id = $("#drpPerson").combobox("getValue");
         var theNew = $("#newPwd").val();
         var theConfirm = $("#confirmPwd").val();
 
-        if (theOld.trim() == "" || theNew.trim() == "" || theConfirm.trim() == "") {
-            alert("请输入旧密码和新密码");
+        if (id.trim() == "") {
+            alert("请选择要修改的用户");
+            return;
+        }
+
+        if (theNew.trim() == "") {
+            alert("请输入新密码");
             return;
         }
 
@@ -50,7 +63,7 @@
             return;
         }
         
-        $.get("/UserManage/editPassword?oldpwd=" + theOld + "&newPwd=" + theNew, function (data) {
+        $.get("/UserManage/editUserPassword?id=" + id + "&newPwd=" + theNew, function (data) {
             alert(data.msg);
         });
     }
