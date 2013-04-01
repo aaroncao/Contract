@@ -19,12 +19,13 @@ namespace ContractWeb.DataAccess
         /// <returns></returns>
         public IList<OrderInfo> getList()
         {
-            string strSql = "select a.id, a.contractID, a.orderID, (select z.name from ContractInfo z where z.contractID=a.contractID) as contractName, "
+            string strSql = "select a.id, a.contractID, (select z.name from ContractInfo z where z.contractID=a.contractID) as contractName, a.orderID, "
+                + "(select z.target from ADCostTarget z where z.id=a.costTargetID) as costTargetName, a.costTargetID, "
                 + "(select z.customerID from ContractInfo z where z.contractID=a.contractID) as customerID, "
                 + "(select x.name from CustomerInfo x, ContractInfo y where x.id=y.customerID and y.contractID=a.contractID) as customerName, "
-                + "a.costTargetID, (select z.target from ADCostTarget z where z.id=a.costTargetID) as costTargetName, "
-                + "a.makeTargetID, (select z.target from MakeCostTarget z where z.id=a.makeTargetID) as makeTargetName, "
-                + "a.begintime, a.endtime, a.roomNum, a.memo from OrderInfo a";
+                + "a.roomNum, a.begintime, a.endtime, a.memo, "
+                + "(select z.target from MakeCostTarget z where z.id=a.makeTargetID) as makeTargetName, a.makeTargetID, "
+                + "playReport, reportTime, mdate from OrderInfo a";
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
             IList<OrderInfo> list = DynamicBuilder<OrderInfo>.ConvertToList(dr);
@@ -191,6 +192,37 @@ namespace ContractWeb.DataAccess
         }
         #endregion
 
+        #region 根据编号获取信息
+        /// <summary>
+        /// 根据编号获取信息
+        /// </summary>
+        /// <param name="id">编号</param>
+        /// <returns></returns>
+        public OrderInfo getOrderInfo(string id)
+        {
+            string strSql = "select a.id, a.contractID, (select z.name from ContractInfo z where z.contractID=a.contractID) as contractName, a.orderID, "
+                + "(select z.target from ADCostTarget z where z.id=a.costTargetID) as costTargetName, a.costTargetID, "
+                + "(select z.customerID from ContractInfo z where z.contractID=a.contractID) as customerID, "
+                + "(select x.name from CustomerInfo x, ContractInfo y where x.id=y.customerID and y.contractID=a.contractID) as customerName, "
+                + "a.roomNum, a.begintime, a.endtime, a.memo, "
+                + "(select z.target from MakeCostTarget z where z.id=a.makeTargetID) as makeTargetName, a.makeTargetID, "
+                + "playReport, reportTime, mdate from OrderInfo a where a.id=@id";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", id)
+            };
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+            IList<OrderInfo> list = DynamicBuilder<OrderInfo>.ConvertToList(dr);
+
+            if (list != null && list.Count > 0)
+                return list[0];
+            else
+                return null;
+        }
+        #endregion
+
         #region 生成当天最大的订单编号
         /// <summary>
         /// 生成当天最大的订单编号
@@ -238,6 +270,33 @@ namespace ContractWeb.DataAccess
                 new SqlParameter("@playReport", System.DBNull.Value),
                 new SqlParameter("@reportTime", System.DBNull.Value),
                 new SqlParameter("@mdate", DateTime.Now)
+            };
+
+            int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+            return result;
+        }
+        #endregion
+
+        #region 修改订单
+        /// <summary>
+        /// 修改订单
+        /// </summary>
+        /// <param name="en">订单信息</param>
+        /// <returns></returns>
+        public int update(OrderInfo en)
+        {
+            string strSql = "update OrderInfo set orderID=@orderID, costTargetID=@costTargetID, makeTargetID=@makeTargetID, roomNum=@roomNum, begintime=@begintime, endtime=@endtime, memo=@memo where id=@id ";
+ 
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@orderID", en.orderID),
+                new SqlParameter("@costTargetID", en.costTargetID),
+                new SqlParameter("@makeTargetID", en.makeTargetID),
+                new SqlParameter("@roomNum", en.roomNum),
+                new SqlParameter("@begintime", en.begintime),
+                new SqlParameter("@endtime", en.endtime),
+                new SqlParameter("@memo", en.memo),
+                new SqlParameter("@id", en.id)
             };
 
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);

@@ -249,38 +249,95 @@ namespace ContractWeb.DataAccess
             string strSql = "insert into ContractInfo (contractID, name, customerID, version, price, roomNum, makeCost, backMoney, money, type, channelID, begintime, endtime, ZQ, personID, memo, mDate, billState) "
                 + "values (@contractID, @name, @customerID, @version, @price, @roomNum, @makeCost, @backMoney, @money, @type, @channelID, @begintime, @endtime, @ZQ, @personID, @memo, @mDate, @billState)";
 
-            SqlParameter[] param = new SqlParameter[]
-            {                
-                new SqlParameter("@contractID", en.contractID),
-                new SqlParameter("@name", en.name),
-                new SqlParameter("@customerID", en.customerID),
-                new SqlParameter("@version", en.version),
-                new SqlParameter("@price", en.price),
-                new SqlParameter("@roomNum", en.roomNum),
-                new SqlParameter("@makeCost", en.makeCost),
-                new SqlParameter("@backMoney", en.backMoney),
-                new SqlParameter("@money", en.money),
-                new SqlParameter("@type", en.type),
-                new SqlParameter("@channelID", en.channelID),
-                new SqlParameter("@begintime", System.DBNull.Value),                    
-                new SqlParameter("@endtime", System.DBNull.Value),
-                new SqlParameter("@ZQ", en.ZQ),
-                new SqlParameter("@personID", en.personID),
-                new SqlParameter("@memo", en.memo),
-                new SqlParameter("@mDate", System.DBNull.Value),
-                new SqlParameter("@billState", en.billState)
-            };
+            SqlParameter[] param = new SqlParameter[18];
+            param[0] = new SqlParameter("@contractID", en.contractID);
 
-            if (en.begintime != null)
-                param[11].Value = en.begintime;
+            if (en.name.Trim() == "")
+                param[1] = new SqlParameter("@name", System.DBNull.Value);
+            else
+                param[1] = new SqlParameter("@name", en.name);
 
-            if (en.endtime != null)
-                param[12].Value = en.endtime;
+            if (en.customerID == 0)
+                param[2] = new SqlParameter("@customerID", System.DBNull.Value);
+            else
+                param[2] = new SqlParameter("@customerID", en.customerID);
 
-            if (en.mDate != null)
-                param[16].Value = en.mDate;
+            if (en.version.Trim() == "")
+                param[3] = new SqlParameter("@version", System.DBNull.Value);
+            else
+                param[3] = new SqlParameter("@version", en.version);
 
+            if (en.price == 0.0)
+                param[4] = new SqlParameter("@price", System.DBNull.Value);
+            else
+                param[4] = new SqlParameter("@price", en.price);
 
+            if (en.roomNum == 0)
+                param[5] = new SqlParameter("@roomNum", System.DBNull.Value);
+            else
+                param[5] = new SqlParameter("@roomNum", en.roomNum);
+
+            if (en.makeCost == 0.0)
+                param[6] = new SqlParameter("@makeCost", System.DBNull.Value);
+            else
+                param[6] = new SqlParameter("@makeCost", en.makeCost);
+
+            if (en.backMoney == 0.0)
+                param[7] = new SqlParameter("@backMoney", System.DBNull.Value);
+            else
+                param[7] = new SqlParameter("@backMoney", en.backMoney);
+
+            if (en.money == 0.0)
+                param[8] = new SqlParameter("@money", System.DBNull.Value);
+            else
+                param[8] = new SqlParameter("@money", en.money);
+
+            if (en.type == 0)
+                param[9] = new SqlParameter("@type", System.DBNull.Value);
+            else
+                param[9] = new SqlParameter("@type", en.type);
+
+            if (en.channelID == 0)
+                param[10] = new SqlParameter("@channelID", System.DBNull.Value);
+            else
+                param[10] = new SqlParameter("@channelID", en.channelID);
+
+            if (en.begintime == null)
+                param[11] = new SqlParameter("@begintime", System.DBNull.Value);
+            else
+                param[11] = new SqlParameter("@begintime", en.begintime);
+
+            if (en.endtime == null)
+                param[12] = new SqlParameter("@endtime", System.DBNull.Value);
+            else
+                param[12] = new SqlParameter("@endtime", en.endtime);
+
+            if (en.ZQ == 0.0)
+                param[13] = new SqlParameter("@ZQ", System.DBNull.Value);
+            else
+                param[13] = new SqlParameter("@ZQ", en.ZQ);
+
+            if (en.personID == 0)
+                param[14] = new SqlParameter("@personID", System.DBNull.Value);
+            else
+                param[14] = new SqlParameter("@personID", en.personID);
+
+            if (en.memo.Trim() == "")
+                param[15] = new SqlParameter("@memo", System.DBNull.Value);
+            else
+                param[15] = new SqlParameter("@memo", en.memo);
+
+            if (en.mDate == null)
+                param[16] = new SqlParameter("@mDate", System.DBNull.Value);
+            else
+                param[16] = new SqlParameter("@mDate", en.mDate);
+
+            if (en.billState == 0)
+                param[17] = new SqlParameter("@billState", System.DBNull.Value);
+            else
+                param[17] = new SqlParameter("@billState", en.billState);
+
+            
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }

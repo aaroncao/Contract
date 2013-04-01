@@ -95,6 +95,17 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        #region 下单概括修改
+        /// <summary>
+        /// 下单概括修改
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult EditOrder()
+        {
+            return View();
+        }
+        #endregion
+
 
 
 
@@ -338,6 +349,25 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        #region 删除开票登记
+        /// <summary>
+        /// 删除开票登记
+        /// </summary>
+        /// <param name="id">自动编号</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult deleteWriteBill(string id)
+        {
+            Bill en = new Bill();
+            en.id = Convert.ToInt32(id);
+
+            DaBill dal = new DaBill();
+            var result = new CustomJsonResult();
+            result.Data = dal.delete(en);
+            return result;
+        }
+        #endregion
+
         #region 根据订单编号获取合同订单信息
         /// <summary>
         /// 根据订单编号获取合同订单信息
@@ -347,6 +377,24 @@ namespace ContractWeb.Controllers
         {
             DaOrderInfo dal = new DaOrderInfo();
             ContractOrder en = dal.getContractOrder(id);
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+            result.Data = en;
+            return result;
+        }
+        #endregion
+
+        #region 根据订单编号获取订单信息
+        /// <summary>
+        /// 根据订单编号获取订单信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult getOrderInfo(string id)
+        {
+            DaOrderInfo dal = new DaOrderInfo();
+            OrderInfo en = dal.getOrderInfo(id);
 
             var result = new CustomJsonResult();
             result.dateFormat = "yyyy-MM-dd";
@@ -488,6 +536,23 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        #region 获取投放列表
+        /// <summary>
+        /// 获取投放列表
+        /// </summary>
+        /// <param name="contract"></param>
+        /// <returns></returns>
+        public JsonResult getPutin(string contract)
+        {
+            DaPutinInfo dal = new DaPutinInfo();
+            IList<PutinInfo> list = dal.getListByContract(contract);
+
+            var result = new CustomJsonResult();
+            result.Data = new { total = list.Count, rows = list };
+            return result;
+        }
+        #endregion
+
         #region 获取订单列表
         /// <summary>
         /// 获取订单列表
@@ -536,6 +601,42 @@ namespace ContractWeb.Controllers
             DaOrderInfo dal = new DaOrderInfo();
             var result = new CustomJsonResult();
             result.Data = dal.add(en);
+            return result;
+        }
+        #endregion
+
+        #region 修改订单
+        /// <summary>
+        /// 修改订单
+        /// </summary>
+        /// <param name="id">自动编号</param>
+        /// <param name="orderID">订单编号</param>
+        /// <param name="adCost">广告费结算对象</param>
+        /// <param name="makeCost">制作费结算对象</param>
+        /// <param name="num">厅数</param>
+        /// <param name="begin">开始日期</param>
+        /// <param name="end">结束日期</param>
+        /// <param name="memo">备注</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult editOrder(string id, string orderID, string adCost, string makeCost, string num, string begin, string end, string memo)
+        {
+            if (num.Trim() == "")
+                num = "0";
+
+            OrderInfo en = new OrderInfo();
+            en.id = Convert.ToInt32(id);
+            en.orderID = orderID;
+            en.costTargetID = Convert.ToInt32(adCost);
+            en.makeTargetID = Convert.ToInt32(makeCost);
+            en.roomNum = Convert.ToInt32(num);
+            en.begintime = Convert.ToDateTime(begin);
+            en.endtime = Convert.ToDateTime(end);
+            en.memo = memo;
+
+            DaOrderInfo dal = new DaOrderInfo();
+            var result = new CustomJsonResult();
+            result.Data = dal.update(en);
             return result;
         }
         #endregion

@@ -35,6 +35,29 @@ namespace ContractWeb.DataAccess
         }
         #endregion
 
+        #region 根据合同编号获取投放信息
+        /// <summary>
+        /// 根据订单编号获取投放信息
+        /// </summary>
+        /// <returns></returns>
+        public IList<PutinInfo> getListByContract(string id)
+        {
+            string strSql = "select id, contractID, orderID, "
+                + "cinemaID, (select z.name from Cinema z where z.id=cinemaID) as cinemaName, "
+                + "cinemaRoomID, (select z.room from CinemaRoom z where z.id=cinemaRoomID) as cinemaRoomName, "
+                + "roomTypeID, (select z.type from CinemaRoomType z where z.id=roomTypeID) as roomType, memo from PutinInfo where contractID=@id";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", id)
+            };
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+            IList<PutinInfo> list = DynamicBuilder<PutinInfo>.ConvertToList(dr);
+            return list;
+        }
+        #endregion
+
         #region 搜索投放信息
         /// <summary>
         /// 搜索投放信息

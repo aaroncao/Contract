@@ -46,8 +46,8 @@ namespace ContractWeb.DataAccess
             if (area.Trim() != "")
             {
                 if (name.Trim() != "")
-                    strSql += "or ";
-                strSql += "area=" + area;
+                    strSql += "and ";
+                strSql += "areaID=" + area;
             }
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);

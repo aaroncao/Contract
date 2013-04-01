@@ -144,7 +144,7 @@
         if (powers != "")
             powers = powers.substring(0, powers.length - 1);
 
-        $.get("/BasicSetting/removePower?id=" + id + "&modules=" + modules + "&powers=" + powers, function (data) {
+        $.get("/BasicSetting/savePower?id=" + id + "&modules=" + modules + "&powers=" + powers, function (data) {
             showPower();
         });
     }

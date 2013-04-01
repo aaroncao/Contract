@@ -433,6 +433,7 @@
     <Content Include="Views\Select\AdvList.cshtml" />
     <Content Include="Views\Home\Exit.cshtml" />
     <Content Include="Views\UserManage\EditUserPwd.cshtml" />
+    <Content Include="Views\Business\EditOrder.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

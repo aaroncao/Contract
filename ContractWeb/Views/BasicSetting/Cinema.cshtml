@@ -44,9 +44,9 @@
 
         <div class="fitem">
             <label class="fitemTitle">影院名称:</label>
-            <input id="srcName" style="width:100px;margin-right:20px;"/>
+            <input id="searchName" class="easyui-validatebox" style="width:100px;margin-right:20px;" />
             <label class="fitemTitle inline" style="width:60px;">所属地区:</label>
-             <select id="srcArea" class="easyui-combobox"></select>
+            <select id="searchArea" class="easyui-combobox"></select>
             <input type="button" value="查询" style="margin-left:10px;" onclick="search()" />
         </div>
 
@@ -101,7 +101,7 @@
             textField: 'name'
         });
 
-        $('#srcArea').combobox({
+        $('#searchArea').combobox({
             url: '/BasicSetting/getDrpAreaList',
             valueField: 'id',
             textField: 'name'
@@ -212,11 +212,14 @@
     }
 
     function search() {
-        var name = $("#srcName").val();
-        var area = $("#srcArea").combobox("getValue");
+        var name = $("#searchName").val();
+        var area = $("#searchArea").combobox("getValue");
 
-        $('#CinemaList').datagrid({
-            url: "/BasicSetting/searchCinema?name=" + name + "&area=" + area
-        });
+        $.post("/BasicSetting/searchCinema", "sName=" + name + "&sArea=" + area,
+            function (data) {
+                if (data != null)
+                    $("#CinemaList").datagrid("loadData", data);
+            }
+        );
     }
 </script>

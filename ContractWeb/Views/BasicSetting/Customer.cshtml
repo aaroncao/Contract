@@ -58,7 +58,7 @@
             <input type="button" value="查询" style="margin-left:10px;" onclick="search()" />
         </div>
 
-        <table id="CustomerList" style="width: 930px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getCustomerList'" toolbar="#toolbar">
+        <table id="CustomerList" style="width: 930px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getCustomerList'">
             <thead>
                 <tr>
                     <th data-options="field:'name',width:110">名称</th>
@@ -154,11 +154,13 @@
 
     function cancel() {
         $("#txtName").val("");
+        $("#drpType").combobox("setValue", "");
         $("#txtPerson").val("");
         $("#txtTel").val("");
         $("#txtOfficeTel").val("");
         $("#txtEmail").val("");
         $("#txtFex").val("");
+        $("#drpState").combobox("setValue", "");
         $("#txtAddress").val("");
     }
 
@@ -200,7 +202,7 @@
         );
     }
 
-    function add() {
+    function update() {
         var name = $("#txtName").val();
         var type = $("#drpType").combobox("getValue");
         var person = $("#txtPerson").val();
@@ -254,8 +256,11 @@
         var type = $("#srcType").combobox("getValue");
         var sale = $("#srcSalesman").combobox("getValue");
 
-        $('#CustomerList').datagrid({
-            url: "/BasicSetting/searchCustomer?name=" + name + "&type=" + type + "&salesman=" + sale
-        });
+        $.post("/BasicSetting/searchCustomer", "name=" + name + "&type=" + type + "&salesman=" + sale,
+            function (data) {
+                if (data != null)
+                    $("#CustomerList").datagrid("loadData", data);
+            }
+        );
     }
 </script>

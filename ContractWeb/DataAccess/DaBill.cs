@@ -12,6 +12,7 @@ namespace ContractWeb.DataAccess
 {
     public class DaBill
     {
+        #region 获取发票列表
         /// <summary>
         /// 获取发票列表
         /// </summary>
@@ -27,7 +28,9 @@ namespace ContractWeb.DataAccess
             IList<Bill> list = DynamicBuilder<Bill>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
+        #region 获取发票列表
         /// <summary>
         /// 获取发票列表
         /// </summary>
@@ -48,7 +51,9 @@ namespace ContractWeb.DataAccess
             IList<Bill> list = DynamicBuilder<Bill>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
+        #region 添加发票
         /// <summary>
         /// 添加发票
         /// </summary>
@@ -66,9 +71,27 @@ namespace ContractWeb.DataAccess
                 new SqlParameter("@date", en.date)
             };
 
-            int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
-            return result;
+            return SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
         }
+        #endregion
 
+        #region 删除发票
+        /// <summary>
+        /// 删除发票
+        /// </summary>
+        /// <param name="en"></param>
+        /// <returns></returns>
+        public int delete(Bill en)
+        {
+            string strSql = "delete from Bill where id=@id";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", en.id)
+            };
+
+            return SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+        }
+        #endregion
     }
 }

@@ -511,7 +511,7 @@ namespace ContractWeb.Controllers
         /// <param name="memo">备注</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult addMakeCost(string id, string name, string memo)
+        public JsonResult updateMakeCost(string id, string name, string memo)
         {
             MakeCostTarget en = new MakeCostTarget();
             en.id = Convert.ToInt32(id);
@@ -660,15 +660,15 @@ namespace ContractWeb.Controllers
         /// <param name="name">影院名称</param>
         /// <param name="area">所属地区</param>
         /// <returns></returns>
-        public JsonResult searchCinema(string name, string area)
+        public JsonResult searchCinema(string sName, string sArea)
         {
             Cinema en = new Cinema();
-            en.name = name;
-            en.area = area;
+            en.name = sName;
+            en.area = sArea;
 
             DaCinema dal = new DaCinema();
             var result = new CustomJsonResult();
-            result.Data = dal.getList(name, area);
+            result.Data = dal.getList(sName, sArea);
             return result;
         }
         #endregion
@@ -816,12 +816,14 @@ namespace ContractWeb.Controllers
         /// <returns></returns>
         public JsonResult searchCinemaRoom(string cinema)
         {
-            CinemaRoom en = new CinemaRoom();
-            en.cinemaID = Convert.ToInt32(cinema);
-
             DaCinemaRoom dal = new DaCinemaRoom();
             var result = new CustomJsonResult();
+
+            if (cinema.Trim() != "")
             result.Data = dal.getList(cinema);
+            else
+                result.Data = dal.getList();
+
             return result;
         }
         #endregion
@@ -917,7 +919,8 @@ namespace ContractWeb.Controllers
             en.email = eMail;
             en.fex = fex;
             en.address = address;
-            en.stateID = Convert.ToInt32(state);
+            en.salesmanID = BaseHelper.getCookie().id;
+            en.stateID = state;
 
             DaCustomerInfo dal = new DaCustomerInfo();
             var result = new CustomJsonResult();
@@ -954,7 +957,7 @@ namespace ContractWeb.Controllers
             en.email = eMail;
             en.fex = fex;
             en.address = address;
-            en.stateID = Convert.ToInt32(state);
+            en.stateID = state;
 
             DaCustomerInfo dal = new DaCustomerInfo();
             var result = new CustomJsonResult();
@@ -1132,30 +1135,32 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        #region 删除权限
+        #region 保存权限
         /// <summary>
-        /// 删除权限
+        /// 保存权限
         /// </summary>
         /// <param name="id"></param>
         /// <param name="modules"></param>
         /// <returns></returns>
-        public JsonResult deletePower(string id, string modules)
+        public JsonResult savePower(string id, string modules, string powers)
         {
             List<PowerGroupPower> list = new List<PowerGroupPower>();
             string[] moduless = modules.Split(',');
+            string[] powerss = powers.Split(',');
 
             for (int i = 0; i < moduless.Length; i++)
             {
                 PowerGroupPower en = new PowerGroupPower();
                 en.groupID = Convert.ToInt32(id);
                 en.moduleID = Convert.ToInt32(moduless[i]);
+                en.power = Convert.ToInt32(powerss[i]);
 
                 list.Add(en);
             }
 
             DaPowerGroupPower dal = new DaPowerGroupPower();
             var result = new CustomJsonResult();
-            result.Data = dal.delete(list);
+            result.Data = dal.update(list);
             return result;
         }
         #endregion

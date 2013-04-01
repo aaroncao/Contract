@@ -56,13 +56,13 @@
 
         <div>
             <div class="fitem">
-                <label class="fitemTitle">合同编号:</label>
+                <label class="fitemTitle">合同编号:<font color="red">*</font></label>
                 <input id="txtPutin_contractID" class="easyui-validatebox" readonly="true" style="width:100px;margin-right:10px;" />
-                <label class="fitemTitle inline">下单编号:</label>
+                <label class="fitemTitle inline">下单编号:<font color="red">*</font></label>
                 <input id="txtPutin_orderID" class="easyui-validatebox" readonly="true" style="width:100px;margin-right:10px;" />
                 <label class="fitemTitle inline">已下厅数:</label>
                 <input id="txtPutin_num" class="easyui-validatebox" readonly="true" style="width:100px;margin-right:10px;" />
-                <label class="fitemTitle inline">投放影院:</label>
+                <label class="fitemTitle inline">投放影院:<font color="red">*</font></label>
                 <select id="drpCinema" class="easyui-combobox"></select>
             </div>
 
@@ -80,15 +80,15 @@
                             </thead>
                         </table>
                     </td>
-                    <td><input type="button" onclick="putin()" value="添加" style="float:left;" /></td>
+                    <td style="vertical-align:middle;"><input type="button" onclick="putin()" value="添加" style="float:left;" /></td>
                     <td>
                         <table id="SelectRoomList" style="width:400px; height:200px; float:right;" data-options="singleSelect:true,idField:'id'">
                             <thead>
                                 <tr>
                                     <th data-options="field:'orderID',width:80">下单编号</th>
-                                    <th data-options="field:'cinema',width:110">投放影院</th>
-                                    <th data-options="field:'room',width:110">投放影厅</th>
-                                    <th data-options="field:'type',width:80">影厅属性</th>
+                                    <th data-options="field:'cinemaName',width:110">投放影院</th>
+                                    <th data-options="field:'cinemaRoomName',width:110">投放影厅</th>
+                                    <th data-options="field:'roomType',width:80">影厅属性</th>
                                 </tr>
                             </thead>
                         </table>
@@ -105,15 +105,15 @@
             <thead>
                 <tr>
                     <th data-options="field:'contractID',width:100">合同编号</th>
-                    <th data-options="field:'orderID',width:50">下单编号</th>
+                    <th data-options="field:'orderID',width:100">下单编号</th>
                     <th data-options="field:'contractName',width:130">合同名称</th>
                     <th data-options="field:'customerName',width:100">客户名称</th>
-                    <th data-options="field:'costTargetName',width:200">广告费结算对象</th>
-                    <th data-options="field:'makeTargetName',width:80">制作费结算对象</th>
-                    <th data-options="field:'begintime',width:80">下单时段(起)</th>
-                    <th data-options="field:'endtime',width:80">下单时段(止)</th>
+                    <th data-options="field:'costTargetName',width:100">广告费结算对象</th>
+                    <th data-options="field:'makeTargetName',width:100">制作费结算对象</th>
+                    <th data-options="field:'begintime',width:120">下单时段(起)</th>
+                    <th data-options="field:'endtime',width:120">下单时段(止)</th>
                     <th data-options="field:'roomNum',width:80">下单厅数</th>
-                    <th data-options="field:'memo',width:80">备注</th>
+                    <th data-options="field:'memo',width:150">备注</th>
                 </tr>
             </thead>
         </table>
@@ -121,11 +121,26 @@
 </div>
 
 <script>
+    var selected = -1;
 
     $(function () {
         $("#CinemaRoomList").datagrid();
         $("#SelectRoomList").datagrid();
-        $("#OrderList").datagrid();
+        $("#OrderList").datagrid({
+            onRowContextMenu: function (e, rowIndex, rowData) {
+                selected = rowData.id;
+                e.preventDefault();
+
+                if (!$('#rmenu').length) {
+                    createRowMenu();//调用添加右击菜单的内容
+                }
+                $('#rmenu').menu('show', {
+                    left: e.pageX,
+                    top: e.pageY
+                });
+
+            }
+        });
 
         $('#drpADTarget').combobox({
             url: '/Business/getDrpADTargetList',
@@ -158,6 +173,46 @@
         }
     });
 
+    function createRowMenu() {
+        var tmenu = $('<div id="rmenu" style="width:130px;"></div>').appendTo('body');
+        $('<div name="editOrder"/>').html("下单概括修改").appendTo(tmenu);
+        $('<div name="adCost"/>').html("广告费结算登记").appendTo(tmenu);
+        $('<div name="adCostList"/>').html("广告费结算情况").appendTo(tmenu);
+        $('<div name="makeCost"/>').html("制作费结算登记").appendTo(tmenu);
+        $('<div name="makeCostList"/>').html("制作费结算情况").appendTo(tmenu);
+        $('<div name="bill"/>').html("收发票登记").appendTo(tmenu);
+        $('<div name="billList"/>').html("发票收到情况").appendTo(tmenu);
+
+        tmenu.menu({
+            onClick: function (item) {
+                switch (item.name) {
+                    case "editOrder":
+                        window.open("/Business/EditOrder?id=" + selected, "", "width=700,height=300,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        break;
+                    case "adCost":
+                        location.href = "/Business/ADCostAccount?id=" + selected;
+                        break;
+                    case "adCostList":
+                        window.open("/Select/ADCostList?id=" + selected, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        break;
+                    case "makeCost":
+                        location.href = "/Business/MakeCostAccount?id=" + selected;
+                        break;
+                    case "makeCostList":
+                        window.open("/Select/MakekCostList?id=" + selected, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        break;
+                    case "bill":
+                        location.href = "/Business/ReceiveBill?id=" + selected;
+                        break;
+                    case "billList":
+                        window.open("/Select/ReceiveBillList?id=" + selected, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        break;
+                }
+            }
+        });
+    }
+
+
     function EnterPress(e) {
         var e = e || window.event;
         if (e.keyCode == 13) {
@@ -167,6 +222,13 @@
                 $("#txtZQ").val(data.ZQ);
                 $("#txtVersion").val(data.version);
             });
+
+            $("#txtPutin_contractID").val($("#txtContractID").val());
+
+            $.get("/Business/getPutin?contract=" + $("#txtContractID").val(), function (data) {
+                $("#SelectRoomList").datagrid("loadData", data);
+                $("#txtPutin_num").val(data.total);
+            })
         }
     }
 
@@ -176,7 +238,7 @@
             return;
         }
 
-        $.get("/Business/buildOrderID", function (data) {
+        $.get("/Business/buildOrderID?t=" + Math.floor(Math.random() * 1000), function (data) {
             $("#txtPutin_contractID").val($("#txtContractID").val());
             $("#txtOrderID").val(data);
             $("#txtPutin_orderID").val(data);
@@ -195,7 +257,9 @@
 
         $.post("/Business/addOrder", "contractID=" + contractID + "&orderID=" + orderID + "&adID=" + adID + "&makeID=" + makeID + "&num=" + num + "&begin=" + begin + "&end=" + end + "&memo=" + memo,
             function (data) {
-                alert("OK");
+                $("#OrderList").datagrid({
+                    url: '/Business/getOrderList'
+                });
             }
         );
     }
@@ -235,7 +299,10 @@
             ids = ids.substring(0, ids.length - 1);
 
         $.get("/Business/addPutin?contract=" + $("#txtPutin_contractID").val() + "&order=" + $("#txtPutin_orderID").val() + "&ids=" + ids, function (data) {
-            alert("OK");
+            $.get("/Business/getPutin?contract=" + $("#txtContractID").val(), function (data) {
+                $("#SelectRoomList").datagrid("loadData", data);
+                $("#txtPutin_num").val(data.total);
+            })
         });
     }
 </script>

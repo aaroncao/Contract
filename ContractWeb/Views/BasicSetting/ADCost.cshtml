@@ -37,7 +37,7 @@
         <table id="TargetList" style="width: 490px; height: 230px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getADCostList'">
             <thead>
                 <tr>
-                    <th data-options="field:'name',width:100">对象</th>
+                    <th data-options="field:'target',width:100">对象</th>
                     <th data-options="field:'memo',width:200">备注</th>
                 </tr>
             </thead>
@@ -53,7 +53,7 @@
         $("#TargetList").datagrid({
             onClickRow: function (rowIndex, rowData) {
                 selected = rowData.id;
-                $("#txtName").val(rowData.name);
+                $("#txtName").val(rowData.target);
                 $("#txtMemo").val(rowData.memo);
             },
             onRowContextMenu: function (e, rowIndex, rowData) {

@@ -82,7 +82,7 @@ namespace ContractWeb.Models
         /// <summary>
         /// 状态ID
         /// </summary>
-        public int stateID { get; set; }
+        public string stateID { get; set; }
 
         /// <summary>
         /// 状态
