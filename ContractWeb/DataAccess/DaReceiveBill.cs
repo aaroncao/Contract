@@ -12,6 +12,7 @@ namespace ContractWeb.DataAccess
 {
     public class DaReceiveBill
     {
+        #region 获取发票列表
         /// <summary>
         /// 获取发票列表
         /// </summary>
@@ -21,7 +22,7 @@ namespace ContractWeb.DataAccess
             string strSql = "select a.id, a.orderID, b.contractID, "
                 + "(select z.name from ContractInfo z where z.contractID=b.contractID) as contractName, "
                 + "(select z.money from ContractInfo z where z.contractID=b.contractID) as contractMoney, "
-                + "a.type, (select z.name from BillType z where z.id=a.type) as typeName, a.costTargetID, "
+                + "a.type, (select z.name from BillType z where z.id=a.type) as typeName, a.costTargetID as targetID, "
                 + "(case when a.type=1 then (select z.target from ADCostTarget z where z.id=a.costTargetID) else (select z.target from MakeCostTarget z where z.id=a.costTargetID) end) as targetName, "
                 + "a.money, a.date "
                 + "from ReceiveBill a, OrderInfo b where a.orderID=b.orderID";
@@ -30,7 +31,9 @@ namespace ContractWeb.DataAccess
             IList<ReceiveBill> list = DynamicBuilder<ReceiveBill>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
+        #region 获取发票列表
         /// <summary>
         /// 获取发票列表
         /// </summary>
@@ -40,7 +43,7 @@ namespace ContractWeb.DataAccess
             string strSql = "select a.id, a.orderID, b.contractID, "
                 + "(select z.name from ContractInfo z where z.contractID=b.contractID) as contractName, "
                 + "(select z.money from ContractInfo z where z.contractID=b.contractID) as contractMoney, "
-                + "a.type, (select z.name from BillType z where z.id=a.type) as typeName, a.costTargetID, "
+                + "a.type, (select z.name from BillType z where z.id=a.type) as typeName, a.costTargetID as targetID, "
                 + "(case when a.type=1 then (select z.target from ADCostTarget z where z.id=a.costTargetID) else (select z.target from MakeCostTarget z where z.id=a.costTargetID) end) as targetName, "
                 + "a.money, a.date "
                 + "from ReceiveBill a, orderInfo b where a.orderID=b.orderID and a.orderID=@id";
@@ -54,8 +57,9 @@ namespace ContractWeb.DataAccess
             IList<ReceiveBill> list = DynamicBuilder<ReceiveBill>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
-
+        #region 添加发票
         /// <summary>
         /// 添加发票
         /// </summary>
@@ -77,5 +81,6 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+        #endregion
     }
 }

@@ -22,15 +22,17 @@
     <select id="drpChannel" class="easyui-combobox"></select>
     <label class="fitemTitle inline" style="margin-left:10px;">合同类型:</label>
     <select id="drpType" class="easyui-combobox"></select>
-    <label class="fitemTitle inline" style="margin-left:10px;">合同状态:</label>
-    <select id="drpState" class="easyui-combobox"></select>
 </div>
 <div class="fitem">
+    <label class="fitemTitle inline">合同状态:</label>
+    <select id="drpState" class="easyui-combobox"></select>
     <label class="fitemTitle">业务员:</label>
     <select id="drpPerson" class="easyui-combobox"></select>
     <label class="fitemTitle inline" style="margin-left:10px;">发票状态:</label>
     <select id="drpBillState" class="easyui-combobox"></select>
-    <label class="fitemTitle inline" style="margin-left:10px;">签署日期:</label>
+</div>
+<div class="fitem">
+    <label class="fitemTitle inline">签署日期:</label>
     <input id="txtDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"/>
     <label class="fitemTitle inline" style="width:70px;margin-left:10px;">合同总金额:</label>
     <input id="txtTotal" class="easyui-validatebox fitemWidth" readonly="true" /> 元
@@ -42,7 +44,7 @@
     <input type="button" value="导出" style="margin-left:10px;" onclick="output()" />
 </p>
 
-<table id="ContractList" style="width: 1050px; height: 400px;" data-options="singleSelect:true,idField:'id',url:'/Select/getContractList'">
+<table id="ContractList" style="width: 1050px; height: 400px;" data-options="singleSelect:true,idField:'id'">
     <thead>
         <tr>
             <th data-options="field:'id',width:50">ID</th>
@@ -121,13 +123,10 @@
             textField: 'name'
         });
 
-        var today = new Date();
-        var todayStr = today.getFullYear() + "-" + (today.getMonth() > 10 ? (today.getMonth + 1) : "0" + (today.getMonth() + 1)) + "-" + (today.getDate() > 10 ? today.getDate() : "0" + today.getDate());
-        $("#txtDate").datebox("setValue", todayStr);
-
         $.get("/Select/getContractList",
-            function (result) {
-                $("#txtTotal").val(result.money);
+            function (data) {
+                $("#txtTotal").val(data.money);
+                $('#ContractList').datagrid("loadData", data);
             }
         );
     });
@@ -186,13 +185,10 @@
         var billState = $("#drpBillState").combobox("getValue");
         var mDate = $("#txtDate").datebox("getValue");
 
-        $('#ContractList').datagrid({
-            url: "/Select/searchContract?id=" + id + "&channel=" + channel + "&type=" + type + "&state=" + state + "&person=" + person + "&billState=" + billState + "&date=" + mDate
-        });
-
         $.get("/Select/searchContract?id=" + id + "&channel=" + channel + "&type=" + type + "&state=" + state + "&person=" + person + "&billState=" + billState + "&date=" + mDate,
-            function (result) {
-                $("#txtTotal").val(result.money);
+            function (data) {
+                $("#txtTotal").val(data.money);
+                $('#ContractList').datagrid("loadData", data);
             }
         );
     }

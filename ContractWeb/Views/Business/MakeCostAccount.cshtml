@@ -92,18 +92,20 @@
             var orderID = $("#txtOrderID").val();
 
             $.get("/Business/getContractOrder?id=" + orderID, function (data) {
-                var contract = data.contract;
-                var order = data.order;
+                if (data != null) {
+                    var contract = data.contract;
+                    var order = data.order;
 
-                $("#txtContractID").val(contract.contractID);
-                $("#txtContractName").val(contract.name);
-                $("#txtMoney").val(contract.money);
+                    $("#txtContractID").val(contract.contractID);
+                    $("#txtContractName").val(contract.name);
+                    $("#txtMoney").val(contract.money);
 
-                $("#txtType").val(contract.typeName);
-                $("#txtChannel").val(contract.channelName);
-                $("#txtTarget").val(order.costTargetName);
+                    $("#txtType").val(contract.typeName);
+                    $("#txtChannel").val(contract.channelName);
+                    $("#txtTarget").val(order.costTargetName);
 
-                getPutinList(orderID);
+                    getPutinList(orderID);
+                }
             });
         }
     }
@@ -125,7 +127,7 @@
 
         $("#txtTarget").val("");
         $("#txtAccountMoney").val("");
-        $("#txtDate").val("");
+        $("#txtDate").datebox("setValue", "");
     }
 
     function add() {

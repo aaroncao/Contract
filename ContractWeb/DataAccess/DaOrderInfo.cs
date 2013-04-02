@@ -164,10 +164,12 @@ namespace ContractWeb.DataAccess
         /// <returns></returns>
         public ContractOrder getContractOrder(string id)
         {
-            string strSql = "select id, contractID, orderID, "
-                + "costTargetID, (select z.target from ADCostTarget z where z.id=costTargetID) as costTargetName, "
-                + "makeTargetID, (select z.target from MakeCostTarget z where z.id=makeTargetID) as makeTargetName "
-                + "from OrderInfo where orderID=@id";
+            string strSql = "select a.id, a.contractID, b.name as contractName, a.orderID, "
+                + "(select z.target from ADCostTarget z where z.id=a.costTargetID) as costTargetName, a.costTargetID, "
+                + "b.customerID, (select z.name from CustomerInfo z where z.id=b.customerID) as customerName, "
+                + "a.roomNum, a.begintime, a.endtime, a.memo, "
+                + "(select z.target from MakeCostTarget z where z.id=a.makeTargetID) as makeTargetName, a.makeTargetID, "
+                + "a.playReport, a.reportTime, a.mdate from OrderInfo a, ContractInfo b where a.contractID=b.contractID and a.orderID=@id";
 
             SqlParameter[] param = new SqlParameter[]
             {
@@ -200,13 +202,12 @@ namespace ContractWeb.DataAccess
         /// <returns></returns>
         public OrderInfo getOrderInfo(string id)
         {
-            string strSql = "select a.id, a.contractID, (select z.name from ContractInfo z where z.contractID=a.contractID) as contractName, a.orderID, "
+            string strSql = "select a.id, a.contractID, b.name as contractName, a.orderID, "
                 + "(select z.target from ADCostTarget z where z.id=a.costTargetID) as costTargetName, a.costTargetID, "
-                + "(select z.customerID from ContractInfo z where z.contractID=a.contractID) as customerID, "
-                + "(select x.name from CustomerInfo x, ContractInfo y where x.id=y.customerID and y.contractID=a.contractID) as customerName, "
+                + "b.customerID, (select z.name from CustomerInfo z where x.id=b.customerID) as customerName, "
                 + "a.roomNum, a.begintime, a.endtime, a.memo, "
                 + "(select z.target from MakeCostTarget z where z.id=a.makeTargetID) as makeTargetName, a.makeTargetID, "
-                + "playReport, reportTime, mdate from OrderInfo a where a.id=@id";
+                + "playReport, reportTime, mdate from OrderInfo a, ContractInfo b where a.contractID=b.contractID and a.id=@id";
 
             SqlParameter[] param = new SqlParameter[]
             {

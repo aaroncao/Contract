@@ -40,7 +40,7 @@ namespace ContractWeb.DataAccess
         /// <returns></returns>
         public IList<ADCost> getList()
         {
-            string strSql = "select a.orderID, b.contractID, c.name, "
+            string strSql = "select a.id, a.orderID, b.contractID, c.name, "
                 + "(select z.name from Channel z where z.id=c.channelID) as channelName, "
                 + "(select z.name from UserInfo z where z.id=c.personID) as personName, "
                 + "c.money as contractMoney, "

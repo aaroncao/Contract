@@ -75,49 +75,49 @@ namespace ContractWeb.DataAccess
             if (channel.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "channelID=" + channel;
             }
 
             if (type.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "type=" + type;
             }
 
             if (state.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "state=" + state;
             }
 
             if (person.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "personID=" + person;
             }
 
             if (billState.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "billState=" + billState;
             }
 
             if (billState.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "billState=" + billState;
             }
 
             if (date.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "mDate='" + date + "'";
             }
 
@@ -153,49 +153,49 @@ namespace ContractWeb.DataAccess
             if (channel.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "channelID=" + channel;
             }
 
             if (type.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "type=" + type;
             }
 
             if (state.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "state=" + state;
             }
 
             if (person.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "personID=" + person;
             }
 
             if (billState.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "billState=" + billState;
             }
 
             if (billState.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "billState=" + billState;
             }
 
             if (date.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "mDate='" + date + "'";
             }
 

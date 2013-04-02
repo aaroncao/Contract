@@ -462,7 +462,7 @@ namespace ContractWeb.Controllers
         /// 获取广告结算列表
         /// </summary>
         /// <returns></returns>
-        public JsonResult getADCostList()
+        public JsonResult getADCostAccountList()
         {
             DaADCostAccount dal = new DaADCostAccount();
             IList<ADCost> list = dal.getList();
