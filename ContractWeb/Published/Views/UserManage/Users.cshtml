@@ -1,5 +1,4 @@
 ﻿<style type="text/css">
-
     .fitemTitle {
         display: inline-block;
         width: 60px;
@@ -11,7 +10,7 @@
 
 <div class="fitem">
     <label class="fitemTitle">用户名:</label>
-    <input id="srcUserID" style="width:100px;margin-right:20px;"/>
+    <input id="srcUserID" class="easyui-validatebox" style="width:100px;margin-right:20px;"/>
     <label class="fitemTitle inline" style="width:60px;">注册日期:</label>
     <input id="srcBegin" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"/> 至
     <input id="srcEnd" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"/>
@@ -43,7 +42,7 @@
 </div>
 
 <!-- dialog -->
-<div id="dlg" class="easyui-dialog" style="width: 400px; height: 280px; padding: 10px 20px" closed="true" buttons="#dlg-buttons">
+<div id="dlg" class="easyui-dialog" style="width: 450px; height: 330px; padding: 10px 20px" closed="true" buttons="#dlg-buttons">
     <div class="fitem">
         <label class="fitemTitle">用户名:<font color="red">*</font></label>
         <input id="txtUserID" class="easyui-validatebox" />
@@ -159,8 +158,8 @@
 
     function search() {
         var userID = $("#srcUserID").val();
-        var begin = $("#srcBegin").val();
-        var end = $("#srcEnd").val();
+        var begin = $("#srcBegin").datebox("getValue");
+        var end = $("#srcEnd").datebox("getValue");
 
         $('#UserList').datagrid({
             url: "/UserManage/searchList?userID=" + userID + "&beginDate=" + begin + "&endDate=" + end

@@ -68,7 +68,7 @@
             return;
         }
 
-        $.get("/Home/LogOn?userID=" + user + "&password=" + password, function (data) {
+        $.get("/Home/LogOn?userID=" + user + "&password=" + password + "&time=" + (new Date()).getTime(), function (data) {
             if (data == 1)
                 location.href = "/Home/index";
             else

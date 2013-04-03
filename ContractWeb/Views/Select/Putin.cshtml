@@ -33,6 +33,7 @@
 
 <p>
     <input type="button" value="查询" style="margin-left:10px;" onclick="search()" />
+    <input type="button" id="btnCancel" onclick="cancel()" value="清空" />
 </p>
 
 <table id="PutinList" style="width: 800px; height: 400px;" data-options="singleSelect:true,idField:'id'">
@@ -63,10 +64,12 @@
             onChange: getDrpRoomData
         });
 
-        var today = new Date();
-        var todayStr = today.getFullYear() + "-" + (today.getMonth() > 10 ? (today.getMonth + 1) : "0" + (today.getMonth() + 1)) + "-" + (today.getDate() > 10 ? today.getDate() : "0" + today.getDate());
-        $("#txtBegin").datebox("setValue", todayStr);
-        $("#txtEnd").datebox("setValue", todayStr);
+        $.get("/Select/getPutinList",
+            function (data) {
+                $("#PutinList").datagrid("loadData", data);
+                $("#txtTotal").val(data.money);
+            }
+        );
     });
 
     function getDrpRoomData() {
@@ -84,8 +87,19 @@
         var begin = $("#txtBegin").datebox("getValue");
         var end = $("#txtEnd").datebox("getValue");
 
-        $('#PutinList').datagrid({
-            url: "/Select/searchPutinList?cinema=" + cinema + "&room=" + room + "&version=" + version + "&begin=" + begin + "&end=" + end
-        });
+        $.get("/Select/searchPutinList?cinema=" + cinema + "&room=" + room + "&version=" + version + "&begin=" + begin + "&end=" + end,
+            function (data) {
+                $("#PutinList").datagrid("loadData", data);
+                $("#txtTotal").val(data.money);
+            }
+        );
+    }
+
+    function cancel() {
+        $("#drpCinema").combobox("setValue", "");
+        $("#drpRoom").combobox("setValue", "");
+        $("#txtVersion").val("");
+        $("#txtBegin").datebox("setValue", "");
+        $("#txtEnd").datebox("setValue", "");
     }
 </script>

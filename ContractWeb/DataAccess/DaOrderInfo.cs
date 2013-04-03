@@ -40,12 +40,12 @@ namespace ContractWeb.DataAccess
         /// <returns></returns>
         public IList<OrderInfo> getList(string orderID, string contractID, string begin, string end, string person, string adTarget, string makeTarget)
         {
-            string strSql = "select a.id, a.contractID, a.orderID, b.name as contractName, "
-                + "b.customerID, "
-                + "(select z.name from CustomerInfo z where z.id=a.customerID) as customerName, "
-                + "a.costTargetID, (select z.target from ADCostTarget z where z.id=a.costTargetID) as costTargetName, "
-                + "a.makeTargetID, (select z.target from MakeCostTarget z where z.id=a.makeTargetID) as makeTargetName, "
-                + "a.begintime, a.endtime, a.roomNum, a.memo from OrderInfo a, ContractInfo b where a.contractID=b.contractID ";
+            string strSql = "select a.id, a.contractID, b.name as contractName, a.orderID, "
+                + "(select z.target from ADCostTarget z where z.id=a.costTargetID) as costTargetName, a.costTargetID, "
+                + "b.customerID, (select z.name from CustomerInfo z where z.id=b.customerID) as customerName, "
+                + "a.roomNum, a.begintime, a.endtime, a.memo, "
+                + "(select z.target from MakeCostTarget z where z.id=a.makeTargetID) as makeTargetName, a.makeTargetID, "
+                + "a.playReport, a.reportTime, a.mdate from OrderInfo a, ContractInfo b where a.contractID=b.contractID ";
 
             string where = "";
 
@@ -55,40 +55,40 @@ namespace ContractWeb.DataAccess
             if (contractID.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "a.contractID like '%" + contractID + "%'";
             }
 
             if (begin.Trim() != "" && end.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "(a.endtime>='" + begin + "' and a.begintime<='" + end + "')";
             }
 
             if (person.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "b.personID='" + person + "'";
             }
 
             if (adTarget.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "a.costTargetID='" + adTarget + "'";
             }
 
             if (makeTarget.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "a.makeTargetID='" + makeTarget + "'";
             }
 
             if (where != "")
-                strSql += "and (" + where + ")";
+                strSql += "and " + where;
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
             IList<OrderInfo> list = DynamicBuilder<OrderInfo>.ConvertToList(dr);
@@ -117,40 +117,40 @@ namespace ContractWeb.DataAccess
             if (contractID.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "a.contractID like '%" + contractID + "%'";
             }
 
             if (begin.Trim() != "" && end.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "(a.endtime>='" + begin + "' and a.begintime<='" + end + "')";
             }
 
             if (person.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "b.personID='" + person + "'";
             }
 
             if (adTarget.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "a.costTargetID='" + adTarget + "'";
             }
 
             if (makeTarget.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "a.makeTargetID='" + makeTarget + "'";
             }
 
             if (where != "")
-                strSql += "and (" + where + ")";
+                strSql += "and " + where;
 
             return SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql).Tables[0];
         }

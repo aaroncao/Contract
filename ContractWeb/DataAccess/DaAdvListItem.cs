@@ -34,12 +34,12 @@ namespace ContractWeb.DataAccess
             if (begin.Trim() != "" && end.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "(c.endtime>='" + begin + "' and c.begintime<='" + end + "')";
             }
 
             if (where != "")
-                strSql += "and (" + where + ")";
+                strSql += "and " + where;
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
             IList<AdvListItem> list = DynamicBuilder<AdvListItem>.ConvertToList(dr);
@@ -69,12 +69,12 @@ namespace ContractWeb.DataAccess
             if (begin.Trim() != "" && end.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "(c.endtime>='" + begin + "' and c.begintime<='" + end + "')";
             }
 
             if (where != "")
-                strSql += "and (" + where + ")";
+                strSql += "and " + where;
 
             return SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql).Tables[0];
         }

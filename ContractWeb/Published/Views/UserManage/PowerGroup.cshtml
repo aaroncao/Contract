@@ -1,5 +1,4 @@
 ﻿<style type="text/css">
-
     .fieldCSS {
         width: 500px;
     }
@@ -57,9 +56,47 @@
                 $("#txtMemo").val(rowData.memo);
                 
                 selected = rowData.id;
+            },
+            onRowContextMenu: function (e, rowIndex, rowData) {
+                selected = rowData.id;
+                e.preventDefault();
+
+                if (!$('#rmenu').length) {
+                    createRowMenu();//调用添加右击菜单的内容
+                }
+                $('#rmenu').menu('show', {
+                    left: e.pageX,
+                    top: e.pageY
+                });
             }
         });
     });
+
+    function createRowMenu() {
+        var tmenu = $('<div id="rmenu" style="width:130px;"></div>').appendTo('body');
+        $('<div name="del" iconCls="icon-remove"/>').html("删除").appendTo(tmenu);
+
+        tmenu.menu({
+            onClick: function (item) {
+                switch (item.name) {
+                    case "del":
+                        var answer = confirm("确认要删除吗")
+                        if (answer) {
+                            $.get("/UserManage/deleteGroup?id=" + selected,
+                                function (result) {
+                                    if (result == 0)
+                                        alert("删除失败，请检查该权限组还存在用户");
+                                    else
+                                        $('#GroupList').datagrid("reload");
+                                }
+                            );
+                        }                        
+                        break;
+                }
+            }
+        });
+    }
+
 
     function cancel() {
         $("#txtName").val("");
@@ -99,7 +136,7 @@
             return;
         }
 
-        $.post("/SystemSetting/updateGroup", "id=" + selected + "&name=" + name + "&memo=" + memo,
+        $.post("/UserManage/updateGroup", "id=" + selected + "&name=" + name + "&memo=" + memo,
             function (data) {
                 if (data == 0)
                     alert("修改失败");

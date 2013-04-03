@@ -6,7 +6,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>@ViewBag.Title</title>
 
+
     <!--   CSS   -->
+
 
     <!-- Reset Stylesheet -->
     <link rel="stylesheet" href="@Url.Content("~/Content/reset.css")" type="text/css" media="screen" />
@@ -18,7 +20,9 @@
     <link rel="stylesheet" href="@Url.Content("~/Content/themes/default/easyui.css")" type="text/css" />
     <link rel="stylesheet" href="@Url.Content("~/Content/themes/icon.css")" type="text/css" />
     
+
     <!--   JavaScript   -->
+
 
     <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.8.3.min.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.easyui.min.js")"></script>
@@ -28,8 +32,15 @@
     <script type="text/javascript" src="@Url.Content("~/Scripts/facebox.js")"></script>
     <!-- jQuery WYSIWYG Plugin -->
     <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.wysiwyg.js")"></script>
-
     <script type="text/javascript" src="@Url.Content("~/Scripts/system.js")"></script>
+
+
+
+    <style type="text/css">
+        .easyui-validatebox {
+            border: solid 1px #a4bed4;
+        }
+</style>
 </head>
 <body>
     <input id="pageNum" style="display:none;" value="@ViewBag.menu" />

@@ -1,0 +1,160 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>下单概括修改</title>
+
+    <!--   CSS   -->
+
+    <!-- Reset Stylesheet -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/reset.css")" type="text/css" media="screen" />
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/style.css")" type="text/css" media="screen" />
+    
+    <link rel="stylesheet" href="@Url.Content("~/Content/themes/default/easyui.css")" type="text/css" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/themes/icon.css")" type="text/css" />
+    
+    <!--   JavaScript   -->
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.8.3.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.easyui.min.js")"></script>
+    <!-- jQuery Configuration -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/simpla.jquery.configuration.js")"></script>
+    <!-- Facebox jQuery Plugin -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/facebox.js")"></script>
+    <!-- jQuery WYSIWYG Plugin -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.wysiwyg.js")"></script>
+
+    <style type="text/css">
+        .fieldCSS {
+            width: 800px;
+        }
+
+        .fitemTitle {
+            display: inline-block;
+            width: 60px;
+        }
+
+        .fitemWidth {
+            width: 100px;
+            margin-right: 10px;
+        }
+    </style>
+
+    <script>
+
+        function myformatter(date) {
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            var d = date.getDate();
+            return y + '-' + (m < 10 ? ('0' + m) : m) + '-' + (d < 10 ? ('0' + d) : d);
+        }
+
+        function myparser(s) {
+            if (!s) return new Date();
+            var ss = s.split('-');
+            var y = parseInt(ss[0], 10);
+            var m = parseInt(ss[1], 10);
+            var d = parseInt(ss[2], 10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)) {
+                return new Date(y, m - 1, d);
+            } else {
+                return new Date();
+            }
+        }
+
+        String.prototype.trim = function () {
+            return this.replace(/(^\s*)(\s*$)/g, "");
+        }
+    </script>
+</head>
+
+<body style="background:#f0f0f0;padding:20px;">
+    <div>
+        <div class="fitem">
+            <label class="fitemTitle">下单编号:<font color="red">*</font></label>
+            <input id="txtOrderID" class="easyui-validatebox fitemWidth" />
+            <label class="fitemTitle inline">合同编号:</label>
+            <input id="txtContractID" class="easyui-validatebox fitemWidth" readonly="true" />
+        </div>
+        <div class="fitem">
+            <label class="fitemTitle" style="width:100px;">广告费结算对象:</label>
+            <select id="drpADTarget" class="easyui-combobox"></select>
+            <label class="fitemTitle inline" style="width:100px;margin-left:10px;">制作费结算对象:</label>
+            <select id="drpMakeTarget" class="easyui-combobox"></select>
+        </div>
+        <div class="fitem">
+            <label class="fitemTitle">下单厅数:</label>
+            <input id="txtRoomNum" class="easyui-validatebox fitemWidth" readonly="true" />厅
+            <label class="fitemTitle inline" style="margin-left:10px;">下单时段从</label>
+            <input id="txtBeginDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" style="width:100px;" /> 至 
+            <input id="txtEndDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" style="width:100px;" />
+        </div>
+        <div class="fitem">
+            <label class="fitemTitle">备注:</label>
+            <input id="txtMemo" class="easyui-validatebox" style="width:300px;" />
+        </div>
+
+        <p>
+            <input type="button" onclick="save()" value="保存" style="margin-right: 20px;" />
+            <input type="button" onclick="window.close()" value="返回" />
+        </p>
+    </div>
+
+    <script>
+        $(function () {
+            var vID = location.href.substring(location.href.indexOf("=") + 1, location.href.length);
+
+            $.get("/Business/getOrderInfo?id=" + vID, function (data) {
+                $("#txtOrderID").val(data.orderID);
+                $("#txtContractID").val(data.contractID);
+                $("#drpADTarget").combobox("setValue", data.costTargetID);
+                $("#drpMakeTarget").combobox("setValue", data.makeTargetID);
+                $("#txtRoomNum").val(data.roomNum);
+                $("#txtBeginDate").datebox("setValue", data.begintime);
+                $("#txtEndDate").datebox("setValue", data.endtime);
+                $("#txtMemo").val(data.memo);
+            });
+
+            $('#drpADTarget').combobox({
+                url: '/Business/getDrpADTargetList',
+                valueField: 'id',
+                textField: 'target'
+            });
+
+            $('#drpMakeTarget').combobox({
+                url: '/Business/getDrpMakeTargetList',
+                valueField: 'id',
+                textField: 'target'
+            });
+        });
+
+        function save() {
+            var vID = location.href.substring(location.href.indexOf("=") + 1, location.href.length);
+
+            var order = $("#txtOrderID").val();
+            var adCost = $("#drpADTarget").combobox("getValue");
+            var makeCost = $("#drpMakeTarget").combobox("getValue");
+            var num = $("#txtRoomNum").val();
+            var begin = $("#txtBeginDate").datebox("getValue");
+            var end = $("#txtEndDate").datebox("getValue");
+            var memo = $("#txtMemo").val();
+
+            $.post("/Business/editOrder", "id=" + vID + "&orderID=" + order + "&adCost=" + adCost + "&makeCost=" + makeCost + "&num=" + num + "&begin=" + begin + "&end=" + end + "&memo=" + memo,
+                function (data) {
+                    if (data == 1)
+                        alert("保存成功");
+                    else
+                        alert("保存失败");
+                }
+            );
+        }
+    </script>
+</body>
+</html>

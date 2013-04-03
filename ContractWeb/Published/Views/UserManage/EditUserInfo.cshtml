@@ -1,5 +1,4 @@
 ﻿<style type="text/css">
-
     .fieldCSS {
         width: 500px;
     }
@@ -16,7 +15,7 @@
         <div>
             <div class="fitem">
                 <label class="fitemTitle">用户名:</label>
-                <label id="lblUserID"></label>
+                <label id="lblUserID">@ViewBag.userInfo.userID</label>
             </div>
             <div class="fitem">
                 <label class="fitemTitle">真实姓名:</label>
@@ -48,13 +47,12 @@
             <input type="button" id="btnSave" onclick="save()" value="保存" />
         </p>
     </fieldset>
-    
 </div>
 
 
 <script>
     $(function () {
-        $.get("/UserManage/getUserInfo", function (data) {
+        $.get("/UserManage/getUserInfo?t=" + Math.floor(Math.random()*1000), function (data) {
             if (data != null) {
                 $("#lblUserID").html(data.userID);
                 $("#txtName").val(data.name);
@@ -72,6 +70,7 @@
     });
 
     function save() {
+        var id = $("#lblUserID").html();
         var name = $("#txtName").val();
         var sex = $('#drpSex').combobox('getValue');
         var card = $("#txtCard").val();
@@ -79,7 +78,7 @@
         var address = $("#txtAddress").val();
 
         $.post("/UserManage/editInfo",
-            "name=" + name + "&sex=" + sex + "&card=" + card + "&tel=" + tel + "&address=" + address,
+            "id=" + id + "&name=" + name + "&sex=" + sex + "&card=" + card + "&tel=" + tel + "&address=" + address,
             function (data) {
                 if (data == 1)
                     alert("修改成功");

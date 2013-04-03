@@ -53,7 +53,7 @@
         $("#StateList").datagrid({
             onClickRow: function (rowIndex, rowData) {
                 selected = rowData.id;
-                $("#txtState").val(rowData.name);
+                $("#txtState").val(rowData.state);
                 $("#txtMemo").val(rowData.memo);
             },
             onRowContextMenu: function (e, rowIndex, rowData) {

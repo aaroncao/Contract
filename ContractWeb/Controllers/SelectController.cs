@@ -504,7 +504,7 @@ namespace ContractWeb.Controllers
         /// 获取制作结算列表
         /// </summary>
         /// <returns></returns>
-        public JsonResult getMakeCostList()
+        public JsonResult getMakeCostAccountList()
         {
             DaMakeCostAccount dal = new DaMakeCostAccount();
             IList<MakeCost> list = dal.getList();
@@ -715,6 +715,27 @@ namespace ContractWeb.Controllers
         /// <summary>
         /// 获取影院投放统计列表
         /// </summary>
+        /// <returns></returns>
+        public JsonResult getPutinList()
+        {
+            DaPutinInfo dal = new DaPutinInfo();
+            IList<PutinListItem> list = dal.getList();
+
+            double money = 0.0;
+            foreach (PutinListItem en in list)
+                money += en.price;
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+            result.Data = new { total = list.Count, rows = list, money = money };
+            return result;
+        }
+        #endregion
+
+        #region 搜索影院投放统计列表
+        /// <summary>
+        /// 搜索影院投放统计列表
+        /// </summary>
         /// <param name="cinema"></param>
         /// <param name="room"></param>
         /// <param name="version"></param>
@@ -726,9 +747,13 @@ namespace ContractWeb.Controllers
             DaPutinInfo dal = new DaPutinInfo();
             IList<PutinListItem> list = dal.getList(cinema, room, version, begin, end);
 
+            double money = 0.0;
+            foreach (PutinListItem en in list)
+                money += en.price;
+
             var result = new CustomJsonResult();
             result.dateFormat = "yyyy-MM-dd";
-            result.Data = new { total = list.Count, rows = list };
+            result.Data = new { total = list.Count, rows = list, money = money };
             return result;
         }
         #endregion

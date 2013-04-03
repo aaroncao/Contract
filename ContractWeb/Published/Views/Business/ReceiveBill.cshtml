@@ -41,6 +41,8 @@
                 <select id="drpTarget" class="easyui-combobox"></select>
                 <label class="fitemTitle inline" style="margin-left:10px;">开票金额:</label>
                 <input id="txtMoney" class="easyui-validatebox fitemWidth"/>
+            </div>
+            <div class="fitem">
                 <label class="fitemTitle inline">开票日期:</label>
                 <input id="txtDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" />
             </div>
@@ -54,7 +56,7 @@
     <fieldset class="fieldCSS">
         <legend>列表</legend>
 
-        <table id="BillList" style="width: 700px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/getReceiveBillList'" toolbar="#toolbar">
+        <table id="BillList" style="width: 700px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/getReceiveBillList'">
             <thead>
                 <tr>
                     <th data-options="field:'orderID',width:100">下单编号</th>

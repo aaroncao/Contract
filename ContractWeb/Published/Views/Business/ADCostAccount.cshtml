@@ -102,23 +102,25 @@
             var orderID = $("#txtOrderID").val();
 
             $.get("/Business/getContractOrder?id=" + orderID, function (data) {
-                var contract = data.contract;
-                var order = data.order;
+                if (data != null) {
+                    var contract = data.contract;
+                    var order = data.order;
 
-                $("#txtContractID").val(contract.contractID);
-                $("#txtContractName").val(contract.name);
-                $("#txtVersion").val(contract.version);
-                $("#txtMoney").val(contract.money);
+                    $("#txtContractID").val(contract.contractID);
+                    $("#txtContractName").val(contract.name);
+                    $("#txtVersion").val(contract.version);
+                    $("#txtMoney").val(contract.money);
 
-                $("#txtType").val(contract.typeName);
-                $("#txtChannel").val(contract.channelName);
-                $("#txtBegin").val(contract.begintime);
-                $("#txtEnd").val(contract.endtime);
-                $("#txtZQ").val(contract.ZQ);
+                    $("#txtType").val(contract.typeName);
+                    $("#txtChannel").val(contract.channelName);
+                    $("#txtBegin").val(contract.begintime);
+                    $("#txtEnd").val(contract.endtime);
+                    $("#txtZQ").val(contract.ZQ);
 
-                $("#txtTarget").val(order.costTargetName);
+                    $("#txtTarget").val(order.costTargetName);
 
-                getPutinList(orderID);
+                    getPutinList(orderID);
+                }
             });
         }
     }
@@ -144,7 +146,7 @@
 
         $("#txtTarget").val("");
         $("#txtAccountMoney").val("");
-        $("#txtDate").val("");
+        $("#txtDate").datebox("setValue", "");
         $("#txtMemo").val("");
     }
 
@@ -157,7 +159,7 @@
 
         $.post("/Business/addADCostAccount", "id=" + id + "&money=" + money + "&state=" + state + "&date=" + date + "&memo=" + memo,
             function (data) {
-                alert("OK");
+                alert("添加成功");
             }
         );
     }

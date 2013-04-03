@@ -70,7 +70,7 @@
     <fieldset class="fieldCSS">
         <legend>列表</legend>
 
-        <table id="BillList" style="width: 700px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/getBillList'" toolbar="#toolbar">
+        <table id="BillList" style="width: 700px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/getBillList'">
             <thead>
                 <tr>
                     <th data-options="field:'contractID',width:100">合同编号</th>
@@ -86,9 +86,23 @@
 </div>
 
 <script>
+    var selected = -1;
 
     $(function () {
-        $('#BillList').datagrid();
+        $('#BillList').datagrid({
+            onRowContextMenu: function (e, rowIndex, rowData) {
+                selected = rowData.id;
+                e.preventDefault();
+
+                if (!$('#rmenu').length) {
+                    createRowMenu();//调用添加右击菜单的内容
+                }
+                $('#rmenu').menu('show', {
+                    left: e.pageX,
+                    top: e.pageY
+                });
+            }
+        });
 
         $('#drpBillType').combobox({
             url: '/Business/getDrpBillTypeList',
@@ -100,6 +114,22 @@
         var todayStr = today.getFullYear() + "-" + (today.getMonth() > 10 ? (today.getMonth + 1) : "0" + (today.getMonth() + 1)) + "-" + (today.getDate() > 10 ? today.getDate() : "0" + today.getDate());
         $("#txtDate").datebox("setValue", todayStr);
     });
+
+    function createRowMenu() {
+        var tmenu = $('<div id="rmenu" style="width:100px;"></div>').appendTo('body');
+        $('<div iconCls="icon-remove"/>').html("删除").appendTo(tmenu);
+
+        tmenu.menu({
+            onClick: function (item) {
+                if (item.iconCls == "icon-remove") {
+                    var answer = confirm("确认要删除吗")
+                    if (answer) {
+                        deleteRow();
+                    }
+                }
+            }
+        });
+    }
 
     function EnterPress(e) {        
         var e = e || window.event;
@@ -127,8 +157,9 @@
         $("#txtADCost").val("");
         $("#txtMakeCost").val("");
         $("#txtAllCost").val("");
+        $("#drpBillType").combobox("setValue", "");
         $("#txtMoney").val("");
-        $("#txtDate").val("");
+        $("#txtDate").datebox("setValue", "");
     }
 
     function add() {
@@ -141,6 +172,17 @@
             function (data) {
                 if (data == 0)
                     alert("新增失败");
+                else
+                    $("#BillList").datagrid("reload");
+            }
+        );
+    }
+
+    function deleteRow() {
+        $.post("/Business/deleteWriteBill", "id=" + selected,
+            function (data) {
+                if (data == 0)
+                    alert("删除失败");
                 else
                     $("#BillList").datagrid("reload");
             }

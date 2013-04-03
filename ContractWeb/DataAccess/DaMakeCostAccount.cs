@@ -12,6 +12,7 @@ namespace ContractWeb.DataAccess
 {
     public class DaMakeCostAccount
     {
+        #region 添加结算
         /// <summary>
         /// 添加结算
         /// </summary>
@@ -33,24 +34,27 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+        #endregion
 
+        #region 获取结算列表
         /// <summary>
         /// 获取结算列表
         /// </summary>
         /// <returns></returns>
         public IList<MakeCost> getList()
         {
-            string strSql = "select a.orderID, b.contractID, c.name, "
+            string strSql = "select a.id, a.orderID, b.contractID, c.name, "
                 + "(select z.name from Channel z where z.id=c.channelID) as channelName, "
-                + "c.version, "
-                + "c.money as contractMoney, "
+                + "c.version, c.money as contractMoney, "
                 + "a.money, (select z.name from AccountState z where z.id=a.state) as state, a.date from ADCostAccount a, OrderInfo b, ContractInfo c where a.orderID=b.orderID and b.contractID=c.contractID ";
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
             IList<MakeCost> list = DynamicBuilder<MakeCost>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
+        #region 获取结算列表
         /// <summary>
         /// 获取结算列表
         /// </summary>
@@ -73,17 +77,18 @@ namespace ContractWeb.DataAccess
             IList<MakeCost> list = DynamicBuilder<MakeCost>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
+        #region 搜索结算列表
         /// <summary>
         /// 搜索结算列表
         /// </summary>
         /// <returns></returns>
         public IList<MakeCost> getList(string id, string contractID, string channel, string state, string begin, string end)
         {
-            string strSql = "select a.orderID, b.contractID, c.name, "
+            string strSql = "select a.id, a.orderID, b.contractID, c.name, "
                 + "(select z.name from Channel z where z.id=c.channelID) as channelName, "
-                + "c.version, "
-                + "c.money as contractMoney, "
+                + "c.version, c.money as contractMoney, "
                 + "a.money, (select z.name from AccountState z where z.id=a.state) as state, a.date from ADCostAccount a, OrderInfo b, ContractInfo c where a.orderID=b.orderID and b.contractID=c.contractID ";
 
             string where = "";
@@ -94,37 +99,38 @@ namespace ContractWeb.DataAccess
             if (contractID.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "c.contractID like '%" + contractID + "%'";
             }
 
             if (channel.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "c.channelID=" + channel;
             }
 
             if (state.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "a.state=" + state;
             }
 
             if (begin.Trim() != "" && end.Trim() != "")
             {
                 if (where != "")
-                    where += " or ";
+                    where += " and ";
                 where += "date between '" + begin + "' and '" + end + "'";
             }
 
             if (where != "")
-                strSql += "and (" + where + ")";
+                strSql += "and " + where;
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
             IList<MakeCost> list = DynamicBuilder<MakeCost>.ConvertToList(dr);
             return list;
         }
+        #endregion
     }
 }

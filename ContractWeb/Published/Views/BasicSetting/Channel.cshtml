@@ -1,5 +1,4 @@
 ﻿<style type="text/css">
-
     .fieldCSS {
         width: 500px;
     }
@@ -143,7 +142,7 @@
         $.get("/BasicSetting/deleteChannel", "id=" + selected,
             function (data) {
                 if (data == 0)
-                    alert("删除失败");
+                    alert("删除失败，该渠道可能在使用中");
                 else
                     $('#ChannelList').datagrid("reload");
             }

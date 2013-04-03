@@ -31,16 +31,19 @@
     <select id="drpState" class="easyui-combobox"></select>
     <label class="fitemTitle inline" style="width:40px;margin-left:10px;">日期:</label>
     <input id="txtBegin" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"></input> 至 <input id="txtEnd" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"></input>
-    <label class="fitemTitle inline" style="width:40px;margin-left:10px;">金额:</label>
+</div>
+
+<div class="fitem">
+    <label class="fitemTitle inline" style="width:40px;">金额:</label>
     <input id="txtTotal" class="easyui-validatebox fitemWidth" readonly="true" /> 元
 </div>
 
 <p>
     <input type="button" value="查询" style="margin-left:10px;" onclick="search()" />
-    <input type="button" id="btnCancel" value="清空" />
+    <input type="button" id="btnCancel" onclick="cancel()" value="清空" />
 </p>
 
-<table id="PutinList" style="width:1050px; height:400px;" data-options="singleSelect:true,idField:'id',url:'/Select/getMakeCostList'">
+<table id="PutinList" style="width:1050px; height:400px;" data-options="singleSelect:true,idField:'id'">
     <thead>
         <tr>
             <th data-options="field:'orderID',width:100">下单编号</th>
@@ -72,9 +75,10 @@
             textField: 'name'
         });
 
-        $.get("/Select/getMakeCostList",
-            function (result) {
-                $("#txtTotal").val(result.money);
+        $.get("/Select/getMakeCostAccountList",
+            function (data) {
+                $("#PutinList").datagrid("loadData", data);
+                $("#txtTotal").val(data.money);
             }
         );
     });
@@ -88,15 +92,21 @@
         var begin = $("#txtBegin").datebox("getValue");
         var end = $("#txtEnd").datebox("getValue");
 
-        $('#PutinList').datagrid({
-            url: "/Select/searchMakeCost?id=" + id + "&contractID=" + contract + "&channel=" + channel + "&state=" + state + "&begin=" + begin + "&end=" + end
-        });
-
         $.get("/Select/searchMakeCost?id=" + id + "&contractID=" + contract + "&channel=" + channel + "&state=" + state + "&begin=" + begin + "&end=" + end,
-            function (result) {
-                $("#txtTotal").val(result.money);
+            function (data) {
+                $("#PutinList").datagrid("loadData", data);
+                $("#txtTotal").val(data.money);
             }
         );
+    }
+
+    function cancel() {
+        $("#txtOrderID").val("");
+        $("#txtContractID").val("");
+        $("#drpChannel").combobox("setValue", "");
+        $("#drpState").combobox("setValue", "");
+        $("#txtBegin").datebox("setValue", "");
+        $("#txtEnd").datebox("setValue", "");
     }
     
 </script>
