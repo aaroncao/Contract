@@ -1048,7 +1048,7 @@ namespace ContractWeb.Controllers
         /// </summary>
         /// <param name="id">权限组ID</param>
         /// <returns></returns>
-        public JsonResult getShowPower(string id)
+        public JsonResult getShowPower(string id, string t)
         {
             DaPowerGroupPower dal = new DaPowerGroupPower();
             IList<PowerGroupPower> groups = dal.getList(id);
@@ -1068,6 +1068,11 @@ namespace ContractWeb.Controllers
         /// <returns></returns>
         public JsonResult addPower(string id, string modules)
         {
+            if (modules.Trim() == "")
+            {
+                return null;
+            }
+
             List<PowerGroupPower> addList = new List<PowerGroupPower>();
             string[] moduless = modules.Split(',');
 

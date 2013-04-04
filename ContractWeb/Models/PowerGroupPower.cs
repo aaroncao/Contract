@@ -34,5 +34,10 @@ namespace ContractWeb.Models
         /// 权限
         /// </summary>
         public int power { get; set; }
+
+        /// <summary>
+        /// 权限名称
+        /// </summary>
+        public string powerName { get; set; }
     }
 }
