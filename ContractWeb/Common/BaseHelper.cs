@@ -94,8 +94,6 @@ namespace ContractWeb.Common
                         menus.Add(sysMenu[i]);
                 }
 
-                //排序
-                //menus.Sort(new MenuCompare());
                 HttpContext.Current.Session["menu"] = menus;
             }
 
@@ -116,6 +114,7 @@ namespace ContractWeb.Common
             cookie.Expires = DateTime.Now.Add(ts);
             cookie.Values.Add("id", info.id.ToString());
             cookie.Values.Add("userID", info.userID);
+            cookie.Values.Add("userName", info.name);
             cookie.Values.Add("password", info.password);
             cookie.Values.Add("powergroupID", info.powergroupID);
 
@@ -139,6 +138,7 @@ namespace ContractWeb.Common
                 info = new UserInfo();
                 info.id = Convert.ToInt32(cookie.Values["id"]);
                 info.userID = cookie.Values["userID"];
+                info.name = cookie.Values["userName"];
                 info.password = cookie.Values["password"];
                 info.powergroupID = cookie.Values["powergroupID"];
             }
@@ -146,23 +146,7 @@ namespace ContractWeb.Common
             return info;
         }
         #endregion
-    }
 
-    /// <summary>
-    /// 菜单排序
-    /// </summary>
-    public class MenuCompare : IComparer<MenuItem>
-    {
-        public int Compare(MenuItem t1, MenuItem t2)
-        {
-            if (t1.type > t2.type)
-                return 1;
-
-            if (t1.id > t2.id)
-                return 1;
-            else
-                return -1;
-        }
-
+        
     }
 }

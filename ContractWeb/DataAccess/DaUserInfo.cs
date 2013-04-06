@@ -88,8 +88,6 @@ namespace ContractWeb.DataAccess
         }
         #endregion
 
-
-
         #region 编辑用户
         /// <summary>
         /// 编辑用户
@@ -144,6 +142,27 @@ namespace ContractWeb.DataAccess
             SqlParameter[] param = new SqlParameter[]
             {
                 new SqlParameter("@id", en.id)
+            };
+
+            int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+            return result;
+        }
+        #endregion
+
+        #region 设置用户的启用状态
+        /// <summary>
+        /// 设置用户的启用状态
+        /// </summary>
+        /// <param name="en"></param>
+        /// <returns></returns>
+        public int updateOpen(UserInfo en)
+        {
+            string strSql = "update UserInfo set state=@state where id=@id";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", en.id),
+                new SqlParameter("@state", en.state)
             };
 
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);

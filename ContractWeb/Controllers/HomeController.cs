@@ -12,6 +12,8 @@ namespace ContractWeb.Controllers
 {
     public class HomeController : Controller
     {
+        /* ============ 界面 ============ */
+
         #region 登录界面
         /// <summary>
         /// 登录界面
@@ -43,13 +45,17 @@ namespace ContractWeb.Controllers
         /// <returns></returns>
         public ActionResult Exit()
         {
-            HttpCookie cookie = Request.Cookies["info"];
-            cookie.Expires = DateTime.Now.AddDays(-1);
+            HttpCookie cookie = new HttpCookie("info");
+            cookie.Expires = DateTime.Now.AddMonths(-1);
+            cookie.Values.Clear();
+            Response.AppendCookie(cookie);
             Response.Cookies.Add(cookie);
 
             return View();
         }
         #endregion
+
+        /* ============ 操作 ============ */
 
         #region 登录验证
         /// <summary>
@@ -58,7 +64,7 @@ namespace ContractWeb.Controllers
         /// <param name="userID">用户ID</param>
         /// <param name="password">密码</param>
         /// <returns></returns>
-        public JsonResult LogOn(string userID, string password, string time)
+        public JsonResult logOn(string userID, string password, string t)
         {
             DaUserInfo daUser = new DaUserInfo();
             UserInfo info = daUser.checkUserID(userID, password);
@@ -67,7 +73,6 @@ namespace ContractWeb.Controllers
             if (info != null)
             {
                 Session["userInfo"] = info;
-                //FormsAuthentication.SetAuthCookie(userID, false);
                 Response.AppendCookie(BaseHelper.saveCookie(info)); 
 
                 result.Data = 1;
@@ -81,12 +86,27 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        #region 获取用户名
+        /// <summary>
+        /// 获取用户名
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getUserName()
+        {
+            UserInfo en = BaseHelper.getCookie();
+
+            var result = new CustomJsonResult();
+            result.Data = en.name;
+            return result;
+        }
+        #endregion
+
         #region 获取菜单数据
         /// <summary>
         /// 获取菜单数据
         /// </summary>
         /// <returns></returns>
-        public JsonResult getMenuData()
+        public JsonResult getMenuData(string t)
         {
             UserInfo info = BaseHelper.getCookie();
             List<MenuItem> list = BaseHelper.getMenuData(info.userID);
@@ -102,13 +122,29 @@ namespace ContractWeb.Controllers
         /// 获取业务员列表
         /// </summary>
         /// <returns></returns>
-        public JsonResult getDrpPersonList()
+        public JsonResult drpPersonList()
         {
             DaUserInfo dal = new DaUserInfo();
             IList<UserInfo> users = dal.getList();
 
             var result = new CustomJsonResult();
             result.Data = users;
+            return result;
+        }
+        #endregion
+
+        #region 获取权限组列表
+        /// <summary>
+        /// 获取权限组列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult drpGroupList()
+        {
+            DaPowerGroup dal = new DaPowerGroup();
+            IList<PowerGroup> groups = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = groups;
             return result;
         }
         #endregion

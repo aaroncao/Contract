@@ -10,12 +10,13 @@
 
 <div class="fitem">
     <label class="fitemTitle">用户名:</label>
-    <input id="srcUserID" class="easyui-validatebox" style="width:100px;margin-right:20px;"/>
-    <label class="fitemTitle inline" style="width:60px;">注册日期:</label>
-    <input id="srcBegin" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"/> 至
-    <input id="srcEnd" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser"/>
+    <input id="srcUserID" class="easyui-validatebox" style="width: 100px; margin-right: 20px;" />
+    <label class="fitemTitle inline" style="width: 60px;">注册日期:</label>
+    <input id="srcBegin" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" />
+    至
+    <input id="srcEnd" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" />
 
-    <input type="button" value="查询" style="margin-left:10px;" onclick="search()" />
+    <input type="button" value="查询" style="margin-left: 10px;" onclick="search()" />
 </div>
 
 <!-- Table -->
@@ -53,7 +54,7 @@
     </div>
     <div class="fitem">
         <label class="fitemTitle">性别:</label>
-        <select id="drpSex" class="easyui-combobox" style="width:100px;" data-option="">
+        <select id="drpSex" class="easyui-combobox" style="width: 100px;" data-option="">
             <option value="1">男</option>
             <option value="2">女</option>
         </select>
@@ -94,7 +95,7 @@
             onClickRow: function (rowIndex, rowData) {
                 $("#txtUserID").val(rowData.userID);
                 $("#txtName").val(rowData.name);
-                
+
                 var sex = 1;
                 if (rowData.sex == "女")
                     sex = 2;
@@ -105,8 +106,56 @@
                 $("#txtAddress").val(rowData.address);
 
                 selected = rowData.id;
-            }
+            },
+            onRowContextMenu: function (e, rowIndex, rowData) {
+                selected = rowData.id;
+                e.preventDefault();
 
+                if (!$('#rmenu').length) {
+                    createRowMenu();//调用添加右击菜单的内容
+                }
+                $('#rmenu').menu('show', {
+                    left: e.pageX,
+                    top: e.pageY
+                });
+            }
+        });
+    }
+
+    function createRowMenu() {
+        var tmenu = $('<div id="rmenu" style="width:130px;"></div>').appendTo('body');
+        $('<div name="open"/>').html("启用该操作员").appendTo(tmenu);
+        $('<div name="close"/>').html("禁用该操作员").appendTo(tmenu);
+        $('<div name="setting"/>').html("权限设置").appendTo(tmenu);
+
+        tmenu.menu({
+            onClick: function (item) {
+                switch (item.name) {
+                    case "open":
+                        $.get("/UserManage/updateUserOpen", "id=" + selected + "&state=1",
+                            function (data) {
+                                if (data == 1) {
+                                    initGrid();
+                                } else
+                                    alert("启用失败");
+                            }
+                        );
+                        break;
+                    case "close":
+                        $.get("/UserManage/updateUserOpen", "id=" + selected + "&state=0",
+                            function (data) {
+                                if (data == 1) {
+                                    initGrid();
+                                } else
+                                    alert("禁用失败");
+                            }
+                        );
+                        break;
+                    case "setting":
+                        window.open("Page_SetRole?id=" + selected, "", "width=500,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        break;
+                }
+            }
         });
     }
 

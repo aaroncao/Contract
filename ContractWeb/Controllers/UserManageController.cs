@@ -72,6 +72,17 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        #region 设置角色界面
+        /// <summary>
+        /// 设置角色界面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Page_SetRole()
+        {
+            return View();
+        }
+        #endregion
+
         #region 修改密码
         /// <summary>
         /// 修改密码
@@ -355,6 +366,63 @@ namespace ContractWeb.Controllers
             var result = new CustomJsonResult();
             result.Data = dal.delete(en);
 
+            return result;
+        }
+        #endregion
+
+        #region 设置用户的启用状态
+        /// <summary>
+        /// 设置用户的启用状态
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public JsonResult updateUserOpen(string id, string state)
+        {
+            UserInfo en = new UserInfo();
+            en.id = Convert.ToInt32(id);
+            en.state = state;
+
+            DaUserInfo dal = new DaUserInfo();
+            var result = new CustomJsonResult();
+            result.Data = dal.updateOpen(en);
+
+            return result;
+        }
+        #endregion
+
+        #region 获取用户权限组列表
+        /// <summary>
+        /// 获取用户权限组列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getUserPowerGroupInfo()
+        {
+            DaUserGroup dal = new DaUserGroup();
+            IList<UserGroup> users = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = new { total = users.Count, rows = users };
+            return result;
+        }
+        #endregion
+
+        #region 修改权限组
+        /// <summary>
+        /// 修改权限组
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="groupID"></param>
+        /// <returns></returns>
+        public JsonResult updateUserGroup(string id, string groupID)
+        {
+            DaUserGroup dal = new DaUserGroup();
+            UserInfo en = new UserInfo();
+            en.id = Convert.ToInt32(id);
+            en.powergroupID = groupID;
+
+            var result = new CustomJsonResult();
+            result.Data = dal.update(en);
             return result;
         }
         #endregion

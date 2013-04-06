@@ -1,0 +1,117 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>用户角色设置</title>
+
+    <!--   CSS   -->
+
+    <!-- Reset Stylesheet -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/reset.css")" type="text/css" media="screen" />
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/style.css")" type="text/css" media="screen" />
+    
+    <link rel="stylesheet" href="@Url.Content("~/Content/themes/default/easyui.css")" type="text/css" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/themes/icon.css")" type="text/css" />
+    
+    <!--   JavaScript   -->
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.8.3.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.easyui.min.js")"></script>
+    <!-- jQuery Configuration -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/simpla.jquery.configuration.js")"></script>
+    <!-- Facebox jQuery Plugin -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/facebox.js")"></script>
+    <!-- jQuery WYSIWYG Plugin -->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.wysiwyg.js")"></script>
+
+    <script>
+        function myformatter(date) {
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            var d = date.getDate();
+            return y + '-' + (m < 10 ? ('0' + m) : m) + '-' + (d < 10 ? ('0' + d) : d);
+        }
+
+        function myparser(s) {
+            if (!s) return new Date();
+            var ss = s.split('-');
+            var y = parseInt(ss[0], 10);
+            var m = parseInt(ss[1], 10);
+            var d = parseInt(ss[2], 10);
+            if (!isNaN(y) && !isNaN(m) && !isNaN(d)) {
+                return new Date(y, m - 1, d);
+            } else {
+                return new Date();
+            }
+        }
+
+        String.prototype.trim = function () {
+            return this.replace(/(^\s*)(\s*$)/g, "");
+        }
+    </script>
+</head>
+<body style="background:#f0f0f0;padding:20px;">
+    <div>
+        <div class="fitem">
+            <label class="fitemTitle">用户:</label>
+            <select id="drpUser" class="easyui-combobox"></select>
+            <label class="fitemTitle inline">权限组:</label>
+            <select id="drpGroup" class="easyui-combobox"></select>
+            <input type="button" value="保存" style="margin-left:10px;" onclick="save()" />
+            <input type="button" value="取消" style="margin-left:10px;" onclick="window.close()" />
+        </div>
+    </div>
+    <table id="groupList" style="width: 400px; height: 200px;" data-options="singleSelect:true,idField:'id',url:'/UserManage/getUserPowerGroupInfo'">
+        <thead>
+            <tr>
+                <th data-options="field:'userName',width:70">用户名</th>
+                <th data-options="field:'groupName',width:100">权限组</th>
+            </tr>
+        </thead>
+    </table>
+
+    <script>
+        $(function () {
+            $("#groupList").datagrid();
+
+            $("#drpUser").combobox({
+                url: '/Home/drpPersonList',
+                valueField: 'id',
+                textField: 'name',
+                onLoadSuccess: function () {
+                    if (location.href.indexOf("id") != -1) {
+                        var id = location.href.substring(location.href.indexOf("=") + 1, location.href.length);
+                        $("#drpUser").combobox("setValue", id);
+                    }
+                }
+            });
+
+            $("#drpGroup").combobox({
+                url: '/Home/drpGroupList',
+                valueField: 'id',
+                textField: 'name'
+            });        
+        });
+
+        function save() {
+            var id = $("#drpUser").combobox("getValue");
+            var groupID = $("#drpGroup").combobox("getValue");
+
+            $.get("/UserManage/updateUserGroup", "id=" + id + "&groupID=" + groupID,
+                function (data) {
+                    if (data == 1) {
+                        $("#groupList").datagrid("reload");
+                    }
+                }
+            );
+        }
+    </script>
+</body>
+</html>
