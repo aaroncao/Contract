@@ -26,14 +26,14 @@ namespace ContractWeb.Common
         /// </summary>
         public static MenuItem[] sysMenu = new MenuItem[] {
             new MenuItem(0, "平台首页", 0, "Index", "Home"),
-            new MenuItem(2, "操作岗位管理", 0, "PowerGroup", "UserManage"),
-            new MenuItem(3, "管理员修改密码", 0, "EditUserPwd", "UserManage"),
+            new MenuItem(2, "操作岗位管理", 0, "Group", "UserManage"),
+            new MenuItem(3, "管理员修改密码", 0, "UserPwd", "UserManage"),
             new MenuItem(2000, "退出系统", 0, "Exit", "Home"),
 
 
             new MenuItem(4, "系统用户管理", 1, "Users", "UserManage"),            
-            new MenuItem(5, "个人密码修改", 1, "EditPwd", "UserManage"),
-            new MenuItem(6, "个人信息修改", 1, "EditUserInfo", "UserManage"),
+            new MenuItem(5, "个人密码修改", 1, "MyPwd", "UserManage"),
+            new MenuItem(6, "个人信息修改", 1, "MyInfo", "UserManage"),
 
 
             new MenuItem(7, "渠道类别设置", 2, "Channel", "BasicSetting"),

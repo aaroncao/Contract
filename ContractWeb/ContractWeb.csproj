@@ -352,8 +352,8 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\UserManage\Users.cshtml" />
-    <Content Include="Views\UserManage\EditPwd.cshtml" />
-    <Content Include="Views\UserManage\EditUserInfo.cshtml" />
+    <Content Include="Views\UserManage\MyPwd.cshtml" />
+    <Content Include="Views\UserManage\MyInfo.cshtml" />
     <Content Include="Views\BasicSetting\Channel.cshtml" />
     <Content Include="Views\BasicSetting\Validity.cshtml" />
     <Content Include="Views\BasicSetting\Area.cshtml" />
@@ -378,7 +378,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\UserManage\PowerGroup.cshtml" />
+    <Content Include="Views\UserManage\Group.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Select\Contract.cshtml" />
@@ -433,9 +433,9 @@
     <Content Include="Views\Select\Putin.cshtml" />
     <Content Include="Views\Select\AdvList.cshtml" />
     <Content Include="Views\Home\Exit.cshtml" />
-    <Content Include="Views\UserManage\EditUserPwd.cshtml" />
+    <Content Include="Views\UserManage\UserPwd.cshtml" />
     <Content Include="Views\Business\EditOrder.cshtml" />
-    <Content Include="Views\UserManage\Page_SetRole.cshtml" />
+    <Content Include="Views\UserManage\Role.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

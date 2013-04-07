@@ -11,7 +11,7 @@
 
 <div>
     <fieldset class="fieldCSS">
-        <legend>权限组</legend>
+        <legend>操作岗位</legend>
         <div>
             <div class="fitem">
                 <label class="fitemTitle">名称:<font color="red">*</font></label>
@@ -33,7 +33,7 @@
     <fieldset class="fieldCSS">
         <legend>列表</legend>
 
-        <table id="GroupList" style="width: 490px; height: 230px;" data-options="singleSelect:true,idField:'id',url:'/UserManage/getGroupList'" toolbar="#toolbar">
+        <table id="GroupList" style="width: 490px; height: 230px;" data-options="singleSelect:true,idField:'id',url:'/UserManage/Group_getList'">
             <thead>
                 <tr>
                     <th data-options="field:'name',width:100">名称</th>
@@ -82,7 +82,7 @@
                     case "del":
                         var answer = confirm("确认要删除吗")
                         if (answer) {
-                            $.get("/UserManage/deleteGroup?id=" + selected,
+                            $.get("/UserManage/Group_remove?id=" + selected,
                                 function (result) {
                                     if (result == 0)
                                         alert("删除失败，请检查该权限组还存在用户");
@@ -112,7 +112,7 @@
             return;
         }
 
-        $.post("/UserManage/addGroup", "name=" + name + "&memo=" + memo,
+        $.post("/UserManage/Group_add", "name=" + name + "&memo=" + memo,
             function (data) {
                 if (data == 0)
                     alert("新增失败");
@@ -136,7 +136,7 @@
             return;
         }
 
-        $.post("/UserManage/updateGroup", "id=" + selected + "&name=" + name + "&memo=" + memo,
+        $.post("/UserManage/Group_edit", "id=" + selected + "&name=" + name + "&memo=" + memo,
             function (data) {
                 if (data == 0)
                     alert("修改失败");

@@ -10,6 +10,7 @@ using ContractWeb.Common;
 
 namespace ContractWeb.Controllers
 {
+    //系统通用
     public class HomeController : Controller
     {
         /* ============ 界面 ============ */
@@ -91,7 +92,7 @@ namespace ContractWeb.Controllers
         /// 获取用户名
         /// </summary>
         /// <returns></returns>
-        public JsonResult getUserName()
+        public JsonResult getUserName(string t)
         {
             UserInfo en = BaseHelper.getCookie();
 

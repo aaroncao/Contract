@@ -52,7 +52,7 @@
 
 <script>
     $(function () {
-        $.get("/UserManage/getUserInfo?t=" + Math.floor(Math.random()*1000), function (data) {
+        $.get("/UserManage/MyInfo_getList?t=" + Math.floor(Math.random()*1000), function (data) {
             if (data != null) {
                 $("#lblUserID").html(data.userID);
                 $("#txtName").val(data.name);
@@ -77,7 +77,7 @@
         var tel = $("#txtTel").val();
         var address = $("#txtAddress").val();
 
-        $.post("/UserManage/editInfo",
+        $.post("/UserManage/MyInfo_edit",
             "id=" + id + "&name=" + name + "&sex=" + sex + "&card=" + card + "&tel=" + tel + "&address=" + address,
             function (data) {
                 if (data == 1)

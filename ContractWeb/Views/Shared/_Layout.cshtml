@@ -49,7 +49,15 @@
                 <a href="#"><img id="logo" src="@Url.Content("~/Content/images/logo11.png")" alt="Simpla Admin logo" /></a>
                 <!-- Sidebar Profile links -->
                 <div id="profile-links">
-                    <a href="#" title="Edit your profile">admin</a><br />
+                    <a id="lblUserName" href="#" title="Edit your profile">
+                        <script>
+                            $.get("/Home/getUserName?t=" + new Date(),
+                                function (data) {
+                                    $("#lblUserName").html(data);
+                                }
+                            );
+                        </script>
+                    </a><br />
                     <div style="height:10px;"></div>
                     <a href="/UserManage/EditPwd">修改密码</a> | <a href="/Home/Exit">退出</a>
                 </div>

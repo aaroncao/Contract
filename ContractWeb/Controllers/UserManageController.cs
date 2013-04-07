@@ -9,14 +9,17 @@ using ContractWeb.DataAccess;
 
 namespace ContractWeb.Controllers
 {
+    //用户管理
     public class UserManageController : Controller
     {
-        #region 权限组界面
+        /* ============ 界面 ============ */
+
+        #region 操作岗位管理界面
         /// <summary>
-        /// 权限组界面
+        /// 操作岗位管理界面
         /// </summary>
         /// <returns></returns>
-        public ActionResult PowerGroup()
+        public ActionResult Group()
         {
             ViewBag.menu = 2;
             return View();
@@ -28,7 +31,7 @@ namespace ContractWeb.Controllers
         /// 管理员修改密码界面
         /// </summary>
         /// <returns></returns>
-        public ActionResult EditUserPwd()
+        public ActionResult UserPwd()
         {
             ViewBag.menu = 3;
             return View();
@@ -47,176 +50,50 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        #region 修改密码界面
+        #region 设置角色界面
+        /// <summary>
+        /// 设置角色界面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Role()
+        {
+            return View();
+        }
+        #endregion
+
+        #region 修改个人密码界面
         /// <summary>
         /// 修改密码界面
         /// </summary>
         /// <returns></returns>
-        public ActionResult EditPwd()
+        public ActionResult MyPwd()
         {
             ViewBag.menu = 5;
             return View();
         }
         #endregion
 
-        #region 个人信息修改界面
+        #region 修改个人信息界面
         /// <summary>
-        /// 个人信息修改界面
+        /// 修改个人信息界面
         /// </summary>
         /// <returns></returns>
-        public ActionResult EditUserInfo()
+        public ActionResult MyInfo()
         {
             ViewBag.userInfo = BaseHelper.getCookie();
             ViewBag.menu = 6;
             return View();
         }
-        #endregion
+        #endregion    
 
-        #region 设置角色界面
+        /* ============ 操作 ============ */
+
+        #region 获取操作岗位管理列表
         /// <summary>
-        /// 设置角色界面
+        /// 获取操作岗位管理列表
         /// </summary>
         /// <returns></returns>
-        public ActionResult Page_SetRole()
-        {
-            return View();
-        }
-        #endregion
-
-        #region 修改密码
-        /// <summary>
-        /// 修改密码
-        /// </summary>
-        /// <param name="oldPwd">旧密码</param>
-        /// <param name="newPwd">新密码</param>
-        /// <returns></returns>
-        public JsonResult editPassword(string oldPwd, string newPwd)
-        {
-            DaUserInfo dal = new DaUserInfo();
-            string[] re = dal.editPassword(BaseHelper.getCookie(), oldPwd, newPwd);
-
-            var result = new CustomJsonResult();
-            result.Data = new { isSuccess = re[0], msg = re[1] };
-            return result;
-        }
-        #endregion
-
-        #region 修改密码
-        /// <summary>
-        /// 修改密码
-        /// </summary>
-        /// <param name="id">用户编号</param>
-        /// <param name="newPwd">新密码</param>
-        /// <returns></returns>
-        public JsonResult editUserPassword(string id, string newPwd)
-        {
-            DaUserInfo dal = new DaUserInfo();
-            string[] re = dal.editPassword(Convert.ToInt32(id), newPwd);
-
-            var result = new CustomJsonResult();
-            result.Data = new { isSuccess = re[0], msg = re[1] };
-            return result;
-        }
-        #endregion
-
-        #region 获取个人信息
-        /// <summary>
-        /// 获取个人信息
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getUserInfo()
-        {
-            DaUserInfo dal = new DaUserInfo();
-            UserInfo info = BaseHelper.getCookie();
-            var result = new CustomJsonResult();
-
-            result.Data = dal.checkUserID(info.userID, info.password);
-            return result;
-        }
-        #endregion
-
-        #region 修改个人信息
-        /// <summary>
-        /// 修改个人信息
-        /// </summary>
-        /// <param name="name">真实姓名</param>
-        /// <param name="sex">性别</param>
-        /// <param name="card">身份证</param>
-        /// <param name="tel">联系方式</param>
-        /// <param name="address">联系地址</param>
-        /// <returns></returns>
-        [HttpPost]
-        public JsonResult editInfo(string id, string name, string sex, string card, string tel, string address)
-        {
-            UserInfo info = BaseHelper.getCookie().clone();
-            info.userID = id.Trim();
-            info.name = name.Trim();
-            info.sex = sex.Trim();
-            info.card = card.Trim();
-            info.tel = tel.Trim();
-            info.address = address.Trim();
-
-            DaUserInfo dal = new DaUserInfo();
-            int isAccess = dal.edit(info);
-
-            if (isAccess == 1)
-            {
-                Session["info"] = info;
-                BaseHelper.saveCookie(info);
-            }
-
-            var result = new CustomJsonResult();
-            result.Data = isAccess;            
-
-            return result;
-        }
-        #endregion
-
-        #region 获取用户列表
-        /// <summary>
-        /// 获取用户列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getUserList()
-        {
-            DaUserInfo dal = new DaUserInfo();
-            IList<UserInfo> users = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.dateFormat = "yyyy-MM-dd";
-
-            result.Data = new { total = users.Count, rows = users };
-            return result;
-        }
-        #endregion
-
-        #region 获取用户列表
-        /// <summary>
-        /// 获取用户列表
-        /// </summary>
-        /// <param name="userID">用户名</param>
-        /// <param name="beginDate">开始日期</param>
-        /// <param name="endDate">结束日期</param>
-        /// <returns></returns>
-        public JsonResult searchList(string userID, string beginDate, string endDate)
-        {
-            DaUserInfo dal = new DaUserInfo();
-            IList<UserInfo> users = dal.getList(userID, beginDate, endDate);
-
-            var result = new CustomJsonResult();
-            result.dateFormat = "yyyy-MM-dd";
-
-            result.Data = new { total = users.Count, rows = users };
-            return result;
-        }
-        #endregion
-
-        #region 获取权限组列表
-        /// <summary>
-        /// 获取权限组列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getGroupList()
+        public JsonResult Group_getList()
         {
             DaPowerGroup dal = new DaPowerGroup();
             IList<PowerGroup> areas = dal.getList();
@@ -227,15 +104,15 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        #region 添加权限组
+        #region 添加操作岗位
         /// <summary>
-        /// 添加权限组
+        /// 添加操作岗位
         /// </summary>
         /// <param name="name">名称</param>
         /// <param name="memo">备注</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult addGroup(string name, string memo)
+        public JsonResult Group_add(string name, string memo)
         {
             PowerGroup en = new PowerGroup();
             en.name = name;
@@ -248,16 +125,16 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        #region 更新权限组
+        #region 更新操作岗位
         /// <summary>
-        /// 更新权限组
+        /// 更新操作岗位
         /// </summary>
         /// <param name="id">编号</param>
         /// <param name="name">名称</param>
         /// <param name="memo">备注</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult updateGroup(string id, string name, string memo)
+        public JsonResult Group_edit(string id, string name, string memo)
         {
             PowerGroup en = new PowerGroup();
             en.id = Convert.ToInt32(id);
@@ -271,13 +148,13 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        #region 删除权限组
+        #region 删除操作岗位
         /// <summary>
-        /// 删除权限组
+        /// 删除操作岗位
         /// </summary>
         /// <param name="id">权限组ID</param>
         /// <returns></returns>
-        public JsonResult deleteGroup(string id)
+        public JsonResult Group_remove(string id)
         {
             PowerGroup en = new PowerGroup();
             en.id = Convert.ToInt32(id);
@@ -285,6 +162,67 @@ namespace ContractWeb.Controllers
             DaPowerGroup dal = new DaPowerGroup();
             var result = new CustomJsonResult();
             result.Data = dal.delete(en);
+            return result;
+        }
+        #endregion
+
+
+
+        #region 管理员修改密码
+        /// <summary>
+        /// 管理员修改密码
+        /// </summary>
+        /// <param name="id">用户编号</param>
+        /// <param name="newPwd">新密码</param>
+        /// <returns></returns>
+        public JsonResult UserPwd_edit(string id, string newPwd)
+        {
+            DaUserInfo dal = new DaUserInfo();
+            string[] re = dal.editPassword(Convert.ToInt32(id), newPwd);
+
+            var result = new CustomJsonResult();
+            result.Data = new { isSuccess = re[0], msg = re[1] };
+            return result;
+        }
+        #endregion
+
+
+
+        #region 获取用户列表
+        /// <summary>
+        /// 获取用户列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult Users_getList()
+        {
+            DaUserInfo dal = new DaUserInfo();
+            IList<UserInfo> users = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+
+            result.Data = new { total = users.Count, rows = users };
+            return result;
+        }
+        #endregion
+
+        #region 搜索用户列表
+        /// <summary>
+        /// 搜索用户列表
+        /// </summary>
+        /// <param name="userID">用户名</param>
+        /// <param name="beginDate">开始日期</param>
+        /// <param name="endDate">结束日期</param>
+        /// <returns></returns>
+        public JsonResult Users_search(string userID, string beginDate, string endDate)
+        {
+            DaUserInfo dal = new DaUserInfo();
+            IList<UserInfo> users = dal.getList(userID, beginDate, endDate);
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+
+            result.Data = new { total = users.Count, rows = users };
             return result;
         }
         #endregion
@@ -301,7 +239,7 @@ namespace ContractWeb.Controllers
         /// <param name="address">联系地址</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult addUser(string userID, string name, string sex, string card, string tel, string address)
+        public JsonResult Users_add(string userID, string name, string sex, string card, string tel, string address)
         {
             UserInfo en = new UserInfo();
             en.userID = userID;
@@ -332,7 +270,7 @@ namespace ContractWeb.Controllers
         /// <param name="address">联系地址</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult editUser(string id, string userID, string name, string sex, string card, string tel, string address)
+        public JsonResult Users_edit(string id, string userID, string name, string sex, string card, string tel, string address)
         {
             UserInfo en = new UserInfo();
             en.id = Convert.ToInt32(id);
@@ -357,7 +295,7 @@ namespace ContractWeb.Controllers
         /// </summary>
         /// <param name="id">编号</param>
         /// <returns></returns>
-        public JsonResult deleteUser(string id)
+        public JsonResult Users_remove(string id)
         {
             UserInfo en = new UserInfo();
             en.id = Convert.ToInt32(id);
@@ -370,14 +308,14 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        #region 设置用户的启用状态
+        #region 设置用户的启用/禁用状态
         /// <summary>
-        /// 设置用户的启用状态
+        /// 设置用户的启用/禁用状态
         /// </summary>
         /// <param name="id"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        public JsonResult updateUserOpen(string id, string state)
+        public JsonResult Users_editOpen(string id, string state)
         {
             UserInfo en = new UserInfo();
             en.id = Convert.ToInt32(id);
@@ -391,12 +329,14 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        #region 获取用户权限组列表
+
+
+        #region 获取用户角色列表
         /// <summary>
-        /// 获取用户权限组列表
+        /// 获取用户角色列表
         /// </summary>
         /// <returns></returns>
-        public JsonResult getUserPowerGroupInfo()
+        public JsonResult Users_getRoleList()
         {
             DaUserGroup dal = new DaUserGroup();
             IList<UserGroup> users = dal.getList();
@@ -414,7 +354,7 @@ namespace ContractWeb.Controllers
         /// <param name="id"></param>
         /// <param name="groupID"></param>
         /// <returns></returns>
-        public JsonResult updateUserGroup(string id, string groupID)
+        public JsonResult Users_editRole(string id, string groupID)
         {
             DaUserGroup dal = new DaUserGroup();
             UserInfo en = new UserInfo();
@@ -426,5 +366,81 @@ namespace ContractWeb.Controllers
             return result;
         }
         #endregion
+
+
+
+        #region 修改密码
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="oldPwd">旧密码</param>
+        /// <param name="newPwd">新密码</param>
+        /// <returns></returns>
+        public JsonResult MyPwd_edit(string oldPwd, string newPwd)
+        {
+            DaUserInfo dal = new DaUserInfo();
+            string[] re = dal.editPassword(BaseHelper.getCookie(), oldPwd, newPwd);
+
+            var result = new CustomJsonResult();
+            result.Data = new { isSuccess = re[0], msg = re[1] };
+            return result;
+        }
+        #endregion        
+
+
+
+        #region 获取个人信息
+        /// <summary>
+        /// 获取个人信息
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult MyInfo_getList()
+        {
+            DaUserInfo dal = new DaUserInfo();
+            UserInfo info = BaseHelper.getCookie();
+            var result = new CustomJsonResult();
+
+            result.Data = dal.checkUserID(info.userID, info.password);
+            return result;
+        }
+        #endregion
+
+        #region 修改个人信息
+        /// <summary>
+        /// 修改个人信息
+        /// </summary>
+        /// <param name="name">真实姓名</param>
+        /// <param name="sex">性别</param>
+        /// <param name="card">身份证</param>
+        /// <param name="tel">联系方式</param>
+        /// <param name="address">联系地址</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult MyInfo_edit(string id, string name, string sex, string card, string tel, string address)
+        {
+            UserInfo info = BaseHelper.getCookie().clone();
+            info.userID = id.Trim();
+            info.name = name.Trim();
+            info.sex = sex.Trim();
+            info.card = card.Trim();
+            info.tel = tel.Trim();
+            info.address = address.Trim();
+
+            DaUserInfo dal = new DaUserInfo();
+            int isAccess = dal.edit(info);
+
+            if (isAccess == 1)
+            {
+                Session["info"] = info;
+                BaseHelper.saveCookie(info);
+            }
+
+            var result = new CustomJsonResult();
+            result.Data = isAccess;            
+
+            return result;
+        }
+        #endregion
+        
     }
 }

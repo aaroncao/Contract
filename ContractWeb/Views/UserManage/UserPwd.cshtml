@@ -63,7 +63,7 @@
             return;
         }
         
-        $.get("/UserManage/editUserPassword?id=" + id + "&newPwd=" + theNew, function (data) {
+        $.get("/UserManage/UserPwd_edit?id=" + id + "&newPwd=" + theNew, function (data) {
             alert(data.msg);
         });
     }

@@ -68,7 +68,7 @@
             <input type="button" value="取消" style="margin-left:10px;" onclick="window.close()" />
         </div>
     </div>
-    <table id="groupList" style="width: 400px; height: 200px;" data-options="singleSelect:true,idField:'id',url:'/UserManage/getUserPowerGroupInfo'">
+    <table id="groupList" style="width: 400px; height: 200px;" data-options="singleSelect:true,idField:'id',url:'/UserManage/Users_getRoleList'">
         <thead>
             <tr>
                 <th data-options="field:'userName',width:70">用户名</th>
@@ -104,7 +104,7 @@
             var id = $("#drpUser").combobox("getValue");
             var groupID = $("#drpGroup").combobox("getValue");
 
-            $.get("/UserManage/updateUserGroup", "id=" + id + "&groupID=" + groupID,
+            $.get("/UserManage/Users_editRole", "id=" + id + "&groupID=" + groupID,
                 function (data) {
                     if (data == 1) {
                         $("#groupList").datagrid("reload");
