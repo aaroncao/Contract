@@ -38,9 +38,9 @@ namespace ContractWeb.Common
 
             new MenuItem(7, "渠道类别设置", 2, "Channel", "BasicSetting"),
             new MenuItem(8, "客户有效期设置", 2, "Validity", "BasicSetting"), 
-            new MenuItem(33, "权限组设定", 2, "PowerSetting", "BasicSetting"),
+            new MenuItem(33, "权限组设定", 2, "GroupPower", "BasicSetting"),
             new MenuItem(9, "地区设定", 2, "Area", "BasicSetting"),
-            new MenuItem(10, "客户状态设定", 2, "State", "BasicSetting"),
+            new MenuItem(10, "客户状态设定", 2, "CustomerState", "BasicSetting"),
             new MenuItem(11, "广告费结算对象设定", 2, "ADCost", "BasicSetting"),
             new MenuItem(12, "制作费结算对象设定", 2, "MakeCost", "BasicSetting"),
             new MenuItem(14, "影院信息管理", 2, "Cinema", "BasicSetting"),

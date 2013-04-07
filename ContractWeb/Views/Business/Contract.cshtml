@@ -69,7 +69,7 @@
     <fieldset class="fieldCSS">
         <legend>列表</legend>
 
-        <table id="ContractList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/getContractList'">
+        <table id="ContractList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/Contract_getList'">
             <thead>
                 <tr>
                     <th data-options="field:'contractID',width:100">合同编号</th>
@@ -102,19 +102,19 @@
         $('#ContractList').datagrid();
 
         $('#drpType').combobox({
-            url: '/Business/getDrpContractTypeList',
+            url: '/Home/drpContractTypeList',
             valueField: 'id',
             textField: 'name'
         });
 
         $('#drpChannel').combobox({
-            url: '/Business/getDrpChannelList',
+            url: '/Home/drpChannelList',
             valueField: 'id',
             textField: 'name'
         });
 
         $('#drpPerson').combobox({
-            url: '/Business/getDrpPersonList',
+            url: '/Home/drpPersonList',
             valueField: 'id',
             textField: 'name'
         });
@@ -149,7 +149,7 @@
             return;
         }
         
-        $.post("/Business/addContract",
+        $.post("/Business/Contract_add",
             "id=" + id + "&name=" + name + "&version=" + version + "&price=" + price + "&num=" + num + "&money=" + money +
             "&make=" + make + "&back=" + back + "&type=" + type + "&channel=" + channel + "&begintime=" + begintime + "&endtime=" + endtime + 
             "&zq=" + zq + "&person=" + person + "&mDate=" + mDate + "&memo=" + memo,

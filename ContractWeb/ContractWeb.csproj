@@ -357,7 +357,7 @@
     <Content Include="Views\BasicSetting\Channel.cshtml" />
     <Content Include="Views\BasicSetting\Validity.cshtml" />
     <Content Include="Views\BasicSetting\Area.cshtml" />
-    <Content Include="Views\BasicSetting\State.cshtml" />
+    <Content Include="Views\BasicSetting\CustomerState.cshtml" />
     <Content Include="Views\BasicSetting\ADCost.cshtml" />
     <Content Include="Views\BasicSetting\MakeCost.cshtml" />
     <Content Include="Views\BasicSetting\Customer.cshtml" />
@@ -414,7 +414,7 @@
     <Content Include="Views\Select\MakeCost.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\BasicSetting\PowerSetting.cshtml" />
+    <Content Include="Views\BasicSetting\GroupPower.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Select\ADCostList.cshtml" />

@@ -149,5 +149,152 @@ namespace ContractWeb.Controllers
             return result;
         }
         #endregion
+
+        #region 获取权限类型列表
+        /// <summary>
+        /// 获取权限类型列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult drpGroupOperTypeList()
+        {
+            IList<ModuleType> types = new List<ModuleType>();
+            types.Add(new ModuleType(0, "禁止"));
+            types.Add(new ModuleType(1, "可读"));
+            types.Add(new ModuleType(2, "可写"));
+
+            var result = new CustomJsonResult();
+            result.Data = types;
+            return result;
+        }
+        #endregion
+
+        #region 获取地区列表
+        /// <summary>
+        /// 获取地区列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult drpAreaList()
+        {
+            DaAreaInfo dal = new DaAreaInfo();
+            IList<AreaInfo> areas = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = areas;
+            return result;
+        }
+        #endregion
+
+        #region 获取影院列表
+        /// <summary>
+        /// 获取影院列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult drpCinemaList()
+        {
+            DaCinema dal = new DaCinema();
+            IList<Cinema> cinemas = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = cinemas;
+            return result;
+        }
+        #endregion
+
+        #region 获取影厅类型列表
+        /// <summary>
+        /// 获取影厅类型列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult drpCinemaRoomTypeList()
+        {
+            DaCinemaRoomType dal = new DaCinemaRoomType();
+            IList<CinemaRoomType> types = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = types;
+            return result;
+        }
+        #endregion
+
+        #region 根据影院ID获取影厅列表
+        /// <summary>
+        /// 根据影院ID获取影厅列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult drpCinemaRoomList(string id)
+        {
+            DaCinemaRoom dal = new DaCinemaRoom();
+            IList<CinemaRoom> rooms = dal.getList(id);
+
+            var result = new CustomJsonResult();
+            result.Data = rooms;
+            return result;
+        }
+        #endregion
+
+        #region 获取客户渠道类型数据
+        /// <summary>
+        /// 获取客户渠道类型数据
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult drpChannelTypeList()
+        {
+            DaCustomerInfo dal = new DaCustomerInfo();
+            IList<ChannelType> types = dal.getChannelTypeList();
+
+            var result = new CustomJsonResult();
+            result.Data = types;
+            return result;
+        }
+        #endregion
+
+        #region 获取客户状态列表
+        /// <summary>
+        /// 获取客户状态列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult drpCustomerStateList()
+        {
+            DaCustomerState dal = new DaCustomerState();
+            IList<CustomerState> states = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = states;
+            return result;
+        }
+        #endregion
+
+        #region 获取合同类型列表
+        /// <summary>
+        /// 获取合同类型列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult drpContractTypeList()
+        {
+            DaContractType dal = new DaContractType();
+            IList<ContractType> types = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = types;
+            return result;
+        }
+        #endregion
+
+        #region 获取渠道列表
+        /// <summary>
+        /// 获取渠道列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult drpChannelList()
+        {
+            DaChannel dal = new DaChannel();
+            IList<Channel> channels = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = channels;
+            return result;
+        }
+        #endregion
     }
 }

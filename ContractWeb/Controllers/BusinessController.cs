@@ -9,8 +9,11 @@ using ContractWeb.DataAccess;
 
 namespace ContractWeb.Controllers
 {
+    //业务管理
     public class BusinessController : Controller
     {
+        /* ============ 界面 ============ */
+
         #region 合同管理界面
         /// <summary>
         /// 合同管理界面
@@ -106,16 +109,14 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-
-
-
-
+        /* ============ 操作 ============ */
+        
         #region 获取合同列表
         /// <summary>
         /// 获取合同列表
         /// </summary>
         /// <returns></returns>
-        public JsonResult getContractList()
+        public JsonResult Contract_getList()
         {
             DaContractInfo dal = new DaContractInfo();
             IList<ContractInfo> contracts = dal.getList();
@@ -123,54 +124,6 @@ namespace ContractWeb.Controllers
             var result = new CustomJsonResult();
             result.dateFormat = "yyyy-MM-dd";
             result.Data = new { total = contracts.Count, rows = contracts };
-            return result;
-        }
-        #endregion
-
-        #region 获取合同类型列表
-        /// <summary>
-        /// 获取合同类型列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getDrpContractTypeList()
-        {
-            DaContractType dal = new DaContractType();
-            IList<ContractType> types = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.Data = types;
-            return result;
-        }
-        #endregion
-
-        #region 获取渠道列表
-        /// <summary>
-        /// 获取渠道列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getDrpChannelList()
-        {
-            DaChannel dal = new DaChannel();
-            IList<Channel> channels = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.Data = channels;
-            return result;
-        }
-        #endregion
-
-        #region 获取业务员列表
-        /// <summary>
-        /// 获取业务员列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getDrpPersonList()
-        {
-            DaUserInfo dal = new DaUserInfo();
-            IList<UserInfo> users = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.Data = users;
             return result;
         }
         #endregion
@@ -197,8 +150,8 @@ namespace ContractWeb.Controllers
         /// <param name="memo">备注</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult addContract(string id, string name, string version, string price, string num, 
-            string money, string make, string back, string type, string channel, string begintime, string endtime, 
+        public JsonResult Contract_add(string id, string name, string version, string price, string num,
+            string money, string make, string back, string type, string channel, string begintime, string endtime,
             string zq, string person, string mDate, string memo)
         {
             ContractInfo en = new ContractInfo();
@@ -251,6 +204,8 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        
+        
         #region 根据编号获取合同
         /// <summary>
         /// 根据编号获取合同

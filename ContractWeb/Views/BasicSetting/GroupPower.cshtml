@@ -14,13 +14,13 @@
         <input type="button" value="权限组" onclick="goPower()" />
         <label class="fitemTitle" style="width: 80px; margin-left: 10px;">权限组名称:</label>
         <select id="drpGroup" class="easyui-combobox"></select>
-        <input type="button" id="btnAdd" value="保存" style="margin-left: 10px;" onclick="save()" />
+        <input type="button" value="保存" style="margin-left: 10px;" onclick="save()" />
     </div>
 
     <table class="fitem">
         <tr>
             <td style="width: 335px;">
-                <table id="ModuleList" style="width: 300px; height: 200px; float: left;" data-options="singleSelect:false,selectOnCheck:true,checkOnSelect:true,idField:'id',url:'/BasicSetting/getModuleList'">
+                <table id="ModuleList" style="width: 300px; height: 200px; float: left;" data-options="singleSelect:false,selectOnCheck:true,checkOnSelect:true,idField:'id',url:'/BasicSetting/GroupPower_getModuleList'">
                     <thead>
                         <tr>
                             <th data-options="field:'ck',checkbox:true"></th>
@@ -30,8 +30,8 @@
                 </table>
             </td>
             <td style="width: 80px; vertical-align: middle;">
-                <input type="button" id="btnAdd" value="添加" onclick="addPower()" />
-                <input type="button" id="btnRemove" value="移除" onclick="removePower()" />
+                <input type="button" value="添加" onclick="addPower()" />
+                <input type="button" value="移除" onclick="removePower()" />
             </td>
             <td>
                 <table id="ModuledList" style="width: 300px; height: 200px; float: left;" data-options="singleSelect:false,selectOnCheck:true,checkOnSelect:true,idField:'id',onDblClickRow:onClickRow ">
@@ -48,7 +48,7 @@
                                     options:{  
                                         valueField:'id',  
                                         textField:'name',  
-                                        url:'/BasicSetting/getDrpGroupTypeList',  
+                                        url:'/Home/drpGroupOperTypeList',  
                                         required:true  
                                     }  
                                 }">权限</th>
@@ -67,8 +67,8 @@
         $("#ModuleList").datagrid();
         $("#ModuledList").datagrid();
 
-        $('#drpGroup').combobox({
-            url: '/BasicSetting/getDrpGroupList',
+        $("#drpGroup").combobox({
+            url: "/Home/drpGroupList",
             valueField: 'id',
             textField: 'name',
             onChange: showPower
@@ -80,13 +80,13 @@
     });
 
     function goPower() {
-        window.location.href = "/UserManage/PowerGroup";
+        window.location.href = "/UserManage/Group";
     }
 
     function showPower() {
         var id = $("#drpGroup").combobox("getValue");
         $("#ModuledList").datagrid({
-            url: "/BasicSetting/getShowPower?id=" + id + "&t=" + new Date()
+            url: "/BasicSetting/GroupPower_getShowPower?id=" + id + "&t=" + new Date()
         });
     }
 
@@ -101,7 +101,7 @@
         if (modules != "")
             modules = modules.substring(0, modules.length - 1);
 
-        $.get("/BasicSetting/addPower?id=" + id + "&modules=" + modules, function (data) {
+        $.get("/BasicSetting/GroupPower_add?id=" + id + "&modules=" + modules, function (data) {
             showPower();
         });
     }
@@ -117,7 +117,7 @@
         if (modules != "")
             modules = modules.substring(0, modules.length - 1);
 
-        $.get("/BasicSetting/removePower?id=" + id + "&modules=" + modules, function (data) {
+        $.get("/BasicSetting/GroupPower_remove?id=" + id + "&modules=" + modules, function (data) {
             showPower();
         });
     }
@@ -163,7 +163,7 @@
         if (powers != "")
             powers = powers.substring(0, powers.length - 1);
 
-        $.get("/BasicSetting/savePower?id=" + id + "&modules=" + modules + "&powers=" + powers, function (data) {
+        $.get("/BasicSetting/GroupPower_edit?id=" + id + "&modules=" + modules + "&powers=" + powers, function (data) {
             showPower();
         });
     }

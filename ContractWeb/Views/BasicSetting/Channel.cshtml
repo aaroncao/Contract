@@ -34,7 +34,7 @@
     <fieldset class="fieldCSS">
         <legend>列表</legend>
 
-        <table id="ChannelList" style="width: 490px; height: 230px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getChannelList'" toolbar="#toolbar">
+        <table id="ChannelList" style="width: 490px; height: 230px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/Channel_getList'">
             <thead>
                 <tr>
                     <th data-options="field:'name',width:100">名称</th>
@@ -104,7 +104,7 @@
             return;
         }
 
-        $.post("/BasicSetting/addChannel", "name=" + name + "&memo=" + memo,
+        $.post("/BasicSetting/Channel_add", "name=" + name + "&memo=" + memo,
             function (data) {
                 if (data == 0)
                     alert("新增失败");
@@ -128,7 +128,7 @@
             return;
         }
 
-        $.post("/BasicSetting/updateChannel", "id=" + selected + "&name=" + name + "&memo=" + memo,
+        $.post("/BasicSetting/Channel_edit", "id=" + selected + "&name=" + name + "&memo=" + memo,
             function (data) {
                 if (data == 0)
                     alert("修改失败");
@@ -139,7 +139,7 @@
     }
 
     function deleteRow() {
-        $.get("/BasicSetting/deleteChannel", "id=" + selected,
+        $.get("/BasicSetting/Channel_remove", "id=" + selected,
             function (data) {
                 if (data == 0)
                     alert("删除失败，该渠道可能在使用中");

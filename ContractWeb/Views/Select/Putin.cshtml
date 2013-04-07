@@ -74,7 +74,7 @@
 
     function getDrpRoomData() {
         $("#drpRoom").combobox({
-            url: "/BasicSetting/getDrpCinemaRoomList?id=" + $("#drpCinema").combobox("getValue"),
+            url: "/Home/drpCinemaRoomList?id=" + $("#drpCinema").combobox("getValue"),
             valueField: 'id',
             textField: 'room'
         });
