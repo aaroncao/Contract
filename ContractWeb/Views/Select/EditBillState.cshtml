@@ -56,7 +56,7 @@
         $(function () {
             var vID = location.href.substring(location.href.indexOf("=") + 1, location.href.length);
 
-            $.get("/Select/getContractEn?id=" + vID,
+            $.get("/Select/ContractList_getContract?id=" + vID,
                 function (data) {
                     $("#txtID").val(data.contractID);
                     $("#txtName").val(data.name);
@@ -71,7 +71,7 @@
             var state = "0";
             if ($("#Finished").attr("checked") == "checked")
                 state = "1";
-            $.get("/Select/changeBillState?id=" + id + "&state=" + state,
+            $.get("/Select/ContractList_editBillState?id=" + id + "&state=" + state,
                 function (data) {
                     if (data == 1)
                         alert("修改成功");

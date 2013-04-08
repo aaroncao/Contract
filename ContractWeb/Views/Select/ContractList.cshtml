@@ -93,36 +93,36 @@
         });
 
         $('#drpType').combobox({
-            url: '/Business/getDrpContractTypeList',
+            url: '/Home/drpContractTypeList',
             valueField: 'id',
             textField: 'name'
         });
 
         $('#drpChannel').combobox({
-            url: '/Business/getDrpChannelList',
+            url: '/Home/drpChannelList',
             valueField: 'id',
             textField: 'name'
         });
 
         $('#drpPerson').combobox({
-            url: '/Business/getDrpPersonList',
+            url: '/Home/drpPersonList',
             valueField: 'id',
             textField: 'name'
         });
 
         $('#drpState').combobox({
-            url: '/Select/getDrpContractStateList',
+            url: '/Home/drpContractStateList',
             valueField: 'id',
             textField: 'name'
         });
         
         $('#drpBillState').combobox({
-            url: '/Select/getDrpBillStateList',
+            url: '/Home/drpBillStateList',
             valueField: 'id',
             textField: 'name'
         });
 
-        $.get("/Select/getContractList",
+        $.get("/Select/ContractList_getList",
             function (data) {
                 $("#txtTotal").val(data.money);
                 $('#ContractList').datagrid("loadData", data);
@@ -153,13 +153,13 @@
                             window.open("EditContract?id=" + selected.contractID, "", "width=950,height=300,toolbar=no,menubar=no,scrollbars=no, resizable=no");
                         break;
                     case "pay":
-                        window.open("CPay?id=" + selected.contractID, "", "width=900,height=300,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        window.open("/Business/CPay?id=" + selected.contractID, "", "width=900,height=300,toolbar=no,menubar=no,scrollbars=no, resizable=no");
                         break;
                     case "payList":
                         window.open("CPayList?id=" + selected.contractID, "", "width=900,height=300,toolbar=no,menubar=no,scrollbars=no, resizable=no");
                         break;
                     case "writeBill":
-                        window.open("WriteBill?id=" + selected.contractID, "", "width=900,height=700,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        window.open("/Business/WriteBill?id=" + selected.contractID, "", "width=900,height=700,toolbar=no,menubar=no,scrollbars=no, resizable=no");
                         break;
                     case "billList":
                         window.open("BillList?id=" + selected.contractID, "", "width=900,height=300,toolbar=no,menubar=no,scrollbars=no, resizable=no");
@@ -184,7 +184,7 @@
         var billState = $("#drpBillState").combobox("getValue");
         var mDate = $("#txtDate").datebox("getValue");
 
-        $.get("/Select/searchContract?id=" + id + "&channel=" + channel + "&type=" + type + "&state=" + state + "&person=" + person + "&billState=" + billState + "&date=" + mDate,
+        $.get("/Select/ContractList_searcht?id=" + id + "&channel=" + channel + "&type=" + type + "&state=" + state + "&person=" + person + "&billState=" + billState + "&date=" + mDate,
             function (data) {
                 $("#txtTotal").val(data.money);
                 $('#ContractList').datagrid("loadData", data);
@@ -201,6 +201,6 @@
         var billState = $("#drpBillState").combobox("getValue");
         var mDate = $("#txtDate").datebox("getValue");
 
-        window.open("/Select/outputContract?id=" + id + "&channel=" + channel + "&type=" + type + "&state=" + state + "&person=" + person + "&billState=" + billState + "&date=" + mDate, "", "width=50,height=50,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+        window.open("/Select/ContractList_output?id=" + id + "&channel=" + channel + "&type=" + type + "&state=" + state + "&person=" + person + "&billState=" + billState + "&date=" + mDate, "", "width=50,height=50,toolbar=no,menubar=no,scrollbars=no, resizable=no");
     }
 </script>

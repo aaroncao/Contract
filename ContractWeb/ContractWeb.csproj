@@ -381,19 +381,13 @@
     <Content Include="Views\UserManage\Group.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Select\Contract.cshtml" />
+    <Content Include="Views\Select\ContractList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Select\EditContract.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Select\CPay.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Select\CPayList.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Select\WriteBill.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Select\BillList.cshtml" />

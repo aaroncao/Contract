@@ -113,6 +113,12 @@
         var today = new Date();
         var todayStr = today.getFullYear() + "-" + (today.getMonth() > 10 ? (today.getMonth + 1) : "0" + (today.getMonth() + 1)) + "-" + (today.getDate() > 10 ? today.getDate() : "0" + today.getDate());
         $("#txtDate").datebox("setValue", todayStr);
+
+        if (location.href.indexOf("=") != -1) {
+            var vID = location.href.substring(location.href.indexOf("=") + 1, location.href.length);
+            $("#txtID").val(vID);
+            getData();
+        }
     });
 
     function createRowMenu() {
@@ -134,15 +140,19 @@
     function EnterPress(e) {        
         var e = e || window.event;
         if (e.keyCode == 13) {
-            $.get("/Business/WriteBill_getContract?id=" + $("#txtID").val(), function (data) {
-                $("#txtName").val(data.name);
-                $("#txtPerson").val(data.personName);
-                $("#txtType").val(data.typeName);
-                $("#txtChannel").val(data.channelName);
-                $("#txtContractMoney").val(data.money);
-                $("#txtMake").val(data.makeCost); 
-            });
+            getData();
         }
+    }
+
+    function getData() {
+        $.get("/Business/WriteBill_getContract?id=" + $("#txtID").val(), function (data) {
+            $("#txtName").val(data.name);
+            $("#txtPerson").val(data.personName);
+            $("#txtType").val(data.typeName);
+            $("#txtChannel").val(data.channelName);
+            $("#txtContractMoney").val(data.money);
+            $("#txtMake").val(data.makeCost);
+        });
     }
 
     function cancel() {

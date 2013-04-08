@@ -346,5 +346,37 @@ namespace ContractWeb.Controllers
             return result;
         }
         #endregion
+
+        #region 获取合同状态列表
+        /// <summary>
+        /// 获取合同状态列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult drpContractStateList()
+        {
+            DaContractState dal = new DaContractState();
+            IList<ContractState> types = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = types;
+            return result;
+        }
+        #endregion
+
+        #region 获取发票状态列表
+        /// <summary>
+        /// 获取发票状态列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult drpBillStateList()
+        {
+            DaBillState dal = new DaBillState();
+            IList<BillState> types = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = types;
+            return result;
+        }
+        #endregion
     }
 }

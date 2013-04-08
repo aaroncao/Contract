@@ -35,7 +35,7 @@
 
 <body style="background:#f0f0f0;padding:20px;">
     <div>
-        <table id="CPayList" style="width: 800px; height: 250px;" data-options="singleSelect:true,idField:'id',url:'/Select/getPayList'">
+        <table id="CPayList" style="width: 800px; height: 250px;" data-options="singleSelect:true,idField:'id',url:'/Select/ContractList_getPayList'">
             <thead>
                 <tr>
                     <th data-options="field:'contractID',width:100">合同编号</th>
@@ -56,7 +56,7 @@
             var vID = location.href.substring(location.href.indexOf("=") + 1, location.href.length);
 
             $("#CPayList").datagrid({
-                url: "/Select/getPayList?id=" + vID
+                url: "/Select/ContractList_getPayList?id=" + vID
             });
         });
     </script>

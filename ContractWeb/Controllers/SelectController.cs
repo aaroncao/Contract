@@ -23,7 +23,7 @@ namespace ContractWeb.Controllers
         /// 合同信息查询界面
         /// </summary>
         /// <returns></returns>
-        public ActionResult Contract()
+        public ActionResult ContractList()
         {
             ViewBag.menu = 26;
             return View();
@@ -41,34 +41,12 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        #region 客户到账登记界面
-        /// <summary>
-        /// 客户到账登记界面
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult CPay()
-        {
-            return View();
-        }
-        #endregion
-
         #region 客户到账情况界面
         /// <summary>
         /// 客户到账情况界面
         /// </summary>
         /// <returns></returns>
         public ActionResult CPayList()
-        {
-            return View();
-        }
-        #endregion
-
-        #region 开发票登记界面
-        /// <summary>
-        /// 开发票登记界面
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult WriteBill()
         {
             return View();
         }
@@ -202,44 +180,12 @@ namespace ContractWeb.Controllers
 
         /* ============ 操作 ============ */
 
-        #region 获取合同状态列表
-        /// <summary>
-        /// 获取合同状态列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getDrpContractStateList()
-        {
-            DaContractState dal = new DaContractState();
-            IList<ContractState> types = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.Data = types;
-            return result;
-        }
-        #endregion
-
-        #region 获取发票状态列表
-        /// <summary>
-        /// 获取发票状态列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getDrpBillStateList()
-        {
-            DaBillState dal = new DaBillState();
-            IList<BillState> types = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.Data = types;
-            return result;
-        }
-        #endregion
-
         #region 获取合同列表
         /// <summary>
         /// 获取合同列表
         /// </summary>
         /// <returns></returns>
-        public JsonResult getContractList()
+        public JsonResult ContractList_getList()
         {
             DaContractInfo dal = new DaContractInfo();
             IList<ContractInfo> contracts = dal.getList();
@@ -255,12 +201,12 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        #region 查询合同
+        #region 搜索合同列表
         /// <summary>
-        /// 查询合同
+        /// 搜索合同列表
         /// </summary>
         /// <returns></returns>
-        public JsonResult searchContract(string id, string channel, string type, string state, string person, string billState, string date)
+        public JsonResult ContractList_searcht(string id, string channel, string type, string state, string person, string billState, string date)
         {
             DaContractInfo dal = new DaContractInfo();
             IList<ContractInfo> contracts = dal.getList(id, channel, type, state, person, billState, date);
@@ -276,13 +222,57 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        #region 导出合同列表
+        /// <summary>
+        /// 导出合同列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="channel"></param>
+        /// <param name="type"></param>
+        /// <param name="state"></param>
+        /// <param name="person"></param>
+        /// <param name="billState"></param>
+        /// <param name="date"></param>
+        public void ContractList_output(string id, string channel, string type, string state, string person, string billState, string date)
+        {
+            DaContractInfo dal = new DaContractInfo();
+            DataTable dt = dal.getDataTable(id, channel, type, state, person, billState, date);
+
+            if (dt.Rows.Count > 0)
+            {
+                string filename = "myContractList.xls";
+                System.IO.StringWriter tw = new System.IO.StringWriter();
+                System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+                DataGrid dgGrid = new DataGrid();
+                dgGrid.DataSource = dt;
+                dgGrid.DataBind();
+
+                //Get the HTML for the control.
+                dgGrid.RenderControl(hw);
+                //Write the HTML back to the browser.
+                //Response.ContentType = application/vnd.ms-excel;
+                Response.ContentType = "application/vnd.ms-excel";
+                Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+                Response.Write(tw.ToString());
+            }
+            else
+            {
+                Response.Write("无数据可导出！");
+            }
+
+            Response.End();
+        }
+        #endregion
+
+
+
         #region 根据编号获取合同信息
         /// <summary>
         /// 根据编号获取合同信息
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public JsonResult getContractEn(string id)
+        public JsonResult ContractList_getContract(string id)
         {
             DaContractInfo dal = new DaContractInfo();
             ContractInfo contract = dal.getEntity(id);
@@ -294,9 +284,9 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        #region 修改合同
+        #region 修改合同信息
         /// <summary>
-        /// 修改合同
+        /// 修改合同信息
         /// </summary>
         /// <param name="id">合同编号</param>
         /// <param name="name">合同名称</param>
@@ -316,7 +306,7 @@ namespace ContractWeb.Controllers
         /// <param name="memo">备注</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult editContract(string id, string name, string version, string price, string num,
+        public JsonResult ContractList_editContract(string id, string name, string version, string price, string num,
             string money, string make, string back, string type, string channel, string begintime, string endtime,
             string zq, string person, string mDate, string memo)
         {
@@ -376,7 +366,7 @@ namespace ContractWeb.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public JsonResult getPayList(string id)
+        public JsonResult ContractList_getPayList(string id)
         {
             DaPayList dal = new DaPayList();
             IList<PayList> list = dal.getList(id);
@@ -393,7 +383,7 @@ namespace ContractWeb.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public JsonResult getBillList(string id)
+        public JsonResult ContractList_getBillList(string id)
         {
             DaBill dal = new DaBill();
             IList<Bill> list = dal.getList(id);
@@ -402,7 +392,7 @@ namespace ContractWeb.Controllers
             result.Data = new { total = list.Count, rows = list };
             return result;
         }
-        #endregion 
+        #endregion
 
         #region 修改开票状态
         /// <summary>
@@ -411,7 +401,7 @@ namespace ContractWeb.Controllers
         /// <param name="id"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        public JsonResult changeBillState(string id, string state)
+        public JsonResult ContractList_editBillState(string id, string state)
         {
             DaContractInfo dal = new DaContractInfo();
             ContractInfo en = new ContractInfo();
@@ -431,7 +421,7 @@ namespace ContractWeb.Controllers
         /// <param name="id"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        public JsonResult changeContractState(string id, string state)
+        public JsonResult ContractList_editContractState(string id, string state)
         {
             DaContractInfo dal = new DaContractInfo();
             ContractInfo en = new ContractInfo();
@@ -443,6 +433,13 @@ namespace ContractWeb.Controllers
             return result;
         }
         #endregion
+        
+
+         
+
+        
+
+       
 
         #region 获取打款状态列表
         /// <summary>
@@ -629,48 +626,6 @@ namespace ContractWeb.Controllers
             return result;
         }
         #endregion 
-
-        #region 导出合同信息报表
-        /// <summary>
-        /// 导出合同信息报表
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="channel"></param>
-        /// <param name="type"></param>
-        /// <param name="state"></param>
-        /// <param name="person"></param>
-        /// <param name="billState"></param>
-        /// <param name="date"></param>
-        public void outputContract(string id, string channel, string type, string state, string person, string billState, string date)
-        {
-            DaContractInfo dal = new DaContractInfo();
-            DataTable dt = dal.getDataTable(id, channel, type, state, person, billState, date);
-
-            if (dt.Rows.Count > 0)
-            {
-                string filename = "myContractList.xls";
-                System.IO.StringWriter tw = new System.IO.StringWriter();
-                System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
-                DataGrid dgGrid = new DataGrid();
-                dgGrid.DataSource = dt;
-                dgGrid.DataBind();
-
-                //Get the HTML for the control.
-                dgGrid.RenderControl(hw);
-                //Write the HTML back to the browser.
-                //Response.ContentType = application/vnd.ms-excel;
-                Response.ContentType = "application/vnd.ms-excel";
-                Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-                Response.Write(tw.ToString());
-            }
-            else
-            {
-                Response.Write("无数据可导出！");
-            }
-
-            Response.End();
-        }
-        #endregion
 
         #region 导出下单信息报表
         /// <summary>

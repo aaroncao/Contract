@@ -56,21 +56,32 @@
 
 
 <script>
+    $(function () {
+        if (location.href.indexOf("=") != -1) {
+            var vID = location.href.substring(location.href.indexOf("=") + 1, location.href.length);
+            $("#txtID").val(vID);
+            getData();
+        }
+    });
 
     function EnterPress(e) {        
         var e = e || window.event;
         if (e.keyCode == 13) {
-            $.get("/Business/CPay_getContract?id=" + $("#txtID").val(), function (data) {
-                $("#txtName").val(data.name);
-                $("#txtCustomer").val(data.customerName);
-                $("#txtVersion").val(data.version);
-                $("#txtMoney").val(data.money);
-                $("#txtMake").val(data.makeCost);
-                $("#txtType").val(data.typeName);
-                $("#txtChannel").val(data.channelName);
-                $("#txtPerson").val(data.personName);
-            });
+            getData();
         }
+    }
+
+    function getData() {
+        $.get("/Business/CPay_getContract?id=" + $("#txtID").val(), function (data) {
+            $("#txtName").val(data.name);
+            $("#txtCustomer").val(data.customerName);
+            $("#txtVersion").val(data.version);
+            $("#txtMoney").val(data.money);
+            $("#txtMake").val(data.makeCost);
+            $("#txtType").val(data.typeName);
+            $("#txtChannel").val(data.channelName);
+            $("#txtPerson").val(data.personName);
+        });
     }
 
     function cancel() {
