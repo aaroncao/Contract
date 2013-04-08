@@ -1,5 +1,4 @@
 ﻿<style type="text/css">
-
     .fitemTitle {
         display: inline-block;
         width: 60px;
@@ -58,13 +57,13 @@
         $("#PutinList").datagrid();
 
         $("#drpCinema").combobox({
-            url: '/BasicSetting/getDrpCinemaList',
+            url: '/Home/drpCinemaList',
             valueField: 'id',
             textField: 'name',
             onChange: getDrpRoomData
         });
 
-        $.get("/Select/getPutinList",
+        $.get("/Select/Putin_getList",
             function (data) {
                 $("#PutinList").datagrid("loadData", data);
                 $("#txtTotal").val(data.money);
@@ -87,7 +86,7 @@
         var begin = $("#txtBegin").datebox("getValue");
         var end = $("#txtEnd").datebox("getValue");
 
-        $.get("/Select/searchPutinList?cinema=" + cinema + "&room=" + room + "&version=" + version + "&begin=" + begin + "&end=" + end,
+        $.get("/Select/Putin_search?cinema=" + cinema + "&room=" + room + "&version=" + version + "&begin=" + begin + "&end=" + end,
             function (data) {
                 $("#PutinList").datagrid("loadData", data);
                 $("#txtTotal").val(data.money);

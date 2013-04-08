@@ -1,5 +1,4 @@
 ﻿<style type="text/css">
-
     .fitemTitle {
         display: inline-block;
         width: 60px;
@@ -39,7 +38,7 @@
     <input type="button" value="导出" style="margin-left:10px;" onclick="output()" />
 </p>
 
-<table id="OrderList" style="width: 1050px; height: 400px;" data-options="singleSelect:true,idField:'id',url:'/Select/getOrderList'">
+<table id="OrderList" style="width: 1050px; height: 400px;" data-options="singleSelect:true,idField:'id',url:'/Select/OrderList_getList'">
     <thead>
         <tr>
             <th data-options="field:'id',width:50">ID</th>
@@ -77,19 +76,19 @@
         });
 
         $('#drpPerson').combobox({
-            url: '/Business/getDrpPersonList',
+            url: '/Home/drpPersonList',
             valueField: 'id',
             textField: 'name'
         });
 
         $('#drpADTarget').combobox({
-            url: '/Business/getDrpADTargetList',
+            url: '/Home/drpADTargetList',
             valueField: 'id',
             textField: 'target'
         });
 
         $('#drpMakeTarget').combobox({
-            url: '/Business/getDrpMakeTargetList',
+            url: '/Home/drpMakeTargetList',
             valueField: 'id',
             textField: 'target'
         });
@@ -105,7 +104,7 @@
         var makeTarget = $("#drpMakeTarget").combobox("getValue");
 
         $('#OrderList').datagrid({
-            url: "/Select/searchOrder?order=" + orderID + "&contract=" + contractID + "&begin=" + begin + "&end=" + end + "&person=" + person + "&adTarget=" + adTarget + "&makeTarget=" + makeTarget
+            url: "/Select/OrderList_search?order=" + orderID + "&contract=" + contractID + "&begin=" + begin + "&end=" + end + "&person=" + person + "&adTarget=" + adTarget + "&makeTarget=" + makeTarget
         });
     }
 
@@ -118,7 +117,7 @@
         var adTarget = $("#drpADTarget").combobox("getValue");
         var makeTarget = $("#drpMakeTarget").combobox("getValue");
 
-        window.open("/Select/outputOrder?order=" + orderID + "&contract=" + contractID + "&begin=" + begin + "&end=" + end + "&person=" + person + "&adTarget=" + adTarget + "&makeTarget=" + makeTarget, "", "width=50,height=50,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+        window.open("/Select/OrderList_output?order=" + orderID + "&contract=" + contractID + "&begin=" + begin + "&end=" + end + "&person=" + person + "&adTarget=" + adTarget + "&makeTarget=" + makeTarget, "", "width=50,height=50,toolbar=no,menubar=no,scrollbars=no, resizable=no");
     }
 
     function createRowMenu() {
@@ -137,19 +136,19 @@
                         location.href = "/Business/ADCostAccount?id=" + selected.orderID;
                         break;
                     case "adCostList":
-                        window.open("/Business/ADCostList?id=" + selected.orderID, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        window.open("/Select/ADCostList?id=" + selected.orderID, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
                         break;
                     case "makeCost":
                         location.href = "/Business/MakeCostAccount?id=" + selected.orderID;
                         break;
                     case "makeCostList":
-                        window.open("/Business/ADCostList?id=" + selected.orderID, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        window.open("/Select/MakeCostList?id=" + selected.orderID, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
                         break;
                     case "bill":
                         location.href = "/Business/ReceiveBill?id=" + selected.orderID;
                         break;
                     case "billList":
-                        window.open("ReceiveBillList?id=" + selected.orderID, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        window.open("/Select/ReceiveBillList?id=" + selected.orderID, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
                         break;
                 }
             }

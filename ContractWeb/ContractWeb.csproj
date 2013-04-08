@@ -399,7 +399,7 @@
     <Content Include="Views\Select\EditContractState.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Select\Order.cshtml" />
+    <Content Include="Views\Select\OrderList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Select\ADCost.cshtml" />

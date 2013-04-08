@@ -378,5 +378,21 @@ namespace ContractWeb.Controllers
             return result;
         }
         #endregion
+
+        #region 获取打款状态列表
+        /// <summary>
+        /// 获取渠道列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult drpAccountStateList()
+        {
+            DaAccountState dal = new DaAccountState();
+            IList<AccountState> states = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = states;
+            return result;
+        }
+        #endregion
     }
 }

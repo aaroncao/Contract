@@ -90,7 +90,7 @@ namespace ContractWeb.Controllers
         /// 下单信息查询界面
         /// </summary>
         /// <returns></returns>
-        public ActionResult Order()
+        public ActionResult OrderList()
         {
             ViewBag.menu = 27;
             return View();
@@ -433,120 +433,15 @@ namespace ContractWeb.Controllers
             return result;
         }
         #endregion
-        
 
-         
 
-        
-
-       
-
-        #region 获取打款状态列表
-        /// <summary>
-        /// 获取渠道列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getDrpAccountStateList()
-        {
-            DaAccountState dal = new DaAccountState();
-            IList<AccountState> states = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.Data = states;
-            return result;
-        }
-        #endregion
-
-        #region 获取广告结算列表
-        /// <summary>
-        /// 获取广告结算列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getADCostAccountList()
-        {
-            DaADCostAccount dal = new DaADCostAccount();
-            IList<ADCost> list = dal.getList();
-
-            double money = 0.0;
-            foreach (ADCost en in list)
-                money += en.money;
-
-            var result = new CustomJsonResult();
-            result.dateFormat = "yyyy-MM-dd";
-            result.Data = new { total = list.Count, rows = list, money = money };
-            return result;
-        }
-        #endregion
-
-        #region 查询广告结算
-        /// <summary>
-        /// 查询广告结算
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult searchADCost(string id, string target, string channel, string state, string begin, string end)
-        {
-            DaADCostAccount dal = new DaADCostAccount();
-            IList<ADCost> list = dal.getList(id, target, channel, state, begin, end);
-
-            double money = 0.0;
-            foreach (ADCost en in list)
-                money += en.money;
-
-            var result = new CustomJsonResult();
-            result.dateFormat = "yyyy-MM-dd";
-            result.Data = new { total = list.Count, rows = list, money = money };
-            return result;
-        }
-        #endregion
-
-        #region 获取制作结算列表
-        /// <summary>
-        /// 获取制作结算列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getMakeCostAccountList()
-        {
-            DaMakeCostAccount dal = new DaMakeCostAccount();
-            IList<MakeCost> list = dal.getList();
-
-            double money = 0.0;
-            foreach (MakeCost en in list)
-                money += en.money;
-
-            var result = new CustomJsonResult();
-            result.dateFormat = "yyyy-MM-dd";
-            result.Data = new { total = list.Count, rows = list, money = money };
-            return result;
-        }
-        #endregion
-
-        #region 查询制作结算
-        /// <summary>
-        /// 查询制作结算
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult searchMakeCost(string id, string contractID, string channel, string state, string begin, string end)
-        {
-            DaMakeCostAccount dal = new DaMakeCostAccount();
-            IList<MakeCost> list = dal.getList(id, contractID, channel, state, begin, end);
-
-            double money = 0.0;
-            foreach (MakeCost en in list)
-                money += en.money;
-
-            var result = new CustomJsonResult();
-            result.dateFormat = "yyyy-MM-dd";
-            result.Data = new { total = list.Count, rows = list, money = money };
-            return result;
-        }
-        #endregion
 
         #region 获取下单列表
         /// <summary>
         /// 获取下单列表
         /// </summary>
         /// <returns></returns>
-        public JsonResult getOrderList()
+        public JsonResult OrderList_getList()
         {
             DaOrderInfo dal = new DaOrderInfo();
             IList<OrderInfo> contracts = dal.getList();
@@ -558,12 +453,12 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        #region 查询下单
+        #region 搜索下单列表
         /// <summary>
-        /// 查询下单
+        /// 搜索下单列表
         /// </summary>
         /// <returns></returns>
-        public JsonResult searchOrder(string order, string contract, string begin, string end, string person, string adTarget, string makeTarget)
+        public JsonResult OrderList_search(string order, string contract, string begin, string end, string person, string adTarget, string makeTarget)
         {
             DaOrderInfo dal = new DaOrderInfo();
             IList<OrderInfo> contracts = dal.getList(order, contract, begin, end, person, adTarget, makeTarget);
@@ -575,61 +470,9 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        #region 获取广告结算列表
+        #region 导出下单报表
         /// <summary>
-        /// 获取广告结算列表
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public JsonResult getADCostList(string id)
-        {
-            DaADCostAccount dal = new DaADCostAccount();
-            IList<ADCost> list = dal.getList(id);
-
-            var result = new CustomJsonResult();
-            result.Data = new { total = list.Count, rows = list };
-            return result;
-        }
-        #endregion 
-
-        #region 获取制作结算列表
-        /// <summary>
-        /// 获取制作结算列表
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public JsonResult getMakeCostList(string id)
-        {
-            DaMakeCostAccount dal = new DaMakeCostAccount();
-            IList<MakeCost> list = dal.getList(id);
-
-            var result = new CustomJsonResult();
-            result.Data = new { total = list.Count, rows = list };
-            return result;
-        }
-        #endregion 
-
-        #region 获取制作结算列表
-        /// <summary>
-        /// 获取制作结算列表
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public JsonResult getReceiveBillList(string id)
-        {
-            DaReceiveBill dal = new DaReceiveBill();
-            IList<ReceiveBill> list = dal.getList(id);
-
-            var result = new CustomJsonResult();
-            result.dateFormat = "yyyy-MM-dd";
-            result.Data = new { total = list.Count, rows = list };
-            return result;
-        }
-        #endregion 
-
-        #region 导出下单信息报表
-        /// <summary>
-        /// 导出下单信息报表
+        /// 导出下单报表
         /// </summary>
         /// <param name="order"></param>
         /// <param name="contract"></param>
@@ -638,7 +481,7 @@ namespace ContractWeb.Controllers
         /// <param name="person"></param>
         /// <param name="adTarget"></param>
         /// <param name="makeTarget"></param>
-        public void outputOrder(string order, string contract, string begin, string end, string person, string adTarget, string makeTarget)
+        public void OrderList_output(string order, string contract, string begin, string end, string person, string adTarget, string makeTarget)
         {
             DaOrderInfo dal = new DaOrderInfo();
             DataTable dt = dal.getDataTable(order, contract, begin, end, person, adTarget, makeTarget);
@@ -669,12 +512,154 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+
+
+        #region 获取发票收到情况列表
+        /// <summary>
+        /// 获取发票收到情况列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult ReceiveBillList_getList(string id)
+        {
+            DaReceiveBill dal = new DaReceiveBill();
+            IList<ReceiveBill> list = dal.getList(id);
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+            result.Data = new { total = list.Count, rows = list };
+            return result;
+        }
+        #endregion 
+
+        #region 获取广告结算列表
+        /// <summary>
+        /// 获取广告结算列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult Order_getADCostList(string id)
+        {
+            DaADCostAccount dal = new DaADCostAccount();
+            IList<ADCost> list = dal.getList(id);
+
+            var result = new CustomJsonResult();
+            result.Data = new { total = list.Count, rows = list };
+            return result;
+        }
+        #endregion
+
+        #region 获取制作结算列表
+        /// <summary>
+        /// 获取制作结算列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult Order_getMakeCostList(string id)
+        {
+            DaMakeCostAccount dal = new DaMakeCostAccount();
+            IList<MakeCost> list = dal.getList(id);
+
+            var result = new CustomJsonResult();
+            result.Data = new { total = list.Count, rows = list };
+            return result;
+        }
+        #endregion 
+
+
+
+        #region 获取广告结算列表
+        /// <summary>
+        /// 获取广告结算列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult ADCost_getList()
+        {
+            DaADCostAccount dal = new DaADCostAccount();
+            IList<ADCost> list = dal.getList();
+
+            double money = 0.0;
+            foreach (ADCost en in list)
+                money += en.money;
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+            result.Data = new { total = list.Count, rows = list, money = money };
+            return result;
+        }
+        #endregion
+
+        #region 搜索广告结算列表
+        /// <summary>
+        /// 搜索广告结算列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult ADCost_search(string id, string target, string channel, string state, string begin, string end)
+        {
+            DaADCostAccount dal = new DaADCostAccount();
+            IList<ADCost> list = dal.getList(id, target, channel, state, begin, end);
+
+            double money = 0.0;
+            foreach (ADCost en in list)
+                money += en.money;
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+            result.Data = new { total = list.Count, rows = list, money = money };
+            return result;
+        }
+        #endregion
+
+        #region 获取制作结算列表
+        /// <summary>
+        /// 获取制作结算列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult MakeCost_getList()
+        {
+            DaMakeCostAccount dal = new DaMakeCostAccount();
+            IList<MakeCost> list = dal.getList();
+
+            double money = 0.0;
+            foreach (MakeCost en in list)
+                money += en.money;
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+            result.Data = new { total = list.Count, rows = list, money = money };
+            return result;
+        }
+        #endregion
+
+        #region 搜索制作结算列表
+        /// <summary>
+        /// 搜索制作结算列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult MakeCost_search(string id, string contractID, string channel, string state, string begin, string end)
+        {
+            DaMakeCostAccount dal = new DaMakeCostAccount();
+            IList<MakeCost> list = dal.getList(id, contractID, channel, state, begin, end);
+
+            double money = 0.0;
+            foreach (MakeCost en in list)
+                money += en.money;
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+            result.Data = new { total = list.Count, rows = list, money = money };
+            return result;
+        }
+        #endregion        
+
+
+        
         #region 获取影院投放统计列表
         /// <summary>
         /// 获取影院投放统计列表
         /// </summary>
         /// <returns></returns>
-        public JsonResult getPutinList()
+        public JsonResult Putin_getList()
         {
             DaPutinInfo dal = new DaPutinInfo();
             IList<PutinListItem> list = dal.getList();
@@ -700,7 +685,7 @@ namespace ContractWeb.Controllers
         /// <param name="begin"></param>
         /// <param name="end"></param>
         /// <returns></returns>
-        public JsonResult searchPutinList(string cinema, string room, string version, string begin, string end)
+        public JsonResult Putin_search(string cinema, string room, string version, string begin, string end)
         {
             DaPutinInfo dal = new DaPutinInfo();
             IList<PutinListItem> list = dal.getList(cinema, room, version, begin, end);
@@ -724,7 +709,7 @@ namespace ContractWeb.Controllers
         /// <param name="begin"></param>
         /// <param name="end"></param>
         /// <returns></returns>
-        public JsonResult searchAdvList(string cinema, string begin, string end)
+        public JsonResult AdvList_search(string cinema, string begin, string end)
         {
             DaAdvListItem dal = new DaAdvListItem();
             IList<AdvListItem> list = dal.getList(cinema, begin, end);
@@ -743,7 +728,7 @@ namespace ContractWeb.Controllers
         /// <param name="cinema"></param>
         /// <param name="begin"></param>
         /// <param name="end"></param>
-        public void outputAdv(string cinema, string begin, string end)
+        public void AdvList_output(string cinema, string begin, string end)
         {
             DaAdvListItem dal = new DaAdvListItem();
             DataTable dt = dal.getDataTable(cinema, begin, end);

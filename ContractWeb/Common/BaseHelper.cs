@@ -57,7 +57,7 @@ namespace ContractWeb.Common
             new MenuItem(23, "收发票登记", 3, "ReceiveBill", "Business"),
 
             new MenuItem(26, "合同信息查询", 4, "ContractList", "Select"),
-            new MenuItem(27, "下单信息查询", 4, "Order", "Select"),
+            new MenuItem(27, "下单信息查询", 4, "OrderList", "Select"),
             new MenuItem(29, "广告费结算查询", 4, "ADCost", "Select"),
             new MenuItem(30, "制作费结算查询", 4, "MakeCost", "Select"),
             new MenuItem(32, "影院投放统计", 4, "Putin", "Select"),
