@@ -101,7 +101,7 @@
         if (e.keyCode == 13) {
             var orderID = $("#txtOrderID").val();
 
-            $.get("/Business/getContractOrder?id=" + orderID, function (data) {
+            $.get("/Business/ADCostAccount_getContractOrderInfo?id=" + orderID, function (data) {
                 if (data != null) {
                     var contract = data.contract;
                     var order = data.order;
@@ -127,7 +127,7 @@
 
     function getPutinList(id) {
         $("#PutinList").datagrid({
-            url:"/Business/getPutinList?id=" + id
+            url: "/Business/ADCostAccount_getPutinOfOrderList?id=" + id
         });
     }
 
@@ -157,7 +157,7 @@
         var date = $("#txtDate").datebox("getValue");
         var memo = $("#txtMemo").val();
 
-        $.post("/Business/addADCostAccount", "id=" + id + "&money=" + money + "&state=" + state + "&date=" + date + "&memo=" + memo,
+        $.post("/Business/ADCostAccount_add", "id=" + id + "&money=" + money + "&state=" + state + "&date=" + date + "&memo=" + memo,
             function (data) {
                 alert("添加成功");
             }

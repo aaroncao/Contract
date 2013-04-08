@@ -56,7 +56,7 @@
     <fieldset class="fieldCSS">
         <legend>列表</legend>
 
-        <table id="BillList" style="width: 700px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/getReceiveBillList'">
+        <table id="BillList" style="width: 700px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/ReceiveBill_getList'">
             <thead>
                 <tr>
                     <th data-options="field:'orderID',width:100">下单编号</th>
@@ -77,7 +77,7 @@
         $('#BillList').datagrid();
 
         $('#drpBillType').combobox({
-            url: '/Business/getDrpBillTypeList',
+            url: '/Home/drpBillTypeList',
             valueField: 'id',
             textField: 'name',
             onChange: getDrpTargetData
@@ -87,7 +87,7 @@
 
         
         $('#drpTarget').combobox({
-            url: '/Business/getDrpADTargetList',
+            url: '/Home/drpADTargetList',
             valueField: 'id',
             textField: 'target'
         });
@@ -102,7 +102,7 @@
         if (e.keyCode == 13) {
             var orderID = $("#txtOrderID").val();
 
-            $.get("/Business/getContractOrder?id=" + orderID, function (data) {
+            $.get("/Business/ReceiveBill_getContractOrderInfo?id=" + orderID, function (data) {
                 var contract = data.contract;
                 var order = data.order;
 
@@ -118,10 +118,10 @@
 
     function getDrpTargetData() {
         var type = $("#drpBillType").combobox("getValue");
-        var urlStr = "/Business/getDrpADTargetList";
+        var urlStr = "/Home/drpADTargetList";
 
         if (type == "2")
-            urlStr = "/Business/getDrpMakeTargetList";
+            urlStr = "/Home/drpMakeTargetList";
 
         $("#drpTarget").combobox({
             url: urlStr,
@@ -154,7 +154,7 @@
         var money = $("#txtMoney").val();
         var date = $("#txtDate").datebox("getValue");
 
-        $.post("/Business/addReceiveBill", "orderID=" + id + "&type=" + type + "&target=" + target + "&money=" + money + "&date=" + date,
+        $.post("/Business/ReceiveBill_add", "orderID=" + id + "&type=" + type + "&target=" + target + "&money=" + money + "&date=" + date,
             function (data) {
                 if (data == 0)
                     alert("新增失败");

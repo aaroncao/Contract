@@ -118,6 +118,8 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        /* ============ 下拉框取数 ============ */
+
         #region 获取业务员列表
         /// <summary>
         /// 获取业务员列表
@@ -293,6 +295,54 @@ namespace ContractWeb.Controllers
 
             var result = new CustomJsonResult();
             result.Data = channels;
+            return result;
+        }
+        #endregion
+
+        #region 获取广告费结算对象列表
+        /// <summary>
+        /// 获取广告费结算对象列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult drpADTargetList()
+        {
+            DaADCostTarget dal = new DaADCostTarget();
+            IList<ADCostTarget> targets = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = targets;
+            return result;
+        }
+        #endregion
+
+        #region 获取制作费结算对象列表
+        /// <summary>
+        /// 获取制作费结算对象列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult drpMakeTargetList()
+        {
+            DaMakeCostTarget dal = new DaMakeCostTarget();
+            IList<MakeCostTarget> targets = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = targets;
+            return result;
+        }
+        #endregion
+
+        #region 获取开票类型列表
+        /// <summary>
+        /// 获取开票类型列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult drpBillTypeList()
+        {
+            DaBillType dal = new DaBillType();
+            IList<BillType> types = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = types;
             return result;
         }
         #endregion

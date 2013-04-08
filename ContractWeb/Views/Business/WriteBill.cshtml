@@ -70,7 +70,7 @@
     <fieldset class="fieldCSS">
         <legend>列表</legend>
 
-        <table id="BillList" style="width: 700px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/getBillList'">
+        <table id="BillList" style="width: 700px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/WriteBill_getList'">
             <thead>
                 <tr>
                     <th data-options="field:'contractID',width:100">合同编号</th>
@@ -105,7 +105,7 @@
         });
 
         $('#drpBillType').combobox({
-            url: '/Business/getDrpBillTypeList',
+            url: '/Home/drpBillTypeList',
             valueField: 'id',
             textField: 'name'
         });
@@ -134,7 +134,7 @@
     function EnterPress(e) {        
         var e = e || window.event;
         if (e.keyCode == 13) {
-            $.get("/Business/getContract?id=" + $("#txtID").val(), function (data) {
+            $.get("/Business/WriteBill_getContract?id=" + $("#txtID").val(), function (data) {
                 $("#txtName").val(data.name);
                 $("#txtPerson").val(data.personName);
                 $("#txtType").val(data.typeName);
@@ -168,7 +168,7 @@
         var money = $("#txtMoney").val();
         var date = $("#txtDate").datebox("getValue");
 
-        $.post("/Business/addBill", "id=" + id + "&type=" + type + "&money=" + money + "&date=" + date,
+        $.post("/Business/WriteBill_add", "id=" + id + "&type=" + type + "&money=" + money + "&date=" + date,
             function (data) {
                 if (data == 0)
                     alert("新增失败");
@@ -179,7 +179,7 @@
     }
 
     function deleteRow() {
-        $.post("/Business/deleteWriteBill", "id=" + selected,
+        $.post("/Business/WriteBill_remove", "id=" + selected,
             function (data) {
                 if (data == 0)
                     alert("删除失败");

@@ -14,9 +14,9 @@ namespace ContractWeb.Controllers
     {
         /* ============ 界面 ============ */
 
-        #region 合同管理界面
+        #region 合同录入界面
         /// <summary>
-        /// 合同管理界面
+        /// 合同录入界面
         /// </summary>
         /// <returns></returns>
         public ActionResult Contract()
@@ -204,15 +204,31 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        
-        
-        #region 根据编号获取合同
+
+
+        #region 获取订单列表
         /// <summary>
-        /// 根据编号获取合同
+        /// 获取订单列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult Order_getList()
+        {
+            DaOrderInfo dal = new DaOrderInfo();
+            IList<OrderInfo> orders = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.Data = new { total = orders.Count, rows = orders };
+            return result;
+        }
+        #endregion
+
+        #region 根据合同编号获取合同信息填充下单界面
+        /// <summary>
+        /// 根据合同编号获取合同信息填充下单界面
         /// </summary>
         /// <param name="id">编号</param>
         /// <returns></returns>
-        public JsonResult getContract(string id)
+        public JsonResult Order_getContract(string id)
         {
             DaContractInfo dal = new DaContractInfo();
             ContractInfo en = dal.getEntity(id);
@@ -223,196 +239,29 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        #region 添加到账登记
+        #region 根据合同编号获取已经投放的影厅列表
         /// <summary>
-        /// 添加到账登记
+        /// 根据合同编号获取已经投放的影厅列表
         /// </summary>
-        /// <param name="id">合同编号</param>
-        /// <param name="money">到账金额</param>
-        /// <param name="date">到账日期</param>
+        /// <param name="contract"></param>
         /// <returns></returns>
-        [HttpPost]
-        public JsonResult addPay(string id, string money, string date)
-        {
-            CustomerPay en = new CustomerPay();
-            en.contractID = id;
-            en.money = Convert.ToDouble(money);
-            en.date = Convert.ToDateTime(date);
-
-            DaCustomerPay dal = new DaCustomerPay();
-            var result = new CustomJsonResult();
-            result.Data = dal.add(en);
-            return result;
-        }
-        #endregion
-
-        #region 获取发票列表
-        /// <summary>
-        /// 获取发票列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getBillList()
-        {
-            DaBill dal = new DaBill();
-            IList<Bill> bills = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.dateFormat = "yyyy-MM-dd";
-            result.Data = new { total = bills.Count, rows = bills };
-            return result;
-        }
-        #endregion
-
-        #region 获取开票类型列表
-        /// <summary>
-        /// 获取开票类型列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getDrpBillTypeList()
-        {
-            DaBillType dal = new DaBillType();
-            IList<BillType> types = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.Data = types;
-            return result;
-        }
-        #endregion
-
-        #region 添加开票登记
-        /// <summary>
-        /// 添加开票登记
-        /// </summary>
-        /// <param name="id">合同编号</param>
-        /// <param name="type">开票类型</param>
-        /// <param name="money">开票金额</param>
-        /// <param name="date">开票日期</param>
-        /// <returns></returns>
-        [HttpPost]
-        public JsonResult addBill(string id, string type, string money, string date)
-        {
-            Bill en = new Bill();
-            en.contractID = id;
-            en.type = Convert.ToInt32(type);
-            en.money = Convert.ToDouble(money);
-            en.date = Convert.ToDateTime(date);
-
-            DaBill dal = new DaBill();
-            var result = new CustomJsonResult();
-            result.Data = dal.add(en);
-            return result;
-        }
-        #endregion
-
-        #region 删除开票登记
-        /// <summary>
-        /// 删除开票登记
-        /// </summary>
-        /// <param name="id">自动编号</param>
-        /// <returns></returns>
-        [HttpPost]
-        public JsonResult deleteWriteBill(string id)
-        {
-            Bill en = new Bill();
-            en.id = Convert.ToInt32(id);
-
-            DaBill dal = new DaBill();
-            var result = new CustomJsonResult();
-            result.Data = dal.delete(en);
-            return result;
-        }
-        #endregion
-
-        #region 根据订单编号获取合同订单信息
-        /// <summary>
-        /// 根据订单编号获取合同订单信息
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getContractOrder(string id)
-        {
-            DaOrderInfo dal = new DaOrderInfo();
-            ContractOrder en = dal.getContractOrder(id);
-
-            var result = new CustomJsonResult();
-            result.dateFormat = "yyyy-MM-dd";
-            result.Data = en;
-            return result;
-        }
-        #endregion
-
-        #region 根据订单编号获取订单信息
-        /// <summary>
-        /// 根据订单编号获取订单信息
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public JsonResult getOrderInfo(string id)
-        {
-            DaOrderInfo dal = new DaOrderInfo();
-            OrderInfo en = dal.getOrderInfo(id);
-
-            var result = new CustomJsonResult();
-            result.dateFormat = "yyyy-MM-dd";
-            result.Data = en;
-            return result;
-        }
-        #endregion
-
-        #region 根据订单编号获取投放列表
-        /// <summary>
-        /// 根据订单编号获取投放列表
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public JsonResult getPutinList(string id)
+        public JsonResult Order_getPutin(string contract)
         {
             DaPutinInfo dal = new DaPutinInfo();
-            IList<PutinInfo> putins = dal.getList(id);
+            IList<PutinInfo> list = dal.getListByContract(contract);
 
             var result = new CustomJsonResult();
-            result.Data = new { total = putins.Count, rows = putins };
+            result.Data = new { total = list.Count, rows = list };
             return result;
         }
         #endregion
 
-        #region 获取广告费结算对象列表
+        #region 获取最新的订单编号
         /// <summary>
-        /// 获取广告费结算对象列表
+        /// 获取最新的订单编号
         /// </summary>
         /// <returns></returns>
-        public JsonResult getDrpADTargetList()
-        {
-            DaADCostTarget dal = new DaADCostTarget();
-            IList<ADCostTarget> targets = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.Data = targets;
-            return result;
-        }
-        #endregion
-
-        #region 获取制作费结算对象列表
-        /// <summary>
-        /// 获取制作费结算对象列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getDrpMakeTargetList()
-        {
-            DaMakeCostTarget dal = new DaMakeCostTarget();
-            IList<MakeCostTarget> targets = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.Data = targets;
-            return result;
-        }
-        #endregion
-
-        #region 获取订单编号
-        /// <summary>
-        /// 获取订单编号
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult buildOrderID()
+        public JsonResult Order_getOrderID()
         {
             DaOrderInfo dal = new DaOrderInfo();
             string id = dal.buildOrderIDofDay();
@@ -423,29 +272,13 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        #region 获取影院列表
-        /// <summary>
-        /// 获取影院列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getDrpCinemeList()
-        {
-            DaCinema dal = new DaCinema();
-            IList<Cinema> cinemas = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.Data = cinemas;
-            return result;
-        }
-        #endregion
-
         #region 获取影厅列表
         /// <summary>
         /// 获取影厅列表
         /// </summary>
         /// <param name="id">影院ID</param>
         /// <returns></returns>
-        public JsonResult getCinemaRoomList(string id)
+        public JsonResult Order_getCinemaRoomList(string id)
         {
             DaCinemaRoom dal = new DaCinemaRoom();
             IList<CinemaRoom> rooms = dal.getList(id);
@@ -464,7 +297,7 @@ namespace ContractWeb.Controllers
         /// <param name="order">订单编号</param>
         /// <param name="ids">影厅ID，逗号隔开</param>
         /// <returns></returns>
-        public JsonResult addPutin(string contract, string order, string ids)
+        public JsonResult Order_addPutin(string contract, string order, string ids)
         {
             string[] id = ids.Split(',');
 
@@ -491,39 +324,6 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-        #region 获取投放列表
-        /// <summary>
-        /// 获取投放列表
-        /// </summary>
-        /// <param name="contract"></param>
-        /// <returns></returns>
-        public JsonResult getPutin(string contract)
-        {
-            DaPutinInfo dal = new DaPutinInfo();
-            IList<PutinInfo> list = dal.getListByContract(contract);
-
-            var result = new CustomJsonResult();
-            result.Data = new { total = list.Count, rows = list };
-            return result;
-        }
-        #endregion
-
-        #region 获取订单列表
-        /// <summary>
-        /// 获取订单列表
-        /// </summary>
-        /// <returns></returns>
-        public JsonResult getOrderList()
-        {
-            DaOrderInfo dal = new DaOrderInfo();
-            IList<OrderInfo> orders = dal.getList();
-
-            var result = new CustomJsonResult();
-            result.Data = new { total = orders.Count, rows = orders };
-            return result;
-        }
-        #endregion
-
         #region 添加订单
         /// <summary>
         /// 添加订单
@@ -538,7 +338,7 @@ namespace ContractWeb.Controllers
         /// <param name="memo">备注</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult addOrder(string contractID, string orderID, string adID, string makeID, string num, string begin, string end, string memo)
+        public JsonResult Order_add(string contractID, string orderID, string adID, string makeID, string num, string begin, string end, string memo)
         {
             if (num.Trim() == "")
                 num = "0";
@@ -560,6 +360,26 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+
+
+        #region 根据订单编号获取订单信息
+        /// <summary>
+        /// 根据订单编号获取订单信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult Order_getOrderInfo(string id)
+        {
+            DaOrderInfo dal = new DaOrderInfo();
+            OrderInfo en = dal.getOrderInfo(id);
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+            result.Data = en;
+            return result;
+        }
+        #endregion
+
         #region 修改订单
         /// <summary>
         /// 修改订单
@@ -574,7 +394,7 @@ namespace ContractWeb.Controllers
         /// <param name="memo">备注</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult editOrder(string id, string orderID, string adCost, string makeCost, string num, string begin, string end, string memo)
+        public JsonResult Order_edit(string id, string orderID, string adCost, string makeCost, string num, string begin, string end, string memo)
         {
             if (num.Trim() == "")
                 num = "0";
@@ -596,6 +416,67 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+
+
+        #region 根据订单编号获取合同和订单的复合信息
+        /// <summary>
+        /// 根据订单编号获取合同和订单的复合信息
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult Order_getContractOrderInfo(string id)
+        {
+            DaOrderInfo dal = new DaOrderInfo();
+            ContractOrder en = dal.getContractOrder(id);
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+            result.Data = en;
+            return result;
+        }
+        #endregion
+
+        #region 根据订单编号获取该订单投放的影厅列表
+        /// <summary>
+        /// 根据订单编号获取该订单投放的影厅列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult Order_getPutinOfOrderList(string id)
+        {
+            DaPutinInfo dal = new DaPutinInfo();
+            IList<PutinInfo> putins = dal.getList(id);
+
+            var result = new CustomJsonResult();
+            result.Data = new { total = putins.Count, rows = putins };
+            return result;
+        }
+        #endregion
+
+
+
+        #region 根据订单编号获取合同和订单的复合信息填充到广告费结算界面
+        /// <summary>
+        /// 根据订单编号获取合同和订单的复合信息填充到广告费结算界面
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult ADCostAccount_getContractOrderInfo(string id)
+        {
+            return Order_getContractOrderInfo(id);
+        }
+        #endregion
+
+        #region 根据订单编号获取该订单投放的影厅列表填充到广告费结算界面
+        /// <summary>
+        /// 根据订单编号获取该订单投放的影厅列表填充到广告费结算界面
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult ADCostAccount_getPutinOfOrderList(string id)
+        {
+            return Order_getPutinOfOrderList(id);
+        }
+        #endregion
+        
         #region 添加广告费结算
         /// <summary>
         /// 添加广告费结算
@@ -607,7 +488,7 @@ namespace ContractWeb.Controllers
         /// <param name="memo">备注</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult addADCostAccount(string id, string money, string state, string date, string memo)
+        public JsonResult ADCostAccount_add(string id, string money, string state, string date, string memo)
         {
             ADCostAccount en = new ADCostAccount();
             en.orderID = id;
@@ -621,7 +502,32 @@ namespace ContractWeb.Controllers
             result.Data = dal.add(en);
             return result;
         }
-        #endregion 
+        #endregion
+
+
+
+        #region 根据订单编号获取合同和订单的复合信息填充到制作费结算界面
+        /// <summary>
+        /// 根据订单编号获取合同和订单的复合信息填充到制作费结算界面
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult MakeCostAccount_getContractOrderInfo(string id)
+        {
+            return Order_getContractOrderInfo(id);
+        }
+        #endregion
+
+        #region 根据订单编号获取该订单投放的影厅列表填充到制作费结算界面
+        /// <summary>
+        /// 根据订单编号获取该订单投放的影厅列表填充到制作费结算界面
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult MakeCostAccount_getPutinOfOrderList(string id)
+        {
+            return Order_getPutinOfOrderList(id);
+        }
+        #endregion
 
         #region 添加制作费结算
         /// <summary>
@@ -633,7 +539,7 @@ namespace ContractWeb.Controllers
         /// <param name="date">日期</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult addMakeCostAccount(string id, string money, string state, string date)
+        public JsonResult MakeCostAccount_add(string id, string money, string state, string date)
         {
             MakeCostAccount en = new MakeCostAccount();
             en.orderID = id;
@@ -648,12 +554,138 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        
+
+        #region 根据合同编号获取合同信息填充到账登记界面
+        /// <summary>
+        /// 根据合同编号获取合同信息填充到账登记界面
+        /// </summary>
+        /// <param name="id">编号</param>
+        /// <returns></returns>
+        public JsonResult CPay_getContract(string id)
+        {
+            return Order_getContract(id);
+        }
+        #endregion
+
+        #region 添加到账登记
+        /// <summary>
+        /// 添加到账登记
+        /// </summary>
+        /// <param name="id">合同编号</param>
+        /// <param name="money">到账金额</param>
+        /// <param name="date">到账日期</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult CPay_add(string id, string money, string date)
+        {
+            CustomerPay en = new CustomerPay();
+            en.contractID = id;
+            en.money = Convert.ToDouble(money);
+            en.date = Convert.ToDateTime(date);
+
+            DaCustomerPay dal = new DaCustomerPay();
+            var result = new CustomJsonResult();
+            result.Data = dal.add(en);
+            return result;
+        }
+        #endregion
+
+
+
+        #region 根据合同编号获取合同信息填充到开发票界面
+        /// <summary>
+        /// 根据合同编号获取合同信息填充到开发票界面
+        /// </summary>
+        /// <param name="id">编号</param>
+        /// <returns></returns>
+        public JsonResult WriteBill_getContract(string id)
+        {
+            return Order_getContract(id);
+        }
+        #endregion
+
+        #region 获取开发票列表
+        /// <summary>
+        /// 获取开发票列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult WriteBill_getList()
+        {
+            DaBill dal = new DaBill();
+            IList<Bill> bills = dal.getList();
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+            result.Data = new { total = bills.Count, rows = bills };
+            return result;
+        }
+        #endregion        
+
+        #region 添加开票登记
+        /// <summary>
+        /// 添加开票登记
+        /// </summary>
+        /// <param name="id">合同编号</param>
+        /// <param name="type">开票类型</param>
+        /// <param name="money">开票金额</param>
+        /// <param name="date">开票日期</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult WriteBill_add(string id, string type, string money, string date)
+        {
+            Bill en = new Bill();
+            en.contractID = id;
+            en.type = Convert.ToInt32(type);
+            en.money = Convert.ToDouble(money);
+            en.date = Convert.ToDateTime(date);
+
+            DaBill dal = new DaBill();
+            var result = new CustomJsonResult();
+            result.Data = dal.add(en);
+            return result;
+        }
+        #endregion
+
+        #region 删除开票登记
+        /// <summary>
+        /// 删除开票登记
+        /// </summary>
+        /// <param name="id">自动编号</param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult WriteBill_remove(string id)
+        {
+            Bill en = new Bill();
+            en.id = Convert.ToInt32(id);
+
+            DaBill dal = new DaBill();
+            var result = new CustomJsonResult();
+            result.Data = dal.delete(en);
+            return result;
+        }
+        #endregion
+
+
+
+        #region 根据订单编号获取合同和订单的复合信息填充到收发票界面
+        /// <summary>
+        /// 根据订单编号获取合同和订单的复合信息填充到收发票界面
+        /// </summary>
+        /// <param name="id">编号</param>
+        /// <returns></returns>
+        public JsonResult ReceiveBill_getContractOrderInfo(string id)
+        {
+            return Order_getContractOrderInfo(id);
+        }
+        #endregion
+
         #region 获取收发票列表
         /// <summary>
         /// 获取收发票列表
         /// </summary>
         /// <returns></returns>
-        public JsonResult getReceiveBillList()
+        public JsonResult ReceiveBill_getList()
         {
             DaReceiveBill dal = new DaReceiveBill();
             IList<ReceiveBill> bills = dal.getList();
@@ -675,7 +707,7 @@ namespace ContractWeb.Controllers
         /// <param name="date">开票日期</param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult addReceiveBill(string orderID, string type, string target, string money, string date)
+        public JsonResult ReceiveBill_add(string orderID, string type, string target, string money, string date)
         {
             ReceiveBill en = new ReceiveBill();
             en.orderID = orderID;

@@ -13,8 +13,11 @@ using ContractWeb.DataAccess;
 
 namespace ContractWeb.Controllers
 {
+    //查询与统计
     public class SelectController : Controller
     {
+        /* ============ 界面 ============ */
+
         #region 合同信息查询界面
         /// <summary>
         /// 合同信息查询界面
@@ -197,7 +200,7 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
-
+        /* ============ 操作 ============ */
 
         #region 获取合同状态列表
         /// <summary>
