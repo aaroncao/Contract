@@ -102,6 +102,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\AuthorizeFilterAttribute.cs" />
     <Compile Include="Common\BaseHelper.cs" />
     <Compile Include="Common\CustomJsonResult.cs" />
     <Compile Include="Common\DynamicBuilder.cs" />
