@@ -14,6 +14,7 @@ using ContractWeb.DataAccess;
 namespace ContractWeb.Controllers
 {
     //查询与统计
+    [AuthorizeFilterAttribute]
     public class SelectController : Controller
     {
         /* ============ 界面 ============ */
@@ -666,7 +667,7 @@ namespace ContractWeb.Controllers
 
             double money = 0.0;
             foreach (PutinListItem en in list)
-                money += en.price;
+                money += en.price * en.ZQ;
 
             var result = new CustomJsonResult();
             result.dateFormat = "yyyy-MM-dd";
@@ -692,7 +693,7 @@ namespace ContractWeb.Controllers
 
             double money = 0.0;
             foreach (PutinListItem en in list)
-                money += en.price;
+                money += en.price * en.ZQ;
 
             var result = new CustomJsonResult();
             result.dateFormat = "yyyy-MM-dd";

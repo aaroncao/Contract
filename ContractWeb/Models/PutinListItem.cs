@@ -68,5 +68,10 @@ namespace ContractWeb.Models
         /// 单厅价格
         /// </summary>
         public double price { get; set; }
+
+        /// <summary>
+        /// 周期
+        /// </summary>
+        public double ZQ { get; set; }
     }
 }

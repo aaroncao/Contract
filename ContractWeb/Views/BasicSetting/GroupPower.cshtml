@@ -100,7 +100,6 @@
 
         if (modules != "")
             modules = modules.substring(0, modules.length - 1);
-
         $.get("/BasicSetting/GroupPower_add?id=" + id + "&modules=" + modules, function (data) {
             showPower();
         });

@@ -10,6 +10,7 @@ using ContractWeb.DataAccess;
 namespace ContractWeb.Controllers
 {
     //用户管理
+    [AuthorizeFilterAttribute]
     public class UserManageController : Controller
     {
         /* ============ 界面 ============ */

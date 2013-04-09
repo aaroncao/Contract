@@ -56,12 +56,13 @@ namespace ContractWeb.Common
             //取权限 
             string strSql = "select c.power "
                 + "from UserInfo a, PowerGroup b, PowerGroupPower c, SystemModule d "
-                + "where a.powergroupID=b.ID and b.ID=c.groupID and c.moduleID=d.ID and d.controller=@controller and d.action=@action";
+                + "where a.powergroupID=b.ID and b.ID=c.groupID and c.moduleID=d.ID and d.controller=@controller and d.action=@action and a.id=@id";
 
             SqlParameter[] param = new SqlParameter[]
             {
                 new SqlParameter("@controller", controller),
-                new SqlParameter("@action", actions[0])
+                new SqlParameter("@action", actions[0]),
+                new SqlParameter("@id", user.id)
             };
 
             DataTable dt = SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql, param).Tables[0];
@@ -75,7 +76,9 @@ namespace ContractWeb.Common
 
             //只读
             int power = Convert.ToInt32(dt.Rows[0]["power"]);
-            if (actions.Length > 1 && (actions[1].IndexOf("add") != -1 || actions[1].IndexOf("edit") != -1 || actions[1].IndexOf("remove") != -1) && power < 2)
+            if (actions.Length > 1 && 
+                (actions[1].IndexOf("add") != -1 || actions[1].IndexOf("edit") != -1 || actions[1].IndexOf("remove") != -1 || actions[1].IndexOf("output") != -1) && 
+                power < 2)
             {
                 filterContext.Result = new ContentResult { Content = @"抱歉,你不具有当前操作的权限！" };
                 return;

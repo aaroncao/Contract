@@ -69,8 +69,8 @@ namespace ContractWeb.DataAccess
                 + "a.cinemaRoomID, (select z.room from CinemaRoom z where z.id=a.cinemaRoomID) as cinemaRoomName, "
                 + "b.version, c.begintime, a.orderID, a.contractID, "
                 + "a.roomTypeID, (select z.type from CinemaRoomType z where z.id=a.roomTypeID) as roomType, "
-                + "b.price "
-                + "from PutinInfo a, ContractInfo b, OrderInfo c where a.contractID=b.contractID and b.contractID=c.contractID ";
+                + "b.price, b.ZQ "
+                + "from PutinInfo a, ContractInfo b, OrderInfo c where a.orderID=c.orderID and b.contractID=c.contractID ";
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
             IList<PutinListItem> list = DynamicBuilder<PutinListItem>.ConvertToList(dr);
@@ -94,8 +94,8 @@ namespace ContractWeb.DataAccess
                 + "a.cinemaRoomID, (select z.room from CinemaRoom z where z.id=a.cinemaRoomID) as cinemaRoomName, "
                 + "b.version, c.begintime, a.orderID, a.contractID, "
                 + "a.roomTypeID, (select z.type from CinemaRoomType z where z.id=a.roomTypeID) as roomType, "
-                + "b.price "
-                + "from PutinInfo a, ContractInfo b, OrderInfo c where a.contractID=b.contractID and b.contractID=c.contractID ";
+                + "b.price, b.ZQ "
+                + "from PutinInfo a, ContractInfo b, OrderInfo c where a.orderID=c.orderID and b.contractID=c.contractID ";
 
             string where = "";
 
