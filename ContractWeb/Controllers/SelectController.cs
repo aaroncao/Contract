@@ -660,7 +660,7 @@ namespace ContractWeb.Controllers
         /// 获取影院投放统计列表
         /// </summary>
         /// <returns></returns>
-        public JsonResult Putin_getList()
+        public JsonResult Putin_getList(string page, string rows)
         {
             DaPutinInfo dal = new DaPutinInfo();
             IList<PutinListItem> list = dal.getList();

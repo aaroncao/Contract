@@ -35,7 +35,7 @@
     <input type="button" id="btnCancel" onclick="cancel()" value="清空" />
 </p>
 
-<table id="PutinList" style="width: 800px; height: 400px;" data-options="singleSelect:true,idField:'id'">
+<table id="PutinList" style="width: 800px; height: 400px;" data-options="singleSelect:true,idField:'id',pagination:true">
     <thead>
         <tr>
             <th data-options="field:'id',width:50">ID</th>
@@ -63,12 +63,23 @@
             onChange: getDrpRoomData
         });
 
-        $.get("/Select/Putin_getList",
+        var options = $("#PutinList").datagrid("getPager").data("pagination").options;
+        $.get("/Select/Putin_getList?page=" + options.pageNumber + "&rows=" + options.pageSize,
             function (data) {
                 $("#PutinList").datagrid("loadData", data);
                 $("#txtTotal").val(data.money);
             }
         );
+
+        var p = $("#PutinList").datagrid("getPager");
+
+        $(p).pagination({
+            pageSize: 10,//每页显示的记录条数，默认为10  
+            pageList: [5, 10, 15],//可以设置每页记录条数的列表
+            beforePageText: '第',//页数文本框前显示的汉字
+            afterPageText: '页    共 {pages} 页',
+            displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录'
+        });
     });
 
     function getDrpRoomData() {

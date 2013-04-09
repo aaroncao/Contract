@@ -65,7 +65,7 @@ namespace ContractWeb.DataAccess
         /// <returns></returns>
         public IList<PutinListItem> getList()
         {
-            string strSql = "select a.id, a.cinemaID, (select z.name from Cinema z where z.id=a.cinemaID) as cinemaName, "
+            string strSql = "select top 200 a.id, a.cinemaID, (select z.name from Cinema z where z.id=a.cinemaID) as cinemaName, "
                 + "a.cinemaRoomID, (select z.room from CinemaRoom z where z.id=a.cinemaRoomID) as cinemaRoomName, "
                 + "b.version, c.begintime, a.orderID, a.contractID, "
                 + "a.roomTypeID, (select z.type from CinemaRoomType z where z.id=a.roomTypeID) as roomType, "
@@ -75,6 +75,19 @@ namespace ContractWeb.DataAccess
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
             IList<PutinListItem> list = DynamicBuilder<PutinListItem>.ConvertToList(dr);
             return list;
+        }
+        #endregion
+
+        #region 获取投放信息的金额
+        /// <summary>
+        /// 获取投放信息
+        /// </summary>
+        /// <returns></returns>
+        public double getListOfMoney()
+        {
+            string strSql = "select sum(b.price * b.ZQ) from PutinInfo a, ContractInfo b, OrderInfo c where a.orderID=c.orderID and b.contractID=c.contractID ";
+
+            return Convert.ToDouble(SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql).Tables[0].Rows[0][0]);
         }
         #endregion
 
