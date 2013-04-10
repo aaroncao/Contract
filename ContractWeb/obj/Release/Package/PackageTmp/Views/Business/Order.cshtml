@@ -101,7 +101,7 @@
     <fieldset class="fieldCSS">
         <legend>列表</legend>
 
-        <table id="OrderList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/getOrderList'">
+        <table id="OrderList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/Business/Order_getList'">
             <thead>
                 <tr>
                     <th data-options="field:'contractID',width:100">合同编号</th>
@@ -143,19 +143,19 @@
         });
 
         $('#drpADTarget').combobox({
-            url: '/Business/getDrpADTargetList',
+            url: '/Home/drpADTargetList',
             valueField: 'id',
             textField: 'target'
         });
 
         $('#drpMakeTarget').combobox({
-            url: '/Business/getDrpMakeTargetList',
+            url: '/Home/drpMakeTargetList',
             valueField: 'id',
             textField: 'target'
         });
                 
         $('#drpCinema').combobox({
-            url: '/Business/getDrpCinemeList',
+            url: '/Home/drpCinemaList',
             valueField: 'id',
             textField: 'name',
             onSelect: getCinemaRoom
@@ -164,7 +164,7 @@
         if (location.href.indexOf("id") != -1) {
             var id = location.href.substring(location.href.indexOf("=")+1, location.href.length);
             $("#txtContractID").val(id);
-            $.get("/Business/getContract?id=" + id, function (data) {
+            $.get("/Business/Order_getContract?id=" + id, function (data) {
                 $("#txtContractName").val(data.name);
                 $("#txtChannel").val(data.channelName);
                 $("#txtZQ").val(data.ZQ);
@@ -216,7 +216,7 @@
     function EnterPress(e) {
         var e = e || window.event;
         if (e.keyCode == 13) {
-            $.get("/Business/getContract?id=" + $("#txtContractID").val(), function(data) {
+            $.get("/Business/Order_getContract?id=" + $("#txtContractID").val(), function (data) {
                 $("#txtContractName").val(data.name);
                 $("#txtChannel").val(data.channelName);
                 $("#txtZQ").val(data.ZQ);
@@ -225,7 +225,7 @@
 
             $("#txtPutin_contractID").val($("#txtContractID").val());
 
-            $.get("/Business/getPutin?contract=" + $("#txtContractID").val(), function (data) {
+            $.get("/Business/Order_getPutin?contract=" + $("#txtContractID").val(), function (data) {
                 $("#SelectRoomList").datagrid("loadData", data);
                 $("#txtPutin_num").val(data.total);
             })
@@ -238,7 +238,7 @@
             return;
         }
 
-        $.get("/Business/buildOrderID?t=" + Math.floor(Math.random() * 1000), function (data) {
+        $.get("/Business/Order_getOrderID?t=" + Math.floor(Math.random() * 1000), function (data) {
             $("#txtPutin_contractID").val($("#txtContractID").val());
             $("#txtOrderID").val(data);
             $("#txtPutin_orderID").val(data);
@@ -255,7 +255,7 @@
         var end = $("#txtEndDate").datebox("getValue");
         var memo = $("#txtMemo").val();
 
-        $.post("/Business/addOrder", "contractID=" + contractID + "&orderID=" + orderID + "&adID=" + adID + "&makeID=" + makeID + "&num=" + num + "&begin=" + begin + "&end=" + end + "&memo=" + memo,
+        $.post("/Business/Order_add", "contractID=" + contractID + "&orderID=" + orderID + "&adID=" + adID + "&makeID=" + makeID + "&num=" + num + "&begin=" + begin + "&end=" + end + "&memo=" + memo,
             function (data) {
                 $("#OrderList").datagrid({
                     url: '/Business/getOrderList'
@@ -284,7 +284,7 @@
 
     function getCinemaRoom(rec) {
         $("#CinemaRoomList").datagrid({
-            url: "/Business/getCinemaRoomList?id=" + rec.id
+            url: "/Business/Order_getCinemaRoomList?id=" + rec.id
         });
     }
 
@@ -298,7 +298,7 @@
         if (ids != "")
             ids = ids.substring(0, ids.length - 1);
 
-        $.get("/Business/addPutin?contract=" + $("#txtPutin_contractID").val() + "&order=" + $("#txtPutin_orderID").val() + "&ids=" + ids, function (data) {
+        $.get("/Business/Order_addPutin?contract=" + $("#txtPutin_contractID").val() + "&order=" + $("#txtPutin_orderID").val() + "&ids=" + ids, function (data) {
             $.get("/Business/getPutin?contract=" + $("#txtContractID").val(), function (data) {
                 $("#SelectRoomList").datagrid("loadData", data);
                 $("#txtPutin_num").val(data.total);

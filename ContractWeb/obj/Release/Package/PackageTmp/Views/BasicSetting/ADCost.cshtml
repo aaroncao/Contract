@@ -1,5 +1,4 @@
 ﻿<style type="text/css">
-
     .fieldCSS {
         width: 500px;
     }
@@ -34,7 +33,7 @@
     <fieldset class="fieldCSS">
         <legend>列表</legend>
 
-        <table id="TargetList" style="width: 490px; height: 230px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getADCostList'">
+        <table id="TargetList" style="width: 490px; height: 230px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/ADCost_getList'">
             <thead>
                 <tr>
                     <th data-options="field:'target',width:100">对象</th>
@@ -102,7 +101,7 @@
             return;
         }
 
-        $.post("/BasicSetting/addADCost", "name=" + name + "&memo=" + memo,
+        $.post("/BasicSetting/ADCost_add", "name=" + name + "&memo=" + memo,
             function (data) {
                 if (data == 0)
                     alert("新增失败");
@@ -126,7 +125,7 @@
             return;
         }
 
-        $.post("/BasicSetting/updateADCost", "id=" + selected + "&name=" + name + "&memo=" + memo,
+        $.post("/BasicSetting/ADCost_edit", "id=" + selected + "&name=" + name + "&memo=" + memo,
             function (data) {
                 if (data == 0)
                     alert("修改失败");
@@ -137,7 +136,7 @@
     }
 
     function deleteRow() {
-        $.get("/BasicSetting/deleteADCost", "id=" + selected,
+        $.get("/BasicSetting/ADCost_remove", "id=" + selected,
             function (data) {
                 if (data == 0)
                     alert("删除失败");

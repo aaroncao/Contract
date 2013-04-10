@@ -111,7 +111,7 @@
         $(function () {
             var vID = location.href.substring(location.href.indexOf("=") + 1, location.href.length);
 
-            $.get("/Business/getOrderInfo?id=" + vID, function (data) {
+            $.get("/Business/Order_getOrderInfo?id=" + vID, function (data) {
                 $("#txtOrderID").val(data.orderID);
                 $("#txtContractID").val(data.contractID);
                 $("#drpADTarget").combobox("setValue", data.costTargetID);
@@ -123,13 +123,13 @@
             });
 
             $('#drpADTarget').combobox({
-                url: '/Business/getDrpADTargetList',
+                url: '/Home/drpADTargetList',
                 valueField: 'id',
                 textField: 'target'
             });
 
             $('#drpMakeTarget').combobox({
-                url: '/Business/getDrpMakeTargetList',
+                url: '/Home/drpMakeTargetList',
                 valueField: 'id',
                 textField: 'target'
             });
@@ -146,7 +146,7 @@
             var end = $("#txtEndDate").datebox("getValue");
             var memo = $("#txtMemo").val();
 
-            $.post("/Business/editOrder", "id=" + vID + "&orderID=" + order + "&adCost=" + adCost + "&makeCost=" + makeCost + "&num=" + num + "&begin=" + begin + "&end=" + end + "&memo=" + memo,
+            $.post("/Business/Order_edit", "id=" + vID + "&orderID=" + order + "&adCost=" + adCost + "&makeCost=" + makeCost + "&num=" + num + "&begin=" + begin + "&end=" + end + "&memo=" + memo,
                 function (data) {
                     if (data == 1)
                         alert("保存成功");

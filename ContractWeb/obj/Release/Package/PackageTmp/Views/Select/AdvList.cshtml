@@ -1,5 +1,4 @@
 ﻿<style type="text/css">
-
     .fitemTitle {
         display: inline-block;
         width: 60px;
@@ -48,7 +47,7 @@
         $("#AdvList").datagrid();
 
         $("#drpCinema").combobox({
-            url: '/BasicSetting/getDrpCinemaList',
+            url: '/Home/drpCinemaList',
             valueField: 'id',
             textField: 'name'
         });
@@ -65,7 +64,7 @@
         var end = $("#txtEnd").datebox("getValue");
 
         $('#AdvList').datagrid({
-            url: "/Select/searchAdvList?cinema=" + cinema + "&begin=" + begin + "&end=" + end
+            url: "/Select/AdvList_search?cinema=" + cinema + "&begin=" + begin + "&end=" + end
         });
     }
 
@@ -74,6 +73,6 @@
         var begin = $("#txtBegin").datebox("getValue");
         var end = $("#txtEnd").datebox("getValue");
 
-        window.open("/Select/outputAdv?cinema=" + cinema + "&begin=" + begin + "&end=" + end + "&end=" + end, "", "width=50,height=50,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+        window.open("/Select/AdvList_output?cinema=" + cinema + "&begin=" + begin + "&end=" + end + "&end=" + end, "", "width=50,height=50,toolbar=no,menubar=no,scrollbars=no, resizable=no");
     }
 </script>

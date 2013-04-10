@@ -1,5 +1,4 @@
 ﻿<style type="text/css">
-
     .fieldCSS {
         width: 500px;
     }
@@ -34,7 +33,7 @@
     <fieldset class="fieldCSS">
         <legend>列表</legend>
 
-        <table id="StateList" style="width: 490px; height: 230px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getStateList'">
+        <table id="StateList" style="width: 490px; height: 230px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/CustomerState_getList'">
             <thead>
                 <tr>
                     <th data-options="field:'state',width:100">名称</th>
@@ -102,7 +101,7 @@
             return;
         }
 
-        $.post("/BasicSetting/addState", "state=" + state + "&memo=" + memo,
+        $.post("/BasicSetting/CustomerState_add", "state=" + state + "&memo=" + memo,
             function (data) {
                 if (data == 0)
                     alert("新增失败");
@@ -126,7 +125,7 @@
             return;
         }
 
-        $.post("/BasicSetting/updateState", "id=" + selected + "&state=" + state + "&memo=" + memo,
+        $.post("/BasicSetting/CustomerState_edit", "id=" + selected + "&state=" + state + "&memo=" + memo,
             function (data) {
                 if (data == 0)
                     alert("修改失败");
@@ -137,7 +136,7 @@
     }
 
     function deleteRow() {
-        $.get("/BasicSetting/deleteState", "id=" + selected,
+        $.get("/BasicSetting/CustomerState_remove", "id=" + selected,
             function (data) {
                 if (data == 0)
                     alert("删除失败");

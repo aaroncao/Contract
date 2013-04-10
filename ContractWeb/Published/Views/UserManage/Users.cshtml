@@ -20,7 +20,7 @@
 </div>
 
 <!-- Table -->
-<table id="UserList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/UserManage/getUserList'" toolbar="#toolbar">
+<table id="UserList" style="width: 900px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/UserManage/Users_getList'" toolbar="#toolbar">
     <thead>
         <tr>
             <th data-options="field:'userID',width:80">用户名</th>
@@ -132,7 +132,7 @@
             onClick: function (item) {
                 switch (item.name) {
                     case "open":
-                        $.get("/UserManage/updateUserOpen", "id=" + selected + "&state=1",
+                        $.get("/UserManage/Users_editOpen", "id=" + selected + "&state=1",
                             function (data) {
                                 if (data == 1) {
                                     initGrid();
@@ -142,7 +142,7 @@
                         );
                         break;
                     case "close":
-                        $.get("/UserManage/updateUserOpen", "id=" + selected + "&state=0",
+                        $.get("/UserManage/Users_editOpen", "id=" + selected + "&state=0",
                             function (data) {
                                 if (data == 1) {
                                     initGrid();
@@ -152,7 +152,7 @@
                         );
                         break;
                     case "setting":
-                        window.open("Page_SetRole?id=" + selected, "", "width=500,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        window.open("Role?id=" + selected, "", "width=500,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
                         break;
                 }
             }
@@ -193,7 +193,7 @@
 
         var answer = confirm("确定要删除？");
         if (answer) {
-            $.get("/UserManage/deleteUser", "id=" + selected,
+            $.get("/UserManage/Users_remove", "id=" + selected,
                 function (data) {
                     if (data == 1) {
                         $("#dlg").dialog("close");
@@ -211,7 +211,7 @@
         var end = $("#srcEnd").datebox("getValue");
 
         $('#UserList').datagrid({
-            url: "/UserManage/searchList?userID=" + userID + "&beginDate=" + begin + "&endDate=" + end
+            url: "/UserManage/Users_search?userID=" + userID + "&beginDate=" + begin + "&endDate=" + end
         });
     }
 
@@ -230,7 +230,7 @@
             alert("真实姓名不能为空");
 
         if (type == 1) {
-            $.post("/UserManage/addUser",
+            $.post("/UserManage/Users_add",
                 "userID=" + userID + "&name=" + name + "&sex=" + sex + "&card=" + card + "&tel=" + tel + "&address=" + address,
                 function (data) {
                     if (data == 1) {
@@ -241,7 +241,7 @@
                 }
             );
         } else {
-            $.post("/UserManage/editUser",
+            $.post("/UserManage/Users_edit",
                 "id=" + selected + "&userID=" + userID + "&name=" + name + "&sex=" + sex + "&card=" + card + "&tel=" + tel + "&address=" + address,
                 function (data) {
                     if (data == 1) {

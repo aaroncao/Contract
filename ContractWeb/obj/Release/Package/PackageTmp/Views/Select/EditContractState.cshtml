@@ -58,7 +58,7 @@
         $(function () {
             var vID = location.href.substring(location.href.indexOf("=") + 1, location.href.length);
 
-            $.get("/Select/getContractEn?id=" + vID,
+            $.get("/Select/ContractList_getContract?id=" + vID,
                 function (data) {
                     $("#txtID").val(data.contractID);
                     $("#txtName").val(data.name);
@@ -67,7 +67,7 @@
             );
 
             $('#drpState').combobox({
-                url: '/Select/getDrpContractStateList',
+                url: '/Home/drpContractStateList',
                 valueField: 'id',
                 textField: 'name'
             });
@@ -77,7 +77,7 @@
             var id = $("#txtID").val();
             var state = $("#drpState").combobox("getValue");
 
-            $.get("/Select/changeContractState?id=" + id + "&state=" + state,
+            $.get("/Select/ContractList_editContractState?id=" + id + "&state=" + state,
                 function (data) {
                     if (data == 1)
                         alert("修改成功");

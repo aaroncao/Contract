@@ -1,5 +1,4 @@
 ﻿<style type="text/css">
-
     .fieldCSS {
         width: 500px;
     }
@@ -34,7 +33,7 @@
     <fieldset class="fieldCSS">
         <legend>列表</legend>
 
-        <table id="TargetList" style="width: 490px; height: 230px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getMakeCostList'">
+        <table id="TargetList" style="width: 490px; height: 230px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/MakeCost_getList'">
             <thead>
                 <tr>
                     <th data-options="field:'target',width:100">对象</th>
@@ -66,7 +65,6 @@
                     left: e.pageX,
                     top: e.pageY
                 });
-
             }
         });
     });
@@ -101,7 +99,7 @@
             return;
         }
 
-        $.post("/BasicSetting/addMakeCost", "name=" + name + "&memo=" + memo,
+        $.post("/BasicSetting/MakeCost_add", "name=" + name + "&memo=" + memo,
             function (data) {
                 if (data == 0)
                     alert("新增失败");
@@ -125,7 +123,7 @@
             return;
         }
 
-        $.post("/BasicSetting/updateMakeCost", "id=" + selected + "&name=" + name + "&memo=" + memo,
+        $.post("/BasicSetting/MakeCost_edit", "id=" + selected + "&name=" + name + "&memo=" + memo,
             function (data) {
                 if (data == 0)
                     alert("修改失败");
@@ -136,7 +134,7 @@
     }
 
     function deleteRow() {
-        $.get("/BasicSetting/deleteMakeCost", "id=" + selected,
+        $.get("/BasicSetting/MakeCost_remove", "id=" + selected,
             function (data) {
                 if (data == 0)
                     alert("删除失败");

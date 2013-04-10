@@ -50,7 +50,7 @@
             return;
         }
         
-        $.get("/UserManage/editPassword?oldpwd=" + theOld + "&newPwd=" + theNew, function (data) {
+        $.get("/UserManage/MyPwd_edit?oldpwd=" + theOld + "&newPwd=" + theNew, function (data) {
             alert(data.msg);
         });
     }

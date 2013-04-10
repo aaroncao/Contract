@@ -1,5 +1,4 @@
 ﻿<style type="text/css">
-
     .fieldCSS {
         width: 500px;
     }
@@ -34,7 +33,7 @@
     <fieldset class="fieldCSS">
         <legend>列表</legend>
 
-        <table id="AreaList" style="width: 490px; height: 230px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getAreaList'">
+        <table id="AreaList" style="width: 490px; height: 230px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/Area_getList'">
             <thead>
                 <tr>
                     <th data-options="field:'name',width:100">名称</th>
@@ -100,7 +99,7 @@
             return;
         }
 
-        $.post("/BasicSetting/addArea", "name=" + name + "&memo=" + memo,
+        $.post("/BasicSetting/Area_add", "name=" + name + "&memo=" + memo,
             function (data) {
                 if (data == 0)
                     alert("新增失败");
@@ -124,7 +123,7 @@
             return;
         }
 
-        $.post("/BasicSetting/updateArea", "id=" + selected + "&name=" + name + "&memo=" + memo,
+        $.post("/BasicSetting/Area_edit", "id=" + selected + "&name=" + name + "&memo=" + memo,
             function (data) {
                 if (data == 0)
                     alert("修改失败");
@@ -135,7 +134,7 @@
     }
 
     function deleteRow() {
-        $.get("/BasicSetting/deleteArea", "id=" + selected,
+        $.get("/BasicSetting/Area_remove", "id=" + selected,
             function (data) {
                 if (data == 0)
                     alert("删除失败");

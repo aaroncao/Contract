@@ -65,24 +65,24 @@
         $('#PutinList').datagrid();
 
         $('#drpTarget').combobox({
-            url: '/Business/getDrpADTargetList',
+            url: '/Home/drpADTargetList',
             valueField: 'id',
             textField: 'target'
         });
 
         $('#drpChannel').combobox({
-            url: '/Business/getDrpChannelList',
+            url: '/Home/drpChannelList',
             valueField: 'id',
             textField: 'name'
         });
 
         $('#drpState').combobox({
-            url: '/Select/getDrpAccountStateList',
+            url: '/Home/drpAccountStateList',
             valueField: 'id',
             textField: 'name'
         });
 
-        $.get("/Select/getADCostAccountList",
+        $.get("/Select/ADCost_getList",
             function (data) {
                 $("#PutinList").datagrid("loadData", data);
                 $("#txtTotal").val(data.money);
@@ -101,7 +101,7 @@
         var begin = $("#txtBegin").datebox("getValue");
         var end = $("#txtEnd").datebox("getValue");
 
-        $.get("/Select/searchADCost?id=" + id + "&target=" + target + "&channel=" + channel + "&state=" + state + "&begin=" + begin + "&end=" + end,
+        $.get("/Select/ADCost_search?id=" + id + "&target=" + target + "&channel=" + channel + "&state=" + state + "&begin=" + begin + "&end=" + end,
             function (data) {
                 $("#PutinList").datagrid("loadData", data);
                 $("#txtTotal").val(data.money);

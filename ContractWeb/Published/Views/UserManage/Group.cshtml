@@ -11,10 +11,10 @@
 
 <div>
     <fieldset class="fieldCSS">
-        <legend>广告费结算对象</legend>
+        <legend>操作岗位</legend>
         <div>
             <div class="fitem">
-                <label class="fitemTitle">对象:<font color="red">*</font></label>
+                <label class="fitemTitle">名称:<font color="red">*</font></label>
                 <input id="txtName" class="easyui-validatebox" required="true" />
             </div>
             <div class="fitem">
@@ -33,10 +33,10 @@
     <fieldset class="fieldCSS">
         <legend>列表</legend>
 
-        <table id="TargetList" style="width: 490px; height: 230px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/ADCost_getList'">
+        <table id="GroupList" style="width: 490px; height: 230px;" data-options="singleSelect:true,idField:'id',url:'/UserManage/Group_getList'">
             <thead>
                 <tr>
-                    <th data-options="field:'target',width:100">对象</th>
+                    <th data-options="field:'name',width:100">名称</th>
                     <th data-options="field:'memo',width:200">备注</th>
                 </tr>
             </thead>
@@ -45,15 +45,17 @@
 </div>
 
 
+
 <script>
     var selected = -1;
 
     $(function () {
-        $("#TargetList").datagrid({
+        $("#GroupList").datagrid({
             onClickRow: function (rowIndex, rowData) {
-                selected = rowData.id;
-                $("#txtName").val(rowData.target);
+                $("#txtName").val(rowData.name);
                 $("#txtMemo").val(rowData.memo);
+                
+                selected = rowData.id;
             },
             onRowContextMenu: function (e, rowIndex, rowData) {
                 selected = rowData.id;
@@ -66,26 +68,35 @@
                     left: e.pageX,
                     top: e.pageY
                 });
-
             }
         });
     });
 
     function createRowMenu() {
-        var tmenu = $('<div id="rmenu" style="width:100px;"></div>').appendTo('body');
-        $('<div iconCls="icon-remove"/>').html("删除").appendTo(tmenu);
+        var tmenu = $('<div id="rmenu" style="width:130px;"></div>').appendTo('body');
+        $('<div name="del" iconCls="icon-remove"/>').html("删除").appendTo(tmenu);
 
         tmenu.menu({
             onClick: function (item) {
-                if (item.iconCls == "icon-remove") {
-                    var answer = confirm("确认要删除吗")
-                    if (answer) {
-                        deleteRow();
-                    }
+                switch (item.name) {
+                    case "del":
+                        var answer = confirm("确认要删除吗")
+                        if (answer) {
+                            $.get("/UserManage/Group_remove?id=" + selected,
+                                function (result) {
+                                    if (result == 0)
+                                        alert("删除失败，请检查该权限组还存在用户");
+                                    else
+                                        $('#GroupList').datagrid("reload");
+                                }
+                            );
+                        }                        
+                        break;
                 }
             }
         });
     }
+
 
     function cancel() {
         $("#txtName").val("");
@@ -97,16 +108,16 @@
         var memo = $("#txtMemo").val();
 
         if (name.trim() == "") {
-            alert("对象不能为空");
+            alert("名称不能为空");
             return;
         }
 
-        $.post("/BasicSetting/ADCost_add", "name=" + name + "&memo=" + memo,
+        $.post("/UserManage/Group_add", "name=" + name + "&memo=" + memo,
             function (data) {
                 if (data == 0)
                     alert("新增失败");
                 else
-                    $("#TargetList").datagrid("reload");
+                    $('#GroupList').datagrid("reload");
             }
         );
     }
@@ -120,29 +131,20 @@
             return;
         }
 
-        if (selected == -1) {
-            alert("请选择一个对象编辑");
+        if (selected < 0) {
+            alert("请选择一个权限组编辑");
             return;
         }
 
-        $.post("/BasicSetting/ADCost_edit", "id=" + selected + "&name=" + name + "&memo=" + memo,
+        $.post("/UserManage/Group_edit", "id=" + selected + "&name=" + name + "&memo=" + memo,
             function (data) {
                 if (data == 0)
                     alert("修改失败");
                 else
-                    $("#TargetList").datagrid("reload");
+                    $('#GroupList').datagrid("reload");
             }
         );
-    }
+    } 
 
-    function deleteRow() {
-        $.get("/BasicSetting/ADCost_remove", "id=" + selected,
-            function (data) {
-                if (data == 0)
-                    alert("删除失败");
-                else
-                    $("#TargetList").datagrid("reload");
-            }
-        );
-    }
+
 </script>

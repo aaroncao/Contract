@@ -663,15 +663,12 @@ namespace ContractWeb.Controllers
         public JsonResult Putin_getList(string page, string rows)
         {
             DaPutinInfo dal = new DaPutinInfo();
-            IList<PutinListItem> list = dal.getList();
-
-            double money = 0.0;
-            foreach (PutinListItem en in list)
-                money += en.price * en.ZQ;
+            IList<PutinListItem> list = dal.getList(page, rows);
+            double[] data = dal.getListOfMoney();
 
             var result = new CustomJsonResult();
             result.dateFormat = "yyyy-MM-dd";
-            result.Data = new { total = list.Count, rows = list, money = money };
+            result.Data = new { total = Convert.ToInt32(data[0]), rows = list, money = data[1] };
             return result;
         }
         #endregion
@@ -686,18 +683,15 @@ namespace ContractWeb.Controllers
         /// <param name="begin"></param>
         /// <param name="end"></param>
         /// <returns></returns>
-        public JsonResult Putin_search(string cinema, string room, string version, string begin, string end)
+        public JsonResult Putin_search(string cinema, string room, string version, string begin, string end, string page, string rows)
         {
             DaPutinInfo dal = new DaPutinInfo();
-            IList<PutinListItem> list = dal.getList(cinema, room, version, begin, end);
-
-            double money = 0.0;
-            foreach (PutinListItem en in list)
-                money += en.price * en.ZQ;
+            IList<PutinListItem> list = dal.getList(cinema, room, version, begin, end, page, rows);
+            double[] data = dal.getListOfMoney(cinema, room, version, begin, end);
 
             var result = new CustomJsonResult();
             result.dateFormat = "yyyy-MM-dd";
-            result.Data = new { total = list.Count, rows = list, money = money };
+            result.Data = new { total = Convert.ToInt32(data[0]), rows = list, money = data[1] };
             return result;
         }
         #endregion

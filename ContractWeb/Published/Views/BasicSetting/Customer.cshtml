@@ -1,5 +1,4 @@
 ﻿<style type="text/css">
-
     .fieldCSS {
         width: 950px;
     }
@@ -58,7 +57,7 @@
             <input type="button" value="查询" style="margin-left:10px;" onclick="search()" />
         </div>
 
-        <table id="CustomerList" style="width: 930px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getCustomerList'">
+        <table id="CustomerList" style="width: 930px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/Customer_getList'">
             <thead>
                 <tr>
                     <th data-options="field:'name',width:110">名称</th>
@@ -112,25 +111,25 @@
         });
 
         $('#drpType').combobox({
-            url: '/BasicSetting/getChannelTypeList',
+            url: '/Home/drpChannelTypeList',
             valueField: 'id',
             textField: 'name'
         });
 
         $('#drpState').combobox({
-            url: '/BasicSetting/getdrpStateList',
+            url: '/Home/drpCustomerStateList',
             valueField: 'id',
             textField: 'state'
         });
         
         $('#srcType').combobox({
-            url: '/BasicSetting/getChannelTypeList',
+            url: '/Home/drpChannelTypeList',
             valueField: 'id',
             textField: 'name'
         });
 
         $('#srcSalesman').combobox({
-            url: '/BasicSetting/getdrpUserList',
+            url: '/Home/drpPersonList',
             valueField: 'id',
             textField: 'name'
         });
@@ -190,7 +189,7 @@
             return;
         }
 
-        $.post("/BasicSetting/addCustomer", "name=" + name + "&type=" + type + "&person=" + person + "&tel=" + tel
+        $.post("/BasicSetting/Customer_add", "name=" + name + "&type=" + type + "&person=" + person + "&tel=" + tel
             + "&officeTel=" + officeTel + "&email=" + email + "&fex=" + fex + "&state="
             + state + "&address=" + address,
             function (data) {
@@ -228,7 +227,7 @@
             return;
         }
 
-        $.post("/BasicSetting/updateCustomer", "id=" + selected + "&name=" + name + "&type=" + type + "&person=" + person + "&tel=" + tel
+        $.post("/BasicSetting/Customer_edit", "id=" + selected + "&name=" + name + "&type=" + type + "&person=" + person + "&tel=" + tel
             + "&officeTel=" + officeTel + "&email=" + email + "&fex=" + fex + "&state="
             + state + "&address=" + address,
             function (data) {
@@ -241,7 +240,7 @@
     }
 
     function deleteRow() {
-        $.get("/BasicSetting/deleteCustomer", "id=" + selected,
+        $.get("/BasicSetting/Customer_remove", "id=" + selected,
             function (data) {
                 if (data == 0)
                     alert("删除失败");
@@ -256,7 +255,7 @@
         var type = $("#srcType").combobox("getValue");
         var sale = $("#srcSalesman").combobox("getValue");
 
-        $.post("/BasicSetting/searchCustomer", "name=" + name + "&type=" + type + "&salesman=" + sale,
+        $.post("/BasicSetting/Customer_search", "name=" + name + "&type=" + type + "&salesman=" + sale,
             function (data) {
                 if (data != null)
                     $("#CustomerList").datagrid("loadData", data);

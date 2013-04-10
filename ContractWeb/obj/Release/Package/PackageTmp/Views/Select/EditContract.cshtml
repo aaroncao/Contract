@@ -31,7 +31,6 @@
     <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.wysiwyg.js")"></script>
 
     <script>
-
         function myformatter(date) {
             var y = date.getFullYear();
             var m = date.getMonth() + 1;
@@ -118,24 +117,24 @@
         var vID = location.href.substring(location.href.indexOf("=") + 1, location.href.length);
 
         $('#drpType').combobox({
-            url: '/Business/getDrpContractTypeList',
+            url: '/Home/drpContractTypeList',
             valueField: 'id',
             textField: 'name'
         });
 
         $('#drpChannel').combobox({
-            url: '/Business/getDrpChannelList',
+            url: '/Home/drpChannelList',
             valueField: 'id',
             textField: 'name'
         });
 
         $('#drpPerson').combobox({
-            url: '/Business/getDrpPersonList',
+            url: '/Home/drpPersonList',
             valueField: 'id',
             textField: 'name'
         });
 
-        $.get("/Select/getContractEn?id=" + vID,
+        $.get("/Select/ContractList_getContract?id=" + vID,
             function (data) {
                 $("#txtID").val(data.contractID);
                 $("#txtName").val(data.name);
@@ -175,7 +174,7 @@
         var mDate = $("#txtDate").datebox("getValue");
         var memo = $("#txtMemo").val();
 
-        $.post("/Select/editContract",
+        $.post("/Select/ContractList_editContract",
             "id=" + id + "&name=" + name + "&version=" + version + "&price=" + price + "&num=" + num + "&money=" + money +
             "&make=" + make + "&back=" + back + "&type=" + type + "&channel=" + channel + "&begintime=" + begintime + "&endtime=" + endtime +
             "&zq=" + zq + "&person=" + person + "&mDate=" + mDate + "&memo=" + memo,

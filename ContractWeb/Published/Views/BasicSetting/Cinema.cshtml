@@ -1,5 +1,4 @@
 ﻿<style type="text/css">
-
     .fieldCSS {
         width: 800px;
     }
@@ -50,7 +49,7 @@
             <input type="button" value="查询" style="margin-left:10px;" onclick="search()" />
         </div>
 
-        <table id="CinemaList" style="width: 780px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getCinemaList'">
+        <table id="CinemaList" style="width: 780px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/Cinema_getList'">
             <thead>
                 <tr>
                     <th data-options="field:'name',width:130">影院名称</th>
@@ -96,13 +95,13 @@
         });
 
         $('#drpArea').combobox({
-            url: '/BasicSetting/getDrpAreaList',
+            url: '/Home/drpAreaList',
             valueField: 'id',
             textField: 'name'
         });
 
         $('#searchArea').combobox({
-            url: '/BasicSetting/getDrpAreaList',
+            url: '/Home/drpAreaList',
             valueField: 'id',
             textField: 'name'
         });
@@ -155,7 +154,7 @@
             return;
         }
 
-        $.post("/BasicSetting/addCinema",
+        $.post("/BasicSetting/Cinema_add",
             "name=" + name + "&area=" + area + "&roomNum=" + num + "&person=" + person + "&tel=" + tel + "&address=" + address,
             function (data) {
                 if (data == 0)
@@ -189,7 +188,7 @@
             return;
         }
 
-        $.post("/BasicSetting/updateCinema",
+        $.post("/BasicSetting/Cinema_edit",
             "id=" + selected + "&name=" + name + "&area=" + area + "&roomNum=" + num + "&person=" + person + "&tel=" + tel + "&address=" + address,
             function (data) {
                 if (data == 0)
@@ -201,7 +200,7 @@
     }
 
     function deleteRow() {
-        $.get("/BasicSetting/deleteCinema", "id=" + selected,
+        $.get("/BasicSetting/Cinema_remove", "id=" + selected,
             function (data) {
                 if (data == 0)
                     alert("删除失败");
@@ -215,7 +214,7 @@
         var name = $("#searchName").val();
         var area = $("#searchArea").combobox("getValue");
 
-        $.post("/BasicSetting/searchCinema", "sName=" + name + "&sArea=" + area,
+        $.post("/BasicSetting/Cinema_search", "sName=" + name + "&sArea=" + area,
             function (data) {
                 if (data != null)
                     $("#CinemaList").datagrid("loadData", data);

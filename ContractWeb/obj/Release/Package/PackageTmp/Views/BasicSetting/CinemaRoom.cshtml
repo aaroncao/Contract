@@ -1,5 +1,4 @@
 ﻿<style type="text/css">
-
     .fieldCSS {
         width: 800px;
     }
@@ -44,7 +43,7 @@
             <input type="button" value="查询" style="margin-left:10px;" onclick="search()" />
         </div>
 
-        <table id="CinemaRoomList" style="width:550px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getCinemaRoomList'" toolbar="#toolbar">
+        <table id="CinemaRoomList" style="width:550px; height: 300px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/CinemaRoom_getList'">
             <thead>
                 <tr>
                     <th data-options="field:'cinema',width:130">所属影院</th>
@@ -85,22 +84,22 @@
             }
         });
 
-        $('#drpCinema').combobox({
-            url: '/BasicSetting/getDrpCinemaList',
-            valueField: 'id',
-            textField: 'name'
+        $("#drpCinema").combobox({
+            url: "/Home/drpCinemaList",
+            valueField: "id",
+            textField: "name"
         });
 
-        $('#drpType').combobox({
-            url: '/BasicSetting/getdrpCinemaRoomTypeList',
+        $("#drpType").combobox({
+            url: '/BasicSetting/drpCinemaRoomTypeList',
             valueField: 'id',
             textField: 'type'
         });
 
         $("#srcCinema").combobox({
-            url: '/BasicSetting/getDrpCinemaList',
-            valueField: 'id',
-            textField: 'name'
+            url: "/Home/drpCinemaList",
+            valueField: "id",
+            textField: "name"
         });
     });
 
@@ -146,7 +145,7 @@
             return;
         }
 
-        $.post("/BasicSetting/addCinemaRoom",
+        $.post("/BasicSetting/CinemaRoom_add",
             "room=" + name + "&cinemaID=" + cinema + "&typeID=" + type + "&memo=" + memo,
             function (data) {
                 if (data == 0)
@@ -178,7 +177,7 @@
             return;
         }
 
-        $.post("/BasicSetting/updateCinemaRoom",
+        $.post("/BasicSetting/CinemaRoom_edit",
             "id=" + selected + "&name=" + name + "&cinema=" + cinema + "&type=" + type + "&memo=" + memo,
             function (data) {
                 if (data == 0)
@@ -190,7 +189,7 @@
     }
 
     function deleteRow() {
-        $.get("/BasicSetting/deleteCinemaRoom", "id=" + selected,
+        $.get("/BasicSetting/CinemaRoom_remove", "id=" + selected,
             function (data) {
                 if (data == 0)
                     alert("删除失败");
@@ -204,7 +203,7 @@
         var cinema = $("#srcCinema").combobox("getValue");
 
         $('#CinemaRoomList').datagrid({
-            url: "/BasicSetting/searchCinemaRoom?cinema=" + cinema
+            url: "/BasicSetting/CinemaRoom_search?cinema=" + cinema
         });
     }
 </script>

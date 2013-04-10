@@ -1,5 +1,4 @@
 ﻿<style type="text/css">
-
     .fitemTitle {
         display: inline-block;
         width: 60px;
@@ -36,7 +35,7 @@
     <input type="button" id="btnCancel" onclick="cancel()" value="清空" />
 </p>
 
-<table id="PutinList" style="width: 800px; height: 400px;" data-options="singleSelect:true,idField:'id'">
+<table id="PutinList" class="easyui-datagrid" style="width: 800px; height: 400px;" data-options="rownumbers:true,singleSelect:true,pagination:true,idField:'id'">
     <thead>
         <tr>
             <th data-options="field:'id',width:50">ID</th>
@@ -55,16 +54,28 @@
 
 <script>
     $(function () {
-        $("#PutinList").datagrid();
-
         $("#drpCinema").combobox({
-            url: '/BasicSetting/getDrpCinemaList',
+            url: '/Home/drpCinemaList',
             valueField: 'id',
             textField: 'name',
             onChange: getDrpRoomData
         });
 
-        $.get("/Select/getPutinList",
+        var page = $("#PutinList").datagrid("getPager");
+        $(page).pagination({
+            pageSize: 50,
+            pageList: [50],
+            beforePageText: '第',  
+            afterPageText: '页    共 {pages} 页',
+            displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+            onBeforeRefresh: function () {},  
+            onSelectPage: function (pageNumber, pageSize) {
+                search();
+            }
+        });
+
+        var options = $("#PutinList").datagrid("getPager").data("pagination").options;
+        $.get("/Select/Putin_search?cinema=&room=&version=&begin=&end=&page=" + options.pageNumber + "&rows=" + options.pageSize,
             function (data) {
                 $("#PutinList").datagrid("loadData", data);
                 $("#txtTotal").val(data.money);
@@ -74,7 +85,7 @@
 
     function getDrpRoomData() {
         $("#drpRoom").combobox({
-            url: "/BasicSetting/getDrpCinemaRoomList?id=" + $("#drpCinema").combobox("getValue"),
+            url: "/Home/drpCinemaRoomList?id=" + $("#drpCinema").combobox("getValue"),
             valueField: 'id',
             textField: 'room'
         });
@@ -87,7 +98,8 @@
         var begin = $("#txtBegin").datebox("getValue");
         var end = $("#txtEnd").datebox("getValue");
 
-        $.get("/Select/searchPutinList?cinema=" + cinema + "&room=" + room + "&version=" + version + "&begin=" + begin + "&end=" + end,
+        var options = $("#PutinList").datagrid("getPager").data("pagination").options;
+        $.get("/Select/Putin_search?cinema=" + cinema + "&room=" + room + "&version=" + version + "&begin=" + begin + "&end=" + end + "&page=" + options.pageNumber + "&rows=" + options.pageSize,
             function (data) {
                 $("#PutinList").datagrid("loadData", data);
                 $("#txtTotal").val(data.money);

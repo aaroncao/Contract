@@ -91,7 +91,7 @@
         if (e.keyCode == 13) {
             var orderID = $("#txtOrderID").val();
 
-            $.get("/Business/getContractOrder?id=" + orderID, function (data) {
+            $.get("/Business/MakeCostAccount_getContractOrderInfo?id=" + orderID, function (data) {
                 if (data != null) {
                     var contract = data.contract;
                     var order = data.order;
@@ -112,7 +112,7 @@
 
     function getPutinList(id) {
         $("#PutinList").datagrid({
-            url:"/Business/getPutinList?id=" + id
+            url: "/Business/MakeCostAccount_getPutinOfOrderList?id=" + id
         });
     }
 
@@ -136,7 +136,7 @@
         var state = $("#notAccounted")[0].checked ? 1 : 2;
         var date = $("#txtDate").datebox("getValue");
 
-        $.post("/Business/addMakeCostAccount", "id=" + id + "&money=" + money + "&state=" + state + "&date=" + date,
+        $.post("/Business/MakeCostAccount_add", "id=" + id + "&money=" + money + "&state=" + state + "&date=" + date,
             function (data) {
                 alert("OK");
             }
