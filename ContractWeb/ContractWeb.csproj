@@ -430,7 +430,7 @@
     <Content Include="Views\Home\Exit.cshtml" />
     <Content Include="Views\UserManage\UserPwd.cshtml" />
     <Content Include="Views\Business\EditOrder.cshtml" />
-    <Content Include="Views\UserManage\Role.cshtml" />
+    <Content Include="Views\UserManage\Users_Role.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

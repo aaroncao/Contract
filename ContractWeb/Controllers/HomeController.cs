@@ -95,9 +95,10 @@ namespace ContractWeb.Controllers
         public JsonResult getUserName(string t)
         {
             UserInfo en = BaseHelper.getCookie();
-
+            DaUserInfo dal = new DaUserInfo();
+            
             var result = new CustomJsonResult();
-            result.Data = en.name;
+            result.Data = dal.getUserInfo(en.id).name;
             return result;
         }
         #endregion
@@ -110,7 +111,7 @@ namespace ContractWeb.Controllers
         public JsonResult getMenuData(string t)
         {
             UserInfo info = BaseHelper.getCookie();
-            List<MenuItem> list = BaseHelper.getMenuData(info.userID);
+            List<MenuItem> list = BaseHelper.getMenuData(info.id);
 
             var result = new CustomJsonResult();
             result.Data = list;

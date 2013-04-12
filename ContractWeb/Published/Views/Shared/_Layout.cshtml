@@ -51,7 +51,7 @@
                 <div id="profile-links">
                     <a id="lblUserName" href="#" title="Edit your profile">
                         <script>
-                            $.get("/Home/getUserName?t=" + new Date(),
+                            $.get("/Home/getUserName?t=" + Math.floor(Math.random() * 1000),
                                 function (data) {
                                     $("#lblUserName").html(data);
                                 }

@@ -56,7 +56,7 @@ namespace ContractWeb.Controllers
         /// 设置角色界面
         /// </summary>
         /// <returns></returns>
-        public ActionResult Role()
+        public ActionResult Users_Role()
         {
             return View();
         }

@@ -66,6 +66,33 @@ namespace ContractWeb.DataAccess
         }
         #endregion
 
+        #region 获取用户列表
+        /// <summary>
+        /// 获取用户列表
+        /// </summary>
+        /// <returns></returns>
+        public UserInfo getUserInfo(int id)
+        {
+            string strSql = "select id, userID, powergroupID, password, "
+                + "(case state when 1 then '使用' when 0 then '禁止' end) as state, name, "
+                + "(case sex when 1 then '男' when 2 then '女' end) as sex, card, tel, address, date "
+                + "from UserInfo where id=@id";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", id)
+            };
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+            IList<UserInfo> list = DynamicBuilder<UserInfo>.ConvertToList(dr);
+
+            if (list != null && list.Count > 0)
+                return list[0];
+            else
+                return null;
+        }
+        #endregion
+
         #region 添加用户
         /// <summary>
         /// 添加用户

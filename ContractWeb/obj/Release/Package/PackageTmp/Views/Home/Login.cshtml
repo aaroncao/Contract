@@ -68,11 +68,12 @@
             return;
         }
 
-        $.get("/Home/logOn?userID=" + user + "&password=" + password + "&t=" + new Date(), function (data) {
-            if (data == 1)
-                location.href = "/Home/index";
-            else
-                $("#msglbl").html("登录失败");
+        $.post("/Home/logOn", "userID=" + user + "&password=" + password + "&t=" + new Date(),
+            function (data) {
+                if (data == 1)
+                    location.href = "/Home/index";
+                else
+                    $("#msglbl").html("登录失败");
         });
     }
 

@@ -69,17 +69,17 @@ namespace ContractWeb.Common
         /// <summary>
         /// 获取菜单权限
         /// </summary>
-        public static List<MenuItem> getMenuData(string userID)
+        public static List<MenuItem> getMenuData(int id)
         {
             List<MenuItem> menus = new List<MenuItem>();
 
-            if (!string.IsNullOrEmpty(userID))
+            if (id != 0)
             {
                 //取权限
-                string strSql = "select b.moduleID from UserInfo a, PowerGroupPower b where a.powergroupID=b.groupID and a.userID=@userID";
+                string strSql = "select b.moduleID from UserInfo a, PowerGroupPower b where a.powergroupID=b.groupID and a.id=@id";
 
                 SqlParameter[] param = new SqlParameter[] {
-                    new SqlParameter("@userID", userID)
+                    new SqlParameter("@id", id)
                 };
 
                 DataTable dt = SqlHelper.ExecuteDataset(DBConnStr, CommandType.Text, strSql, param).Tables[0];
