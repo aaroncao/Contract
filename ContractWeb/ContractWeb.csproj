@@ -123,6 +123,7 @@
     <Compile Include="DataAccess\DaCinema.cs" />
     <Compile Include="DataAccess\DaCinemaRoom.cs" />
     <Compile Include="DataAccess\DaCinemaRoomType.cs" />
+    <Compile Include="DataAccess\DaContractBinding.cs" />
     <Compile Include="DataAccess\DaContractInfo.cs" />
     <Compile Include="DataAccess\DaContractState.cs" />
     <Compile Include="DataAccess\DaContractType.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Models\Cinema.cs" />
     <Compile Include="Models\CinemaRoom.cs" />
     <Compile Include="Models\CinemaRoomType.cs" />
+    <Compile Include="Models\ContractBinding.cs" />
     <Compile Include="Models\ContractInfo.cs" />
     <Compile Include="Models\ContractOrder.cs" />
     <Compile Include="Models\ContractState.cs" />
@@ -431,6 +433,7 @@
     <Content Include="Views\UserManage\UserPwd.cshtml" />
     <Content Include="Views\Business\EditOrder.cshtml" />
     <Content Include="Views\UserManage\Users_Role.cshtml" />
+    <Content Include="Views\UserManage\ContractBinding.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

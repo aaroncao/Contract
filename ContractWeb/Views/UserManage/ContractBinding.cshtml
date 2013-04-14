@@ -1,0 +1,50 @@
+﻿<style type="text/css">
+    .fieldCSS {
+        width: 500px;
+    }
+
+    .fitemTitle {
+        display: inline-block;
+        width: 40px;
+    }
+</style>
+
+<div>
+    <div class="fitem">
+        <label class="fitemTitle" style="width: 80px; margin-left: 10px;">用户:</label>
+        <select id="drpUser" class="easyui-combobox"></select>
+        <input type="button" value="保存" style="margin-left: 10px;" onclick="save()" />
+    </div>
+
+    <div class="fitem">
+        <table id="PeoList" style="width: 300px; height: 200px; float: left;" data-options="singleSelect:false,selectOnCheck:true,checkOnSelect:true,idField:'id',url:'/Home/drpPersonList'">
+            <thead>
+                <tr>
+                    <th data-options="field:'ck',checkbox:true"></th>
+                    <th data-options="field:'name',width:110">业务员</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+    });
+
+    function save() {
+        var id = $("#drpUser").combobox("getValue");
+        var peos = "";
+        var rows = $('#PeoList').datagrid('getSelections');
+        for (var i = 0; i < rows.length; i++) {
+            peos += rows[i].id + ",";
+        }
+
+        if (peos != "")
+            peos = peos.substring(0, peos.length - 1);
+        $.get("/UserManage/ContractBinding_edit?id=" + id + "&peos=" + peos, function (data) {
+            showPower();
+        });
+    }
+</script>

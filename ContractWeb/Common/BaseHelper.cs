@@ -20,51 +20,6 @@ namespace ContractWeb.Common
         /// </summary>
         public static string DBConnStr = ConfigurationManager.ConnectionStrings["DBConnection"].ToString();
 
-        #region 系统菜单配置
-        /// <summary>
-        /// 系统菜单配置
-        /// </summary>
-        public static MenuItem[] sysMenu = new MenuItem[] {
-            new MenuItem(0, "平台首页", 0, "Index", "Home"),
-            new MenuItem(2, "操作岗位管理", 0, "Group", "UserManage"),
-            new MenuItem(3, "管理员修改密码", 0, "UserPwd", "UserManage"),
-            new MenuItem(2000, "退出系统", 0, "Exit", "Home"),
-
-
-            new MenuItem(4, "系统用户管理", 1, "Users", "UserManage"),            
-            new MenuItem(5, "个人密码修改", 1, "MyPwd", "UserManage"),
-            new MenuItem(6, "个人信息修改", 1, "MyInfo", "UserManage"),
-
-
-            new MenuItem(7, "渠道类别设置", 2, "Channel", "BasicSetting"),
-            new MenuItem(8, "客户有效期设置", 2, "Validity", "BasicSetting"), 
-            new MenuItem(33, "权限组设定", 2, "GroupPower", "BasicSetting"),
-            new MenuItem(9, "地区设定", 2, "Area", "BasicSetting"),
-            new MenuItem(10, "客户状态设定", 2, "CustomerState", "BasicSetting"),
-            new MenuItem(11, "广告费结算对象设定", 2, "ADCost", "BasicSetting"),
-            new MenuItem(12, "制作费结算对象设定", 2, "MakeCost", "BasicSetting"),
-            new MenuItem(14, "影院信息管理", 2, "Cinema", "BasicSetting"),
-            new MenuItem(15, "影厅信息管理", 2, "CinemaRoom", "BasicSetting"),
-            
-
-            new MenuItem(13, "客户资料管理", 3, "Customer", "BasicSetting"),
-            new MenuItem(34, "合同信息录入", 3, "Contract", "Business"),
-            new MenuItem(18, "下单", 3, "Order", "Business"),
-            new MenuItem(19, "客户到账登记", 3, "CPay", "Business"),
-            new MenuItem(20, "开发票登记", 3, "WriteBill", "Business"),
-            new MenuItem(21, "广告费结算", 3, "ADCostAccount", "Business"),
-            new MenuItem(22, "制作费结算", 3, "MakeCostAccount", "Business"),
-            new MenuItem(23, "收发票登记", 3, "ReceiveBill", "Business"),
-
-            new MenuItem(26, "合同信息查询", 4, "ContractList", "Select"),
-            new MenuItem(27, "下单信息查询", 4, "OrderList", "Select"),
-            new MenuItem(29, "广告费结算查询", 4, "ADCost", "Select"),
-            new MenuItem(30, "制作费结算查询", 4, "MakeCost", "Select"),
-            new MenuItem(32, "影院投放统计", 4, "Putin", "Select"),
-            new MenuItem(38, "影院广告情况统计", 4, "AdvList", "Select")
-        };
-        #endregion
-
         #region 获取菜单权限
         /// <summary>
         /// 获取菜单权限
@@ -76,7 +31,9 @@ namespace ContractWeb.Common
             if (id != 0)
             {
                 //取权限
-                string strSql = "select b.moduleID from UserInfo a, PowerGroupPower b where a.powergroupID=b.groupID and a.id=@id";
+                string strSql = "select c.id, c.name, c.menuType, c.action, c.controller "
+                    + "from UserInfo a, PowerGroupPower b, SystemModule c "
+                    + "where a.powergroupID=b.groupID and b.moduleID=c.id and a.id=@id and c.menuType is not null order by c.menuType, c.id ";
 
                 SqlParameter[] param = new SqlParameter[] {
                     new SqlParameter("@id", id)
@@ -85,13 +42,11 @@ namespace ContractWeb.Common
                 DataTable dt = SqlHelper.ExecuteDataset(DBConnStr, CommandType.Text, strSql, param).Tables[0];
 
                 //配数据
-                for (int i = 0; i < sysMenu.Length; i++)
+                for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    if (sysMenu[i].id == 0 || sysMenu[i].id >= 2000)
-                        menus.Add(sysMenu[i]);
-
-                    if (dt.Select("moduleID=" + sysMenu[i].id).Length > 0)
-                        menus.Add(sysMenu[i]);
+                    DataRow row = dt.Rows[i];
+                    MenuItem item = new MenuItem(Convert.ToInt32(row["id"]), row["name"].ToString(), Convert.ToInt32(row["menuType"]), row["action"].ToString(), row["controller"].ToString());
+                    menus.Add(item);
                 }
 
                 HttpContext.Current.Session["menu"] = menus;

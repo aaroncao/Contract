@@ -87,6 +87,18 @@ namespace ContractWeb.Controllers
         }
         #endregion    
 
+        #region 合同信息查询绑定设置
+        /// <summary>
+        /// 合同信息查询绑定设置
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ContractBinding()
+        {
+            ViewBag.menu = 36;
+            return View();
+        }
+        #endregion
+
         /* ============ 操作 ============ */
 
         #region 获取操作岗位管理列表
@@ -442,6 +454,19 @@ namespace ContractWeb.Controllers
             return result;
         }
         #endregion
-        
+
+
+        #region 保存合同信息查询绑定设置
+        /// <summary>
+        /// 保存合同信息查询绑定设置
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="peos"></param>
+        /// <returns></returns>
+        public JsonResult ContractBinding_edit(string id, string peos)
+        {
+
+        }
+        #endregion
     }
 }
