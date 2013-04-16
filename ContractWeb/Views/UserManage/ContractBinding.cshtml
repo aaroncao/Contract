@@ -30,12 +30,29 @@
 
 <script>
     $(function () {
+        $("#PeoList").datagrid();
 
+        $("#drpUser").combobox({
+            url: '/Home/drpPersonList',
+            valueField: 'id',
+            textField: 'name',
+            onChange: getData
+        });
     });
 
-    function save() {
+    function getData() {
         var id = $("#drpUser").combobox("getValue");
+        $.get("/UserManage/ContractBinding_getList?id=" + id, function (data) {
+            if (data != null) {
+                for (var i=0; i<data.length; i++)
+                    $('#PeoList').datagrid('selectRecord', data[i]);
+            }
+        });
+    }
+
+    function save() {
         var peos = "";
+        var id = $("#drpUser").combobox("getValue");        
         var rows = $('#PeoList').datagrid('getSelections');
         for (var i = 0; i < rows.length; i++) {
             peos += rows[i].id + ",";
@@ -44,7 +61,7 @@
         if (peos != "")
             peos = peos.substring(0, peos.length - 1);
         $.get("/UserManage/ContractBinding_edit?id=" + id + "&peos=" + peos, function (data) {
-            showPower();
+            getData();
         });
     }
 </script>

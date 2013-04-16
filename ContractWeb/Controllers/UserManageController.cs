@@ -456,6 +456,23 @@ namespace ContractWeb.Controllers
         #endregion
 
 
+
+        #region 获取合同信息查询绑定设置
+        /// <summary>
+        /// 获取合同信息查询绑定设置
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult ContractBinding_getList(string id)
+        {
+            DaContractBinding dal = new DaContractBinding();
+
+            var result = new CustomJsonResult();
+            result.Data = dal.getList(id);
+            return result;
+        }
+        #endregion
+
         #region 保存合同信息查询绑定设置
         /// <summary>
         /// 保存合同信息查询绑定设置
@@ -465,7 +482,12 @@ namespace ContractWeb.Controllers
         /// <returns></returns>
         public JsonResult ContractBinding_edit(string id, string peos)
         {
+            string[] persons = peos.Split(',');
+            DaContractBinding dal = new DaContractBinding();
 
+            var result = new CustomJsonResult();
+            result.Data = dal.update(id, persons);
+            return result;
         }
         #endregion
     }

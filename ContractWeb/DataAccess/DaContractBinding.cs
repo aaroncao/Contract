@@ -12,30 +12,45 @@ namespace ContractWeb.DataAccess
 {
     public class DaContractBinding
     {
-        #region 设置权限
+        #region 获取绑定人员
         /// <summary>
-        /// 设置权限
+        /// 获取绑定人员
         /// </summary>
-        /// <param name="en"></param>
+        /// <param name="userID"></param>
         /// <returns></returns>
-        public int update(List<PowerGroupPower> list)
+        public List<string> getList(string userID)
         {
-            SqlParameter[] param = null;
-            string strSql = "update PowerGroupPower set power=@power where groupID=@group and moduleID=@module";
+            List<string> result = new List<string>();
+            string strSql = "select personID from ContractBinding where userID=" + userID + " ";
+            DataTable dt = SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql).Tables[0];
 
-            for (int i = 0; i < list.Count; i++)
+            foreach (DataRow row in dt.Rows)
             {
-                param = new SqlParameter[]
-                {
-                    new SqlParameter("@power", list[i].power),
-                    new SqlParameter("@group", list[i].groupID),
-                    new SqlParameter("@module", list[i].moduleID)
-                };
-
-                SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
+                result.Add(row["personID"].ToString());
             }
 
-            return 1;
+            return result;
+        }
+        #endregion
+
+
+        #region 设置绑定人员
+        /// <summary>
+        /// 设置绑定人员
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="persons"></param>
+        /// <returns></returns>
+        public int update(string userID, string[] persons)
+        {
+            string strSql = "delete from ContractBinding where userID=" + userID + " ";
+
+            for (int i = 0; i < persons.Length; i++)
+            {
+                strSql += "insert into ContractBinding values (" + userID + ", " + persons[i] + ") ";
+            }
+
+            return SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql);
         }
         #endregion
     }

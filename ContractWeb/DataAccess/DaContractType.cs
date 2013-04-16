@@ -19,7 +19,7 @@ namespace ContractWeb.DataAccess
         public IList<ContractType> getList()
         {
             string strSql = "select id, name from ContractType";
-
+            
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
             IList<ContractType> list = DynamicBuilder<ContractType>.ConvertToList(dr);
             return list;
