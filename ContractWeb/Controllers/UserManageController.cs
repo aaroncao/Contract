@@ -485,8 +485,15 @@ namespace ContractWeb.Controllers
             string[] persons = null;
             DaContractBinding dal = new DaContractBinding();
 
-            if (peos.Length != 0)
-                persons = peos.Split(',');
+            if (peos.IndexOf(id) == -1)
+            {
+                if (peos.Length != 0)
+                    peos += "," + id;
+                else
+                    peos += id;
+            }
+
+            persons = peos.Split(',');
 
             var result = new CustomJsonResult();
             result.Data = dal.update(id, persons);

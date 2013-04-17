@@ -936,7 +936,7 @@ namespace ContractWeb.Controllers
         public JsonResult Customer_getList()
         {
             DaCustomerInfo dal = new DaCustomerInfo();
-            IList<CustomerInfo> customers = dal.getList();
+            IList<CustomerInfo> customers = dal.getList(BaseHelper.getCookie().id.ToString());
 
             var result = new CustomJsonResult();
             result.dateFormat = "yyyy-MM-dd";
@@ -966,7 +966,7 @@ namespace ContractWeb.Controllers
 
             DaCustomerInfo dal = new DaCustomerInfo();
             var result = new CustomJsonResult();
-            result.Data = dal.getList(en);
+            result.Data = dal.getList(en, BaseHelper.getCookie().id.ToString());
             return result;
         }
         #endregion

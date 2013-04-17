@@ -12,6 +12,7 @@ namespace ContractWeb.DataAccess
 {
     public class DaCustomerInfo
     {
+        #region 获取客户有效期
         /// <summary>
         /// 获取客户有效期
         /// </summary>
@@ -30,7 +31,9 @@ namespace ContractWeb.DataAccess
 
             return result;
         }
+        #endregion
 
+        #region 设置客户有效期
         /// <summary>
         /// 设置客户有效期
         /// </summary>
@@ -51,7 +54,9 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+        #endregion
 
+        #region 获取客户渠道类型列表
         /// <summary>
         /// 获取客户渠道类型列表
         /// </summary>
@@ -64,30 +69,39 @@ namespace ContractWeb.DataAccess
             IList<ChannelType> list = DynamicBuilder<ChannelType>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
+        #region 获取客户资料列表
         /// <summary>
         /// 获取客户资料列表
         /// </summary>
         /// <returns></returns>
-        public IList<CustomerInfo> getList()
+        public IList<CustomerInfo> getList(string userID)
         {
-            string strSql = "select id, name, "
-            + "channelTypeID, (select z.name from ChannelType z where z.id=channelTypeID) as channelType, "
-            + "person, tel, officeTel, email, fex, address, "
-            + "salesmanID, (select z.name from UserInfo z where z.id=salesmanID) as salesman, memo, mDate, "
-            + "stateID, (select z.state from CustomerState z where z.id=stateID) as state from CustomerInfo";
+            string strSql = "select a.id, a.name, "
+            + "a.channelTypeID, (select z.name from ChannelType z where z.id=a.channelTypeID) as channelType, "
+            + "a.person, a.tel, a.officeTel, a.email, a.fex, a.address, "
+            + "a.salesmanID, (select z.name from UserInfo z where z.id=a.salesmanID) as salesman, a.memo, a.mDate, "
+            + "a.stateID, (select z.state from CustomerState z where z.id=a.stateID) as state "
+            + "from CustomerInfo a, ContractBinding b where a.salesmanID=b.personID and b.userID=@id";
 
-            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", userID)
+            };
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             IList<CustomerInfo> list = DynamicBuilder<CustomerInfo>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
         /// <summary>
         /// 获取客户资料列表
         /// </summary>
         /// <param name="en"></param>
         /// <returns></returns>
-        public IList<CustomerInfo> getList(CustomerInfo en)
+        public IList<CustomerInfo> getList(CustomerInfo en, string userID)
         {
             string strSql = "select id, name, "
                 + "channelTypeID, (select z.name from ChannelType z where z.id=channelTypeID) as channelType, "
