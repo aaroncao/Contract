@@ -45,9 +45,12 @@ namespace ContractWeb.DataAccess
         {
             string strSql = "delete from ContractBinding where userID=" + userID + " ";
 
-            for (int i = 0; i < persons.Length; i++)
+            if (persons != null)
             {
-                strSql += "insert into ContractBinding values (" + userID + ", " + persons[i] + ") ";
+                for (int i = 0; i < persons.Length; i++)
+                {
+                    strSql += "insert into ContractBinding values (" + userID + ", " + persons[i] + ") ";
+                }
             }
 
             return SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql);

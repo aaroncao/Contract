@@ -120,7 +120,7 @@ namespace ContractWeb.Controllers
         public JsonResult Contract_getList()
         {
             DaContractInfo dal = new DaContractInfo();
-            IList<ContractInfo> contracts = dal.getList();
+            IList<ContractInfo> contracts = dal.getList(BaseHelper.getCookie().id.ToString());
 
             var result = new CustomJsonResult();
             result.dateFormat = "yyyy-MM-dd";

@@ -47,3 +47,4 @@ E:\Contract\ContractWeb\bin\zh-Hans\System.Web.Providers.resources.dll
 E:\Contract\ContractWeb\obj\Release\ContractWeb.dll
 E:\Contract\ContractWeb\obj\Release\ContractWeb.pdb
 E:\NetWorkSpace\ContractWeb\ContractWeb\obj\Release\ContractWeb.csprojResolveAssemblyReference.cache
+E:\Contract\ContractWeb\obj\Release\ContractWeb.csprojResolveAssemblyReference.cache

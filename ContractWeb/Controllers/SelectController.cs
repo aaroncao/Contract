@@ -189,7 +189,7 @@ namespace ContractWeb.Controllers
         public JsonResult ContractList_getList()
         {
             DaContractInfo dal = new DaContractInfo();
-            IList<ContractInfo> contracts = dal.getList();
+            IList<ContractInfo> contracts = dal.getList(BaseHelper.getCookie().id.ToString());
 
             double money = 0.0;
             foreach(ContractInfo en in contracts)
@@ -210,7 +210,7 @@ namespace ContractWeb.Controllers
         public JsonResult ContractList_searcht(string id, string channel, string type, string state, string person, string billState, string date)
         {
             DaContractInfo dal = new DaContractInfo();
-            IList<ContractInfo> contracts = dal.getList(id, channel, type, state, person, billState, date);
+            IList<ContractInfo> contracts = dal.getList(id, channel, type, state, person, billState, date, BaseHelper.getCookie().id.ToString());
 
             double money = 0.0;
             foreach (ContractInfo en in contracts)
@@ -237,7 +237,7 @@ namespace ContractWeb.Controllers
         public void ContractList_output(string id, string channel, string type, string state, string person, string billState, string date)
         {
             DaContractInfo dal = new DaContractInfo();
-            DataTable dt = dal.getDataTable(id, channel, type, state, person, billState, date);
+            DataTable dt = dal.getDataTable(id, channel, type, state, person, billState, date, BaseHelper.getCookie().id.ToString());
 
             if (dt.Rows.Count > 0)
             {

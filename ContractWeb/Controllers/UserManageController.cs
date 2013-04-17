@@ -463,7 +463,7 @@ namespace ContractWeb.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public JsonResult ContractBinding_getList(string id)
+        public JsonResult ContractBinding_getList(string id, string t)
         {
             DaContractBinding dal = new DaContractBinding();
 
@@ -482,8 +482,11 @@ namespace ContractWeb.Controllers
         /// <returns></returns>
         public JsonResult ContractBinding_edit(string id, string peos)
         {
-            string[] persons = peos.Split(',');
+            string[] persons = null;
             DaContractBinding dal = new DaContractBinding();
+
+            if (peos.Length != 0)
+                persons = peos.Split(',');
 
             var result = new CustomJsonResult();
             result.Data = dal.update(id, persons);

@@ -17,17 +17,23 @@ namespace ContractWeb.DataAccess
         /// 获取合同列表
         /// </summary>
         /// <returns></returns>
-        public IList<ContractInfo> getList()
+        public IList<ContractInfo> getList(string userID)
         {
-            string strSql = "select id, contractID, name, customerID, (select z.name from CustomerInfo z where z.id=customerID) as customerName, "
-                + "version, price, roomNum, makeCost, backMoney, money, "
-                + "type, (select z.name from ContractType z where z.id=type) as typeName, "
-                + "channelID, (select z.name from Channel z where z.id=channelID) as channelName, "
-                + "begintime, endtime, ZQ, personID, (select z.name from UserInfo z where z.id=personID) as personName, "
-                + "memo, mDate, billState, (select z.name from BillState z where z.id=billState) as billStateName, "
-                + "state, (select z.name from ContractState z where z.id=state) as stateName, editTime from ContractInfo";
+            string strSql = "select a.id, a.contractID, a.name, a.customerID, (select z.name from CustomerInfo z where z.id=a.customerID) as customerName, "
+                + "a.version, a.price, a.roomNum, a.makeCost, a.backMoney, a.money, "
+                + "a.type, (select z.name from ContractType z where z.id=a.type) as typeName, "
+                + "a.channelID, (select z.name from Channel z where z.id=a.channelID) as channelName, "
+                + "a.begintime, a.endtime, a.ZQ, a.personID, (select z.name from UserInfo z where z.id=a.personID) as personName, "
+                + "a.memo, a.mDate, a.billState, (select z.name from BillState z where z.id=a.billState) as billStateName, "
+                + "a.state, (select z.name from ContractState z where z.id=a.state) as stateName, a.editTime "
+                + "from ContractInfo a, ContractBinding b where a.personID=b.personID and b.userID=@id";
 
-            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", userID)
+            };
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             IList<ContractInfo> list = DynamicBuilder<ContractInfo>.ConvertToList(dr);
             return list;
         }
@@ -38,17 +44,23 @@ namespace ContractWeb.DataAccess
         /// 获取合同列表(输出报表)
         /// </summary>
         /// <returns></returns>
-        public DataTable getDataTable()
+        public DataTable getDataTable(string userID)
         {
-            string strSql = "select id, contractID, name, customerID, (select z.name from CustomerInfo z where z.id=customerID) as customerName, "
-                + "version, price, roomNum, makeCost, backMoney, money, "
-                + "type, (select z.name from ContractType z where z.id=type) as typeName, "
-                + "channelID, (select z.name from Channel z where z.id=channelID) as channelName, "
-                + "begintime, endtime, ZQ, personID, (select z.name from UserInfo z where z.id=personID) as personName, "
-                + "memo, mDate, billState, (select z.name from BillState z where z.id=billState) as billStateName, "
-                + "state, (select z.name from ContractState z where z.id=state) as stateName, editTime from ContractInfo";
+            string strSql = "select a.id, a.contractID, a.name, a.customerID, (select z.name from CustomerInfo z where z.id=a.customerID) as customerName, "
+                + "a.version, a.price, a.roomNum, a.makeCost, a.backMoney, a.money, "
+                + "a.type, (select z.name from ContractType z where z.id=a.type) as typeName, "
+                + "a.channelID, (select z.name from Channel z where z.id=a.channelID) as channelName, "
+                + "a.begintime, a.endtime, a.ZQ, a.personID, (select z.name from UserInfo z where z.id=a.personID) as personName, "
+                + "a.memo, a.mDate, a.billState, (select z.name from BillState z where z.id=a.billState) as billStateName, "
+                + "a.state, (select z.name from ContractState z where z.id=a.state) as stateName, a.editTime "
+                + "from ContractInfo a, ContractBinding b where a.personID=b.personID and b.userID=@id";
 
-            return SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql).Tables[0];
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", userID)
+            };
+
+            return SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql, param).Tables[0];
         }
         #endregion
 
@@ -57,74 +69,72 @@ namespace ContractWeb.DataAccess
         /// 搜索合同列表
         /// </summary>
         /// <returns></returns>
-        public IList<ContractInfo> getList(string id, string channel, string type, string state, string person, string billState, string date)
+        public IList<ContractInfo> getList(string id, string channel, string type, string state, string person, string billState, string date, string userID)
         {
-            string strSql = "select id, contractID, name, customerID, (select z.name from CustomerInfo z where z.id=customerID) as customerName, "
-                + "version, price, roomNum, makeCost, backMoney, money, "
-                + "type, (select z.name from ContractType z where z.id=type) as typeName, "
-                + "channelID, (select z.name from Channel z where z.id=channelID) as channelName, "
-                + "begintime, endtime, ZQ, personID, (select z.name from UserInfo z where z.id=personID) as personName, "
-                + "memo, mDate, billState, (select z.name from BillState z where z.id=billState) as billStateName, "
-                + "state, (select z.name from ContractState z where z.id=state) as stateName, editTime from ContractInfo ";
+            string strSql = "select a.id, a.contractID, a.name, a.customerID, (select z.name from CustomerInfo z where z.id=a.customerID) as customerName, "
+                + "a.version, a.price, a.roomNum, a.makeCost, a.backMoney, a.money, "
+                + "a.type, (select z.name from ContractType z where z.id=a.type) as typeName, "
+                + "a.channelID, (select z.name from Channel z where z.id=a.channelID) as channelName, "
+                + "a.begintime, a.endtime, a.ZQ, a.personID, (select z.name from UserInfo z where z.id=a.personID) as personName, "
+                + "a.memo, a.mDate, a.billState, (select z.name from BillState z where z.id=a.billState) as billStateName, "
+                + "a.state, (select z.name from ContractState z where z.id=a.state) as stateName, a.editTime "
+                + "from ContractInfo a, ContractBinding b where a.personID=b.personID and b.userID=@id";
 
             string where = "";
 
             if (id.Trim() != "")
-                where += "contractID='" + id + "'";
+                where += "a.contractID='" + id + "'";
 
             if (channel.Trim() != "")
             {
                 if (where != "")
                     where += " and ";
-                where += "channelID=" + channel;
+                where += "a.channelID=" + channel;
             }
 
             if (type.Trim() != "")
             {
                 if (where != "")
                     where += " and ";
-                where += "type=" + type;
+                where += "a.type=" + type;
             }
 
             if (state.Trim() != "")
             {
                 if (where != "")
                     where += " and ";
-                where += "state=" + state;
+                where += "a.state=" + state;
             }
 
             if (person.Trim() != "")
             {
                 if (where != "")
                     where += " and ";
-                where += "personID=" + person;
+                where += "a.personID=" + person;
             }
 
             if (billState.Trim() != "")
             {
                 if (where != "")
                     where += " and ";
-                where += "billState=" + billState;
-            }
-
-            if (billState.Trim() != "")
-            {
-                if (where != "")
-                    where += " and ";
-                where += "billState=" + billState;
+                where += "a.billState=" + billState;
             }
 
             if (date.Trim() != "")
             {
                 if (where != "")
                     where += " and ";
-                where += "mDate='" + date + "'";
+                where += "a.mDate='" + date + "'";
             }
 
-            if (where != "")
-                strSql += "where " + where;
+            strSql += " and " + where;
 
-            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", userID)
+            };
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             IList<ContractInfo> list = DynamicBuilder<ContractInfo>.ConvertToList(dr);
             return list;
         }
@@ -135,74 +145,73 @@ namespace ContractWeb.DataAccess
         /// 搜索合同列表（输出报表）
         /// </summary>
         /// <returns></returns>
-        public DataTable getDataTable(string id, string channel, string type, string state, string person, string billState, string date)
+        public DataTable getDataTable(string id, string channel, string type, string state, string person, string billState, string date, string userID)
         {
-            string strSql = "select contractID as [合同编号], name as [合同名称], (select z.name from CustomerInfo z where z.id=customerID) as [客户名称], "
-                + "version as [版本], price as [单厅价格], roomNum as [每场厅数], makeCost as [制作费], backMoney as [优惠], money as [签署金额], "
-                + "(select z.name from ContractType z where z.id=type) as [合同类型], "
-                + "(select z.name from Channel z where z.id=channelID) as [渠道归类], "
-                + "begintime as [合同周期(起)], endtime as [合同周期(止)], ZQ as [周期], (select z.name from UserInfo z where z.id=personID) as [经办人], "
-                + "memo as [备注], (select z.name from BillState z where z.id=billState) as [发票状态], "
-                + "(select z.name from ContractState z where z.id=state) as [合同状态], editTime as [状态修改时间] from ContractInfo ";
+            string strSql = "select a.contractID as [合同编号], a.name as [合同名称], (select z.name from CustomerInfo z where z.id=a.customerID) as [客户名称], "
+                + "a.version as [版本], a.price as [单厅价格], a.roomNum as [每场厅数], a.makeCost as [制作费], a.backMoney as [优惠], a.money as [签署金额], "
+                + "(select z.name from ContractType z where z.id=a.type) as [合同类型], "
+                + "(select z.name from Channel z where z.id=a.channelID) as [渠道归类], "
+                + "a.begintime as [合同周期(起)], a.endtime as [合同周期(止)], a.ZQ as [周期], (select z.name from UserInfo z where z.id=a.personID) as [经办人], "
+                + "a.memo as [备注], (select z.name from BillState z where z.id=a.billState) as [发票状态], "
+                + "(select z.name from ContractState z where z.id=a.state) as [合同状态], a.editTime as [状态修改时间] "
+                + "from ContractInfo a, ContractBinding b where a.personID=b.personID and b.userID=@id";
 
             string where = "";
 
             if (id.Trim() != "")
-                where += "contractID='" + id + "'";
+                where += "a.contractID='" + id + "'";
 
             if (channel.Trim() != "")
             {
                 if (where != "")
                     where += " and ";
-                where += "channelID=" + channel;
+                where += "a.channelID=" + channel;
             }
 
             if (type.Trim() != "")
             {
                 if (where != "")
                     where += " and ";
-                where += "type=" + type;
+                where += "a.type=" + type;
             }
 
             if (state.Trim() != "")
             {
                 if (where != "")
                     where += " and ";
-                where += "state=" + state;
+                where += "a.state=" + state;
             }
 
             if (person.Trim() != "")
             {
                 if (where != "")
                     where += " and ";
-                where += "personID=" + person;
+                where += "a.personID=" + person;
             }
 
             if (billState.Trim() != "")
             {
                 if (where != "")
                     where += " and ";
-                where += "billState=" + billState;
-            }
-
-            if (billState.Trim() != "")
-            {
-                if (where != "")
-                    where += " and ";
-                where += "billState=" + billState;
+                where += "a.billState=" + billState;
             }
 
             if (date.Trim() != "")
             {
                 if (where != "")
                     where += " and ";
-                where += "mDate='" + date + "'";
+                where += "a.mDate='" + date + "'";
             }
 
             if (where != "")
-                strSql += "where " + where;
+                strSql += " and " + where;
 
-            return SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql).Tables[0];
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", userID)
+            };
+
+            return SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql, param).Tables[0];
         }
         #endregion
 
