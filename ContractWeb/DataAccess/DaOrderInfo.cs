@@ -17,7 +17,7 @@ namespace ContractWeb.DataAccess
         /// 获取订单列表
         /// </summary>
         /// <returns></returns>
-        public IList<OrderInfo> getList()
+        public IList<OrderInfo> getList(string userID)
         {
             string strSql = "select a.id, a.contractID, (select z.name from ContractInfo z where z.contractID=a.contractID) as contractName, a.orderID, "
                 + "(select z.target from ADCostTarget z where z.id=a.costTargetID) as costTargetName, a.costTargetID, "
@@ -25,7 +25,8 @@ namespace ContractWeb.DataAccess
                 + "(select x.name from CustomerInfo x, ContractInfo y where x.id=y.customerID and y.contractID=a.contractID) as customerName, "
                 + "a.roomNum, a.begintime, a.endtime, a.memo, "
                 + "(select z.target from MakeCostTarget z where z.id=a.makeTargetID) as makeTargetName, a.makeTargetID, "
-                + "playReport, reportTime, mdate from OrderInfo a";
+                + "a.playReport, a.reportTime, a.mdate "
+                + "from OrderInfo a, ContractInfo b, ContractBinding c where a.contractID=b.contractID and b.personID=c.personID and c.userID=@id";
 
             IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
             IList<OrderInfo> list = DynamicBuilder<OrderInfo>.ConvertToList(dr);

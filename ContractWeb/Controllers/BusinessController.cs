@@ -215,7 +215,7 @@ namespace ContractWeb.Controllers
         public JsonResult Order_getList()
         {
             DaOrderInfo dal = new DaOrderInfo();
-            IList<OrderInfo> orders = dal.getList();
+            IList<OrderInfo> orders = dal.getList(BaseHelper.getCookie().id.ToString());
 
             var result = new CustomJsonResult();
             result.Data = new { total = orders.Count, rows = orders };

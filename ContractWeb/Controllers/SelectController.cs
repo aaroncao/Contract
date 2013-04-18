@@ -445,7 +445,7 @@ namespace ContractWeb.Controllers
         public JsonResult OrderList_getList()
         {
             DaOrderInfo dal = new DaOrderInfo();
-            IList<OrderInfo> contracts = dal.getList();
+            IList<OrderInfo> contracts = dal.getList(BaseHelper.getCookie().id.ToString());
 
             var result = new CustomJsonResult();
             result.dateFormat = "yyyy-MM-dd";
@@ -462,7 +462,7 @@ namespace ContractWeb.Controllers
         public JsonResult OrderList_search(string order, string contract, string begin, string end, string person, string adTarget, string makeTarget)
         {
             DaOrderInfo dal = new DaOrderInfo();
-            IList<OrderInfo> contracts = dal.getList(order, contract, begin, end, person, adTarget, makeTarget);
+            IList<OrderInfo> contracts = dal.getList(order, contract, begin, end, person, adTarget, makeTarget, BaseHelper.getCookie().id.ToString());
 
             var result = new CustomJsonResult();
             result.dateFormat = "yyyy-MM-dd";

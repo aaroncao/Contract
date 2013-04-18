@@ -96,6 +96,7 @@ namespace ContractWeb.DataAccess
         }
         #endregion
 
+        #region 获取客户资料列表
         /// <summary>
         /// 获取客户资料列表
         /// </summary>
@@ -103,37 +104,34 @@ namespace ContractWeb.DataAccess
         /// <returns></returns>
         public IList<CustomerInfo> getList(CustomerInfo en, string userID)
         {
-            string strSql = "select id, name, "
-                + "channelTypeID, (select z.name from ChannelType z where z.id=channelTypeID) as channelType, "
-                + "person, tel, officeTel, email, fex, address, "
-                + "salesmanID, (select z.name from UserInfo z where z.id=salesmanID) as salesman, memo, mDate, "
-                + "stateID, (select z.state from CustomerState z where z.id=stateID) as state from CustomerInfo ";
-
-            if (en.name.Trim() != "" || en.channelTypeID != 0 || en.salesmanID != 0)
-                strSql += "where ";
+            string strSql = "select a.id, a.name, "
+                + "a.channelTypeID, (select z.name from ChannelType z where z.id=a.channelTypeID) as channelType, "
+                + "a.person, a.tel, a.officeTel, a.email, a.fex, a.address, "
+                + "a.salesmanID, (select z.name from UserInfo z where z.id=a.salesmanID) as salesman, a.memo, a.mDate, "
+                + "a.stateID, (select z.state from CustomerState z where z.id=a.stateID) as state "
+                + "from CustomerInfo a, ContractBinding b where a.salesmanID=b.personID and b.userID=@id ";
 
             if (en.name.Trim() != "")
-                strSql += "name like '%" + en.name + "%' ";
+                strSql += " and a.name like '%" + en.name + "%' ";
 
             if (en.channelTypeID != 0)
-            {
-                if (en.name.Trim() != "")
-                    strSql += "and ";
-                strSql += "channelTypeID=" + en.channelTypeID + " "; 
-            }
+                strSql += " and a.channelTypeID=" + en.channelTypeID + " "; 
 
             if (en.salesmanID != 0)
-            {
-                if (en.name.Trim() != "" || en.channelTypeID != 0)
-                    strSql += "and ";
-                strSql += "salesmanID=" + en.salesmanID + " ";
-            }
+                strSql += " and a.salesmanID=" + en.salesmanID + " ";
 
-            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", userID)
+            };
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             IList<CustomerInfo> list = DynamicBuilder<CustomerInfo>.ConvertToList(dr);
             return list;
         }
+        #endregion
 
+        #region 新增客户
         /// <summary>
         /// 新增客户
         /// </summary>
@@ -186,7 +184,9 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+        #endregion
 
+        #region 修改客户
         /// <summary>
         /// 修改客户
         /// </summary>
@@ -237,7 +237,9 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
+        #endregion
 
+        #region 删除客户
         /// <summary>
         /// 删除客户
         /// </summary>
@@ -255,6 +257,6 @@ namespace ContractWeb.DataAccess
             int result = SqlHelper.ExecuteNonQuery(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             return result;
         }
-
+        #endregion
     }
 }
