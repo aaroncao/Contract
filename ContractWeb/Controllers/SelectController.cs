@@ -179,6 +179,18 @@ namespace ContractWeb.Controllers
         }
         #endregion
 
+        #region 到账查询
+        /// <summary>
+        /// 到账查询
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult PayList()
+        {
+            ViewBag.menu = 28;
+            return View();
+        }
+        #endregion
+
         /* ============ 操作 ============ */
 
         #region 获取合同列表
@@ -370,7 +382,7 @@ namespace ContractWeb.Controllers
         public JsonResult ContractList_getPayList(string id)
         {
             DaPayList dal = new DaPayList();
-            IList<PayList> list = dal.getList(id);
+            IList<PayList> list = dal.getListByContract(id);
 
             var result = new CustomJsonResult();
             result.Data = new { total = list.Count, rows = list };
@@ -731,6 +743,97 @@ namespace ContractWeb.Controllers
             if (dt.Rows.Count > 0)
             {
                 string filename = "myAdvList.xls";
+                System.IO.StringWriter tw = new System.IO.StringWriter();
+                System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+                DataGrid dgGrid = new DataGrid();
+                dgGrid.DataSource = dt;
+                dgGrid.DataBind();
+
+                //Get the HTML for the control.
+                dgGrid.RenderControl(hw);
+                //Write the HTML back to the browser.
+                //Response.ContentType = application/vnd.ms-excel;
+                Response.ContentType = "application/vnd.ms-excel";
+                Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+                Response.Write(tw.ToString());
+            }
+            else
+            {
+                Response.Write("无数据可导出！");
+            }
+
+            Response.End();
+        }
+        #endregion
+
+
+
+        #region 搜索到账列表
+        /// <summary>
+        /// 搜索到账列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult PayList_search(string contract, string channel, string begin, string end, string person)
+        {
+            DaPayList dal = new DaPayList();
+            IList<PayList> pays = dal.getList(contract, channel, begin, end, person, BaseHelper.getCookie().id.ToString());
+            
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+            result.Data = new { total = pays.Count, rows = pays };
+            return result;
+        }
+        #endregion
+
+        #region 搜索各到账类型列表
+        /// <summary>
+        /// 搜索各到账类型列表
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult PayList_searchMoney(string contract, string channel, string begin, string end, string person, string type)
+        {
+            DaPayList dal = new DaPayList();
+            IList<PayList> pays = dal.getList(contract, channel, begin, end, person, Convert.ToInt32(type), BaseHelper.getCookie().id.ToString());
+
+            var result = new CustomJsonResult();
+            result.dateFormat = "yyyy-MM-dd";
+            result.Data = new { total = pays.Count, rows = pays };
+            return result;
+        }
+        #endregion
+
+        #region 获取到账总金额
+        /// <summary>
+        /// 获取到账总金额
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult PayList_getMoney()
+        {
+            DaPayList dal = new DaPayList();
+            var result = new CustomJsonResult();
+            result.Data = dal.getMoney();
+            return result;
+        }
+        #endregion
+
+        #region 导出到账情况
+        /// <summary>
+        /// 导出到账情况
+        /// </summary>
+        /// <param name="contract"></param>
+        /// <param name="channel"></param>
+        /// <param name="begin"></param>
+        /// <param name="end"></param>
+        /// <param name="person"></param>
+        /// <param name="type"></param>
+        public void PayList_output(string contract, string channel, string begin, string end, string person, string type)
+        {
+            DaPayList dal = new DaPayList();
+            DataTable dt = dal.getDataTable(contract, channel, begin, end, person, Convert.ToInt32(type), BaseHelper.getCookie().id.ToString());
+
+            if (dt.Rows.Count > 0)
+            {
+                string filename = "myPayList.xls";
                 System.IO.StringWriter tw = new System.IO.StringWriter();
                 System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
                 DataGrid dgGrid = new DataGrid();

@@ -1,0 +1,151 @@
+﻿<style type="text/css">
+    .fieldCSS {
+        width: 500px;
+    }
+
+    .fitemTitle {
+        display: inline-block;
+        width: 40px;
+    }
+</style>
+
+<div>
+    <div class="fitem">
+        <input type="button" value="权限组" onclick="goPower()"/>
+        <label class="fitemTitle" style="width:80px;margin-left:10px;">权限组名称:</label>
+        <select id="drpGroup" class="easyui-combobox"></select>
+        <input type="button" id="btnAdd" value="保存" style="margin-left:10px;" onclick="save()" />
+    </div>
+
+    <table class="fitem">
+        <tr>
+            <td style="width:335px;">
+                <table id="ModuleList" style="width:300px; height:200px; float:left;" data-options="singleSelect:false,selectOnCheck:true,checkOnSelect:true,idField:'id',url:'/BasicSetting/getModuleList'">
+                    <thead>
+                        <tr>
+                            <th data-options="field:'ck',checkbox:true"></th>
+                            <th data-options="field:'name',width:110">模块名称</th>
+                        </tr>
+                    </thead>
+                </table>
+            </td>
+            <td style="width:80px;vertical-align:middle;">
+                <input type="button" id="btnAdd" value="添加" onclick="addPower()"/>
+                <input type="button" id="btnRemove" value="移除" onclick="removePower()" />
+            </td>       
+            <td>
+                <table id="ModuledList" style="width:300px; height:200px; float:left;" data-options="singleSelect:false,selectOnCheck:true,checkOnSelect:true,idField:'id',onClickRow:onClickRow ">
+                    <thead>
+                        <tr>
+                            <th data-options="field:'ck',checkbox:true"></th>
+                            <th data-options="field:'moduleName',width:110">模块名称</th>
+                            <th data-options="field:'power',width:100,  
+                                formatter:function(value, row){  
+                                debugger;
+                                    return row.productname;  
+                                },  
+                                editor:{  
+                                    type:'combobox',  
+                                    options:{  
+                                        valueField:'id',  
+                                        textField:'name',  
+                                        url:'/BasicSetting/getDrpGroupTypeList',  
+                                        required:true  
+                                    }  
+                                }">权限</th>
+                        </tr>
+                    </thead>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    $(function () {
+        $("#ModuleList").datagrid();
+        $("#ModuledList").datagrid();
+
+        $('#drpGroup').combobox({
+            url: '/BasicSetting/getDrpGroupList',
+            valueField: 'id',
+            textField: 'name',
+            onChange:showPower
+        });
+    });
+
+    function goPower() {
+        window.location.href = "/UserManage/PowerGroup";
+    }
+
+    function showPower() {
+        var id = $("#drpGroup").combobox("getValue");
+        $("#ModuledList").datagrid({
+            url: "/BasicSetting/getShowPower?id=" + id
+        });
+    }
+
+    function addPower() {
+        var id = $("#drpGroup").combobox("getValue");
+        var modules = "";
+        var rows = $('#ModuleList').datagrid('getSelections');
+        for (var i = 0; i < rows.length; i++) {
+            modules += rows[i].id + ",";
+        }
+
+        if (modules != "")
+            modules = modules.substring(0, modules.length - 1);
+
+        $.get("/BasicSetting/addPower?id=" + id + "&modules=" + modules, function (data) {
+            showPower();
+        });
+    }
+
+    function removePower() {
+        var id = $("#drpGroup").combobox("getValue");
+        var modules = "";
+        var rows = $('#ModuledList').datagrid('getSelections');
+        for (var i = 0; i < rows.length; i++) {
+            modules += rows[i].id + ",";
+        }
+
+        if (modules != "")
+            modules = modules.substring(0, modules.length - 1);
+
+        $.get("/BasicSetting/removePower?id=" + id + "&modules=" + modules, function (data) {
+            showPower();
+        });
+    }
+
+    function onClickRow(index){  
+        if (editIndex != index){  
+            if (endEditing()){  
+                $('#dg').datagrid('selectRow', index).datagrid('beginEdit', index);  
+                editIndex = index;  
+            } else {  
+                $('#dg').datagrid('selectRow', editIndex);  
+            }  
+        }  
+    } 
+
+
+    function save() {
+        var id = $("#drpGroup").combobox("getValue");
+        var modules = "", powers = "";
+        var rows = $('#ModuledList').datagrid('getSelections');
+        for (var i = 0; i < rows.length; i++) {
+            modules += rows[i].id + ",";
+            powers += rows[i].productid + ",";
+        }
+
+        if (modules != "")
+            modules = modules.substring(0, modules.length - 1);
+
+        if (powers != "")
+            powers = powers.substring(0, powers.length - 1);
+
+        $.get("/BasicSetting/removePower?id=" + id + "&modules=" + modules + "&powers=" + powers, function (data) {
+            showPower();
+        });
+    }
+</script>

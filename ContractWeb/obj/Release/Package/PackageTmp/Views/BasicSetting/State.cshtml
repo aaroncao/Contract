@@ -1,0 +1,151 @@
+﻿<style type="text/css">
+
+    .fieldCSS {
+        width: 500px;
+    }
+
+    .fitemTitle {
+        display: inline-block;
+        width: 40px;
+    }
+</style>
+
+<div>
+    <fieldset class="fieldCSS">
+        <legend>客户状态</legend>
+        <div>
+            <div class="fitem">
+                <label class="fitemTitle">名称:<font color="red">*</font></label>
+                <input id="txtState" class="easyui-validatebox" required="true" />
+            </div>
+            <div class="fitem">
+                <label class="fitemTitle">备注:</label>
+                <input id="txtMemo" class="easyui-validatebox" />
+            </div>
+        </div>
+
+        <p>
+            <input type="button" id="btnAdd" onclick="add()" value="新增" style="margin-right: 20px;" />
+            <input type="button" id="btnEdit" onclick="update()" value="修改" style="margin-right: 20px;" />
+            <input type="button" id="btnCancel" onclick="cancel()" value="清空" />
+        </p>
+    </fieldset>
+    
+    <fieldset class="fieldCSS">
+        <legend>列表</legend>
+
+        <table id="StateList" style="width: 490px; height: 230px;" data-options="singleSelect:true,idField:'id',url:'/BasicSetting/getStateList'">
+            <thead>
+                <tr>
+                    <th data-options="field:'state',width:100">名称</th>
+                    <th data-options="field:'memo',width:200">备注</th>
+                </tr>
+            </thead>
+        </table>
+    </fieldset>
+</div>
+
+
+<script>
+    var selected = -1;
+
+    $(function () {
+        $("#StateList").datagrid({
+            onClickRow: function (rowIndex, rowData) {
+                selected = rowData.id;
+                $("#txtState").val(rowData.name);
+                $("#txtMemo").val(rowData.memo);
+            },
+            onRowContextMenu: function (e, rowIndex, rowData) {
+                selected = rowData.id;
+                e.preventDefault();
+
+                if (!$('#rmenu').length) {
+                    createRowMenu();//调用添加右击菜单的内容
+                }
+                $('#rmenu').menu('show', {
+                    left: e.pageX,
+                    top: e.pageY
+                });
+
+            }
+        });
+    });
+
+    function createRowMenu() {
+        var tmenu = $('<div id="rmenu" style="width:100px;"></div>').appendTo('body');
+        $('<div iconCls="icon-remove"/>').html("删除").appendTo(tmenu);
+
+        tmenu.menu({
+            onClick: function (item) {
+                if (item.iconCls == "icon-remove") {
+                    var answer = confirm("确认要删除吗")
+                    if (answer) {
+                        deleteRow();
+                    }
+                }
+            }
+        });
+    }
+
+    function cancel() {
+        $("#txtState").val("");
+        $("#txtMemo").val("");
+    }
+
+    function add() {
+        var state = $("#txtState").val();
+        var memo = $("#txtMemo").val();
+
+        if (state.trim() == "") {
+            alert("名称不能为空");
+            return;
+        }
+
+        $.post("/BasicSetting/addState", "state=" + state + "&memo=" + memo,
+            function (data) {
+                if (data == 0)
+                    alert("新增失败");
+                else
+                    $("#StateList").datagrid("reload");
+            }
+        );
+    }
+
+    function update() {
+        var state = $("#txtState").val();
+        var memo = $("#txtMemo").val();
+
+        if (state.trim() == "") {
+            alert("名称不能为空");
+            return;
+        }
+
+        if (selected == -1) {
+            alert("请选择一个客户状态编辑");
+            return;
+        }
+
+        $.post("/BasicSetting/updateState", "id=" + selected + "&state=" + state + "&memo=" + memo,
+            function (data) {
+                if (data == 0)
+                    alert("修改失败");
+                else
+                    $("#StateList").datagrid("reload");
+            }
+        );
+    }
+
+    function deleteRow() {
+        $.get("/BasicSetting/deleteState", "id=" + selected,
+            function (data) {
+                if (data == 0)
+                    alert("删除失败");
+                else
+                    $("#StateList").datagrid("reload");
+            }
+        );
+    }
+    
+</script>
+

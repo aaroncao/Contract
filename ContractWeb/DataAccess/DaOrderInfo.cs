@@ -19,16 +19,20 @@ namespace ContractWeb.DataAccess
         /// <returns></returns>
         public IList<OrderInfo> getList(string userID)
         {
-            string strSql = "select a.id, a.contractID, (select z.name from ContractInfo z where z.contractID=a.contractID) as contractName, a.orderID, "
+            string strSql = "select a.id, a.contractID, b.name as contractName, a.orderID, "
                 + "(select z.target from ADCostTarget z where z.id=a.costTargetID) as costTargetName, a.costTargetID, "
-                + "(select z.customerID from ContractInfo z where z.contractID=a.contractID) as customerID, "
-                + "(select x.name from CustomerInfo x, ContractInfo y where x.id=y.customerID and y.contractID=a.contractID) as customerName, "
+                + "b.customerID, (select z.name from CustomerInfo z where z.id=b.customerID) as customerName, "
                 + "a.roomNum, a.begintime, a.endtime, a.memo, "
                 + "(select z.target from MakeCostTarget z where z.id=a.makeTargetID) as makeTargetName, a.makeTargetID, "
                 + "a.playReport, a.reportTime, a.mdate "
                 + "from OrderInfo a, ContractInfo b, ContractBinding c where a.contractID=b.contractID and b.personID=c.personID and c.userID=@id";
 
-            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", userID)
+            };
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             IList<OrderInfo> list = DynamicBuilder<OrderInfo>.ConvertToList(dr);
             return list;
         }
@@ -39,59 +43,45 @@ namespace ContractWeb.DataAccess
         /// 搜索订单列表
         /// </summary>
         /// <returns></returns>
-        public IList<OrderInfo> getList(string orderID, string contractID, string begin, string end, string person, string adTarget, string makeTarget)
+        public IList<OrderInfo> getList(string orderID, string contractID, string begin, string end, string person, string adTarget, string makeTarget, string userID)
         {
             string strSql = "select a.id, a.contractID, b.name as contractName, a.orderID, "
                 + "(select z.target from ADCostTarget z where z.id=a.costTargetID) as costTargetName, a.costTargetID, "
                 + "b.customerID, (select z.name from CustomerInfo z where z.id=b.customerID) as customerName, "
                 + "a.roomNum, a.begintime, a.endtime, a.memo, "
                 + "(select z.target from MakeCostTarget z where z.id=a.makeTargetID) as makeTargetName, a.makeTargetID, "
-                + "a.playReport, a.reportTime, a.mdate from OrderInfo a, ContractInfo b where a.contractID=b.contractID ";
+                + "a.playReport, a.reportTime, a.mdate "
+                + "from OrderInfo a, ContractInfo b, ContractBindingn c where a.contractID=b.contractID and b.personID=c.personID and c.userID=@id ";
 
             string where = "";
 
             if (orderID.Trim() != "")
-                where += "a.orderID like '%" + orderID + "%'";
+                where += "and a.orderID like '%" + orderID + "%' ";
 
             if (contractID.Trim() != "")
-            {
-                if (where != "")
-                    where += " and ";
-                where += "a.contractID like '%" + contractID + "%'";
-            }
+                where += "and a.contractID like '%" + contractID + "%' ";
 
             if (begin.Trim() != "" && end.Trim() != "")
-            {
-                if (where != "")
-                    where += " and ";
-                where += "(a.endtime>='" + begin + "' and a.begintime<='" + end + "')";
-            }
+                where += "and (a.endtime>='" + begin + "' and a.begintime<='" + end + "') ";
 
             if (person.Trim() != "")
-            {
-                if (where != "")
-                    where += " and ";
-                where += "b.personID='" + person + "'";
-            }
+                where += "and b.personID='" + person + "' ";
 
             if (adTarget.Trim() != "")
-            {
-                if (where != "")
-                    where += " and ";
-                where += "a.costTargetID='" + adTarget + "'";
-            }
+                where += "and a.costTargetID='" + adTarget + "' ";
 
             if (makeTarget.Trim() != "")
-            {
-                if (where != "")
-                    where += " and ";
-                where += "a.makeTargetID='" + makeTarget + "'";
-            }
+                where += "and a.makeTargetID='" + makeTarget + "' ";
 
             if (where != "")
-                strSql += "and " + where;
+                strSql += where;
 
-            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql);
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", userID)
+            };
+
+            IDataReader dr = SqlHelper.ExecuteReader(BaseHelper.DBConnStr, CommandType.Text, strSql, param);
             IList<OrderInfo> list = DynamicBuilder<OrderInfo>.ConvertToList(dr);
             return list;
         }

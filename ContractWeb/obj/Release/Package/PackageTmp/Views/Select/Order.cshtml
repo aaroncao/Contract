@@ -1,4 +1,5 @@
 ﻿<style type="text/css">
+
     .fitemTitle {
         display: inline-block;
         width: 60px;
@@ -21,12 +22,12 @@
     <label class="fitemTitle inline">下单时间:</label>
     从 <input id="txtBeginDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" style="width:100px;" /> 至 
     <input id="txtEndDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" style="width:100px;" />
+    <label class="fitemTitle" style="margin-left:10px;">业务员:</label>
+    <select id="drpPerson" class="easyui-combobox"></select>
 </div>
 
 <div class="fitem">
-    <label class="fitemTitle">业务员:</label>
-    <select id="drpPerson" class="easyui-combobox"></select>
-    <label class="fitemTitle" style="width:100px;margin-left:10px;">广告费结算对象:</label>
+    <label class="fitemTitle" style="width:100px;">广告费结算对象:</label>
     <select id="drpADTarget" class="easyui-combobox"></select>
     <label class="fitemTitle inline" style="width:100px;margin-left:10px;">制作费结算对象:</label>
     <select id="drpMakeTarget" class="easyui-combobox"></select>
@@ -38,12 +39,12 @@
     <input type="button" value="导出" style="margin-left:10px;" onclick="output()" />
 </p>
 
-<table id="OrderList" style="width: 1050px; height: 400px;" data-options="singleSelect:true,idField:'id',url:'/Select/OrderList_getList'">
+<table id="OrderList" style="width: 1050px; height: 400px;" data-options="singleSelect:true,idField:'id',url:'/Select/getOrderList'">
     <thead>
         <tr>
             <th data-options="field:'id',width:50">ID</th>
-            <th data-options="field:'orderID',width:100">下单编号</th>
-            <th data-options="field:'contractID',width:100">合同编号</th>
+            <th data-options="field:'contractID',width:100">下单编号</th>
+            <th data-options="field:'orderID',width:100">合同编号</th>
             <th data-options="field:'contractName',width:180">合同名称</th>
             <th data-options="field:'costTargetName',width:120">广告费结算对象</th>
             <th data-options="field:'makeTargetName',width:120">制作费结算对象</th>
@@ -76,19 +77,19 @@
         });
 
         $('#drpPerson').combobox({
-            url: '/Home/drpPersonList',
+            url: '/Business/getDrpPersonList',
             valueField: 'id',
             textField: 'name'
         });
 
         $('#drpADTarget').combobox({
-            url: '/Home/drpADTargetList',
+            url: '/Business/getDrpADTargetList',
             valueField: 'id',
             textField: 'target'
         });
 
         $('#drpMakeTarget').combobox({
-            url: '/Home/drpMakeTargetList',
+            url: '/Business/getDrpMakeTargetList',
             valueField: 'id',
             textField: 'target'
         });
@@ -104,7 +105,7 @@
         var makeTarget = $("#drpMakeTarget").combobox("getValue");
 
         $('#OrderList').datagrid({
-            url: "/Select/OrderList_search?order=" + orderID + "&contract=" + contractID + "&begin=" + begin + "&end=" + end + "&person=" + person + "&adTarget=" + adTarget + "&makeTarget=" + makeTarget
+            url: "/Select/searchOrder?order=" + orderID + "&contract=" + contractID + "&begin=" + begin + "&end=" + end + "&person=" + person + "&adTarget=" + adTarget + "&makeTarget=" + makeTarget
         });
     }
 
@@ -117,7 +118,7 @@
         var adTarget = $("#drpADTarget").combobox("getValue");
         var makeTarget = $("#drpMakeTarget").combobox("getValue");
 
-        window.open("/Select/OrderList_output?order=" + orderID + "&contract=" + contractID + "&begin=" + begin + "&end=" + end + "&person=" + person + "&adTarget=" + adTarget + "&makeTarget=" + makeTarget, "", "width=50,height=50,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+        window.open("/Select/outputOrder?order=" + orderID + "&contract=" + contractID + "&begin=" + begin + "&end=" + end + "&person=" + person + "&adTarget=" + adTarget + "&makeTarget=" + makeTarget, "", "width=50,height=50,toolbar=no,menubar=no,scrollbars=no, resizable=no");
     }
 
     function createRowMenu() {
@@ -136,19 +137,19 @@
                         location.href = "/Business/ADCostAccount?id=" + selected.orderID;
                         break;
                     case "adCostList":
-                        window.open("/Select/ADCostList?id=" + selected.orderID, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        window.open("/Business/ADCostList?id=" + selected.orderID, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
                         break;
                     case "makeCost":
                         location.href = "/Business/MakeCostAccount?id=" + selected.orderID;
                         break;
                     case "makeCostList":
-                        window.open("/Select/MakeCostList?id=" + selected.orderID, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        window.open("/Business/ADCostList?id=" + selected.orderID, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
                         break;
                     case "bill":
                         location.href = "/Business/ReceiveBill?id=" + selected.orderID;
                         break;
                     case "billList":
-                        window.open("/Select/ReceiveBillList?id=" + selected.orderID, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+                        window.open("ReceiveBillList?id=" + selected.orderID, "", "width=900,height=400,toolbar=no,menubar=no,scrollbars=no, resizable=no");
                         break;
                 }
             }

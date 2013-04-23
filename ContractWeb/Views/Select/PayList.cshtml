@@ -1,0 +1,153 @@
+﻿<style type="text/css">
+    .fitemTitle {
+        display: inline-block;
+        width: 60px;
+    }
+
+    .fitemWidth {
+        width: 100px;
+        margin-right: 10px;
+    }
+</style>
+
+<div class="ftitle">到账查询</div>
+<p />
+
+<div class="fitem">
+    <label class="fitemTitle">合同编号：</label>
+    <input id="txtContractID" class="easyui-validatebox fitemWidth" />
+    <label class="fitemTitle inline">渠道归类:</label>
+    <select id="drpChannel" class="easyui-combobox"></select>
+    <label class="fitemTitle inline">日期:</label>
+    <input id="txtBeginDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" style="width:100px;" /> 至 
+    <input id="txtEndDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" style="width:100px;" />
+</div>
+
+<div class="fitem">
+    <label class="fitemTitle">业务员:</label>
+    <select id="drpPerson" class="easyui-combobox"></select>
+    <label class="fitemTitle" style="width:100px;margin-left:10px;">到账金额:</label>
+    <input id="txtMoney" class="easyui-validatebox fitemWidth" />
+</div>
+
+<p>
+    <input type="button" value="查询" style="margin-left:10px;" onclick="search()" />
+    <input type="button" value="未到账" style="margin-left:10px;" onclick="searchMoney(0)" />
+    <input type="button" value="未完全到账" style="margin-left:10px;" onclick="searchMoney(1)" />
+    <input type="button" value="完全到账" style="margin-left:10px;" onclick="searchMoney(2)" />
+    <input type="button" value="到账金额" style="margin-left:10px;" onclick="getMoney()" />
+    <input type="button" value="导出" style="margin-left:10px;" onclick="output()" />
+</p>
+
+<table id="PayList" style="width: 1050px; height: 400px;" data-options="singleSelect:true,idField:'id'">
+    <thead>
+        <tr>
+            <th data-options="field:'contractID',width:100">合同编号</th>
+            <th data-options="field:'contractName',width:180">合同名称</th>
+            <th data-options="field:'channelName',width:120">渠道归类</th>
+            <th data-options="field:'personName',width:120">业务员</th>
+            <th data-options="field:'money',width:70">签署金额</th>
+            <th data-options="field:'date',width:70">到账日期</th>
+            <th data-options="field:'payMoney',width:70">到账金额</th>
+            <th data-options="field:'payPercent',width:100">到账比例</th>
+        </tr>
+    </thead>
+</table>
+
+<script>
+    var type = -1;
+    var selected = null;
+
+    $(function () {
+        $('#PayList').datagrid({
+            onRowContextMenu: function (e, rowIndex, rowData) {
+                selected = rowData;
+                e.preventDefault();
+
+                if (!$('#rmenu').length) {
+                    createRowMenu();//调用添加右击菜单的内容
+                }
+                $('#rmenu').menu('show', {
+                    left: e.pageX,
+                    top: e.pageY
+                });
+
+            }
+        });
+
+        $('#drpPerson').combobox({
+            url: '/Home/drpPersonList',
+            valueField: 'id',
+            textField: 'name'
+        });
+
+        $('#drpChannel').combobox({
+            url: '/Home/drpChannelList',
+            valueField: 'id',
+            textField: 'name'
+        });
+    });
+
+    function search() {
+        type = -1;
+
+        var contractID = $("#txtContractID").val();
+        var channel = $("#drpChannel").combobox("getValue");
+        var begin = $("#txtBeginDate").datebox("getValue");
+        var end = $("#txtEndDate").datebox("getValue");
+        var person = $("#drpPerson").combobox("getValue");
+
+        $('#PayList').datagrid({
+            url: "/Select/PayList_search?contract=" + contractID + "&channel=" + channel + "&begin=" + begin + "&end=" + end + "&person=" + person
+        });
+    }
+
+    function searchMoney(t) {
+        type = t;
+
+        var contractID = $("#txtContractID").val();
+        var channel = $("#drpChannel").combobox("getValue");
+        var begin = $("#txtBeginDate").datebox("getValue");
+        var end = $("#txtEndDate").datebox("getValue");
+        var person = $("#drpPerson").combobox("getValue");
+
+        $('#PayList').datagrid({
+            url: "/Select/PayList_searchMoney?contract=" + contractID + "&channel=" + channel + "&begin=" + begin + "&end=" + end + "&person=" + person + "&type=" + type
+        });
+    }
+
+    function output() {
+        var contractID = $("#txtContractID").val();
+        var channel = $("#drpChannel").combobox("getValue");
+        var begin = $("#txtBeginDate").datebox("getValue");
+        var end = $("#txtEndDate").datebox("getValue");
+        var person = $("#drpPerson").combobox("getValue");
+
+        window.open("/Select/PayList_output?contract=" + contractID + "&channel=" + channel + "&begin=" + begin + "&end=" + end + "&person=" + person + "&type=" + type, "", "width=50,height=50,toolbar=no,menubar=no,scrollbars=no, resizable=no");
+    }
+
+    function getMoney() {
+        $.get("/Select/PayList_getMoney",
+            function (data) {
+                if (data != null)
+                    $("#txtMoney").val(data);
+            }
+        );
+    }
+
+    function createRowMenu() {
+        var tmenu = $('<div id="rmenu" style="width:130px;"></div>').appendTo('body');
+        $('<div name="adCost"/>').html("广告费结算登记").appendTo(tmenu);
+
+        tmenu.menu({
+            onClick: function (item) {
+                switch (item.name) {
+                    case "adCost":
+                        location.href = "/Business/ADCostAccount?id=" + selected.orderID;
+                        break;
+                }
+            }
+        });
+    }
+
+</script>

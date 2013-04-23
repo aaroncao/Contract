@@ -53,5 +53,10 @@ namespace ContractWeb.Models
         /// 到账比例
         /// </summary>
         public string payPercent { get; set; }
+
+        /// <summary>
+        ///  到账日期
+        /// </summary>
+        public DateTime date { get; set; }
     }
 }

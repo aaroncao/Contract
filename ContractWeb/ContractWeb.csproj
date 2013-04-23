@@ -434,6 +434,7 @@
     <Content Include="Views\Business\EditOrder.cshtml" />
     <Content Include="Views\UserManage\Users_Role.cshtml" />
     <Content Include="Views\UserManage\ContractBinding.cshtml" />
+    <Content Include="Views\Select\PayList.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
