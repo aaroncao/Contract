@@ -59,7 +59,7 @@ namespace ContractWeb.DataAccess
                 strSql += " and a.personID='" + person + "' ";
 
             if (begin.Trim() != "" && end.Trim() != "")
-                strSql += " and b.date between '" + begin + "' and '" + end + "' ";
+                strSql += " and a.mDate between '" + begin + "' and '" + end + "' ";
             
             SqlParameter[] param = new SqlParameter[]
             {
@@ -92,7 +92,7 @@ namespace ContractWeb.DataAccess
                 strSql += " and a.personID='" + person + "' ";
 
             if (begin.Trim() != "" && end.Trim() != "")
-                strSql += " and b.date between '" + begin + "' and '" + end + "' ";
+                strSql += " and a.mDate between '" + begin + "' and '" + end + "' ";
 
             strSql += " group by a.contractID, a.money ";
 
@@ -133,10 +133,28 @@ namespace ContractWeb.DataAccess
         /// 获取到账总金额
         /// </summary>
         /// <returns></returns>
-        public double getMoney()
+        public double getMoney(string contractID, string channel, string begin, string end, string person, string userID)
         {
-            string strSql = "select sum(money) from CustomerPay";
-            DataTable dt = SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql).Tables[0];
+            string strSql = "select sum(b.money) from ContractInfo a join ContractBinding c on a.personID=c.personID left join CustomerPay b on a.contractID=b.contractID where c.userID=@id ";
+
+            if (contractID.Trim() != "")
+                strSql += " and a.contractID='" + contractID + "' ";
+
+            if (channel.Trim() != "")
+                strSql += " and a.channelID='" + channel + "' ";
+
+            if (person.Trim() != "")
+                strSql += " and a.personID='" + person + "' ";
+
+            if (begin.Trim() != "" && end.Trim() != "")
+                strSql += " and b.date between '" + begin + "' and '" + end + "' ";
+
+            SqlParameter[] param = new SqlParameter[]
+            {
+                new SqlParameter("@id", userID)
+            };
+
+            DataTable dt = SqlHelper.ExecuteDataset(BaseHelper.DBConnStr, CommandType.Text, strSql, param).Tables[0];
 
             if (dt != null && dt.Rows.Count > 0)
                 return Convert.ToDouble(dt.Rows[0][0]);

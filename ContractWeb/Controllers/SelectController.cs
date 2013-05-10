@@ -807,11 +807,11 @@ namespace ContractWeb.Controllers
         /// 获取到账总金额
         /// </summary>
         /// <returns></returns>
-        public JsonResult PayList_getMoney()
+        public JsonResult PayList_getMoney(string contract, string channel, string begin, string end, string person)
         {
             DaPayList dal = new DaPayList();
             var result = new CustomJsonResult();
-            result.Data = dal.getMoney();
+            result.Data = dal.getMoney(contract, channel, begin, end, person, BaseHelper.getCookie().id.ToString());
             return result;
         }
         #endregion

@@ -18,7 +18,7 @@
     <input id="txtContractID" class="easyui-validatebox fitemWidth" />
     <label class="fitemTitle inline">渠道归类:</label>
     <select id="drpChannel" class="easyui-combobox"></select>
-    <label class="fitemTitle inline">日期:</label>
+    <label class="fitemTitle inline" style="width:40px;margin-left:10px;">日期:</label>
     <input id="txtBeginDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" style="width:100px;" /> 至 
     <input id="txtEndDate" class="easyui-datebox" data-options="formatter:myformatter,parser:myparser" style="width:100px;" />
 </div>
@@ -127,7 +127,13 @@
     }
 
     function getMoney() {
-        $.get("/Select/PayList_getMoney",
+        var contractID = $("#txtContractID").val();
+        var channel = $("#drpChannel").combobox("getValue");
+        var begin = $("#txtBeginDate").datebox("getValue");
+        var end = $("#txtEndDate").datebox("getValue");
+        var person = $("#drpPerson").combobox("getValue");
+
+        $.get("/Select/PayList_getMoney?contract=" + contractID + "&channel=" + channel + "&begin=" + begin + "&end=" + end + "&person=" + person,
             function (data) {
                 if (data != null)
                     $("#txtMoney").val(data);
